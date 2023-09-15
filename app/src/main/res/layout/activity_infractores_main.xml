@@ -97,13 +97,10 @@
   <ScrollView
       android:id="@+id/scrollView5"
       android:layout_width="match_parent"
-      android:layout_height="724dp"
-      android:layout_marginTop="4dp"
+      android:layout_height="0dp"
       android:layout_weight="1"
-      android:paddingBottom="10dp"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/textView20">
+      android:layout_marginTop="4dp"
+      android:paddingBottom="10dp">
 
     <LinearLayout
         android:id="@+id/infractores_main_infractores_cards"
@@ -114,53 +111,42 @@
   </ScrollView>
 
   <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="184dp"
-      android:layout_marginTop="20dp"
-      android:layout_weight="1"
-      android:gravity="right"
-      android:orientation="vertical">
+      android:id="@+id/infractores_main_infractores_btnAgregar"
+      android:layout_width="250dp"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom"
+      android:layout_marginLeft="20dp"
+      android:layout_marginTop="10dp"
+      android:layout_marginBottom="20dp"
+      android:background="@drawable/rounded_corners_all"
+      android:backgroundTint="#4399FF"
+      android:gravity="center"
+      android:orientation="horizontal">
 
-    <LinearLayout
-        android:id="@+id/infractores_main_infractores_btnAgregar"
-        android:layout_width="229dp"
-        android:layout_height="61dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/rounded_corners_all"
-        android:backgroundTint="#4399FF"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView5"
-        app:layout_constraintVertical_bias="1.0">
+    <ImageView
+        android:id="@+id/imageView18"
+        android:layout_width="0dp"
+        android:layout_height="34dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="1"
+        android:paddingLeft="7dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:src="@drawable/button_person_add" />
 
-      <ImageView
-          android:id="@+id/imageView18"
-          android:layout_width="0dp"
-          android:layout_height="34dp"
-          android:layout_marginLeft="10dp"
-          android:layout_marginTop="10dp"
-          android:layout_marginBottom="10dp"
-          android:layout_weight="1"
-          android:paddingLeft="7dp"
-          android:paddingTop="7dp"
-          android:paddingBottom="7dp"
-          android:src="@drawable/button_person_add" />
-
-      <TextView
-          android:id="@+id/textView21"
-          android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          android:layout_margin="10dp"
-          android:layout_weight="1"
-          android:fontFamily="@font/poppins_semibold"
-          android:gravity="center_vertical"
-          android:text="Agregar"
-          android:textColor="#FFFFFF"
-          android:textSize="16sp" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center_vertical"
+        android:text="Agregar"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
   </LinearLayout>
 
 </LinearLayout>

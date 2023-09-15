@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EDF2F6"
-    tools:context=".Infractores_agregar">
+    tools:context=".Infractores_agregar"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -50,7 +51,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="730dp"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -205,8 +206,8 @@
                     android:ems="10"
                     android:fontFamily="@font/poppins_medium"
                     android:hint="Nombre"
-                    android:maxLength="50"
                     android:inputType="textPersonName"
+                    android:maxLength="50"
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="10dp"
                     android:textColor="#000000"
@@ -222,8 +223,8 @@
                     android:ems="10"
                     android:fontFamily="@font/poppins_medium"
                     android:hint="Apellido"
-                    android:maxLength="50"
                     android:inputType="textPersonName"
+                    android:maxLength="50"
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="10dp"
                     android:textColor="#000000"
@@ -239,13 +240,13 @@
                     android:ems="10"
                     android:fontFamily="@font/poppins_medium"
                     android:hint="Dui"
-                    android:maxLength="9"
                     android:inputType="number"
+                    android:maxLength="9"
                     android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp"
                     android:textColor="#000000"
                     android:textColorHint="#8E8E8E"
-                    android:textSize="16sp"
-                    android:paddingVertical="10dp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -335,7 +336,6 @@
                         android:fontFamily="@font/poppins_semibold"
                         android:gravity="center_vertical"
                         android:text="Departamento"
-                        android:textAlignment="textEnd"
                         android:textColor="#777777"
                         android:textSize="16sp" />
 
@@ -362,7 +362,6 @@
                         android:fontFamily="@font/poppins_semibold"
                         android:gravity="center_vertical"
                         android:text="Municipio"
-                        android:textAlignment="textEnd"
                         android:textColor="#777777"
                         android:textSize="16sp" />
 
@@ -392,8 +391,8 @@
                     android:ems="10"
                     android:fontFamily="@font/poppins_medium"
                     android:hint="Dirección"
-                    android:maxLength="50"
                     android:inputType="textMultiLine"
+                    android:maxLength="50"
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="20dp"
                     android:singleLine="false"
@@ -428,8 +427,8 @@
                     android:ems="10"
                     android:fontFamily="@font/poppins_medium"
                     android:hint="Descripción"
-                    android:maxLength="50"
                     android:inputType="textMultiLine"
+                    android:maxLength="50"
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="20dp"
                     android:singleLine="false"
@@ -546,4 +545,4 @@
         </LinearLayout>
     </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context=".Acercamientos_agregar"
     android:background="#EDF2F6">
@@ -12,7 +14,9 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,7 +55,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="726dp"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
@@ -120,7 +124,6 @@
                         android:fontFamily="@font/poppins_semibold"
                         android:gravity="center_vertical"
                         android:text="Departamento"
-                        android:textAlignment="textEnd"
                         android:textColor="#3D96FF"
                         android:textSize="16sp" />
 
@@ -147,7 +150,6 @@
                         android:fontFamily="@font/poppins_semibold"
                         android:gravity="center_vertical"
                         android:text="Municipio"
-                        android:textAlignment="textEnd"
                         android:textColor="#3D96FF"
                         android:textSize="16sp" />
 
@@ -339,6 +341,7 @@
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 tools:layout_editor_absoluteX="20dp">
@@ -393,4 +396,4 @@
         </LinearLayout>
     </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -9,11 +9,11 @@ import java.sql.SQLException
 class conexionSQL {
 
     // Variables para la cadena de conexión
-    private val endpoint = "expo2023.cwiwwdujwmza.us-east-2.rds.amazonaws.com"
+    private val endpoint = "database-1.cqdnfs7kilaa.us-east-1.rds.amazonaws.com"
     private val port = "1433"
     private val dbName = "ESESPI_Expo1"
     private val username = "admin"
-    private val password = "#Dbnlemus2006xd"
+    private val password = "#Dbnlemus2006"
 
     // Función de conexión
     fun dbConn(): Connection? {

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        tools:targetApi="31">
+        <activity
+            android:name=".Detenidos_info"
+            android:exported="false" />
+        <activity
+            android:name=".Detenidos_main"
+            android:exported="false" />
+        <activity
+            android:name=".Detenidos_agregar"
+            android:exported="false" />
+        <activity
+            android:name=".Infractores_seleccion"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Acercamientos_info"
+            android:exported="false" />
+        <activity
+            android:name=".Acercamientos_main"
+            android:exported="false" />
+        <activity
+            android:name=".Acercamientos_agregar"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Decomisos_info"
+            android:exported="false" />
+        <activity
+            android:name=".Decomisos_agregar"
+            android:exported="false" />
+        <activity
+            android:name=".Decomisos_main"
+            android:exported="false" />
+        <activity
+            android:name=".Infractores_Info"
+            android:exported="false" />
+        <activity
+            android:name=".Infractores_agregar"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Infractores_main"
+            android:exported="false" />
+        <activity
+            android:name=".RecuperacionCredencialesRecuperarContrasena"
+            android:exported="false" />
+        <activity
+            android:name=".RecuperacionCredencialesRecuperarUsuario"
+            android:exported="false" />
+        <activity
+            android:name=".RecuperacionCredencialesElegirCredencial"
+            android:exported="false" />
+        <activity
+            android:name=".RecuperacionCredencialesMailVerificacion"
+            android:exported="false" />
+        <activity
+            android:name=".RecuperacionCredencialesElegirMetodo"
+            android:exported="false" />
+        <activity
+            android:name=".DashBoard"
+            android:exported="false" />
+        <activity
+            android:name=".RegistroUsuarioDatosPolicia"
+            android:exported="false" />
+        <activity
+            android:name=".RegistroUsuarioIngresoCredenciales"
+            android:exported="false" />
+        <activity
+            android:name=".RegistroUsuarioIngresoDatosReferenciaPersonal"
+            android:exported="false" />
+        <activity
+            android:name=".RegistroUsuarioReferenciasPersonales"
+            android:exported="true" />
+        <activity
+            android:name=".RegistroUsuarioCosve"
+            android:exported="false" />
+        <activity
+            android:name=".RegistroUsuarioVerificarTelefono"
+            android:exported="false" />
+        <activity
+            android:name=".RegistroUsuarioVerificarCorreo"
+            android:exported="false" />
+        <activity
+            android:name=".RegistroUsuarioSeleccionNacionalidad"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".RegistroUsuarioIngresoDatos"
+            android:exported="false" />
+        <activity
+            android:name=".RegistroUsuarioSeleccionIdioma"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SplashScreen"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+    </application>
+
+</manifest>

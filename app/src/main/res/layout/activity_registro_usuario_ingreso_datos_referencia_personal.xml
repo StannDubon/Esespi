@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegistroUsuarioIngresoDatosReferenciaPersonal">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#EDF2F6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="264dp">
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="151dp"
+                    android:layout_height="77dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.188"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.229"
+                    app:srcCompat="@drawable/logo_name_right" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_extrabold"
+                    android:text="Registrarse"
+                    android:textAlignment="center"
+                    android:textColor="#403F71"
+                    android:textSize="36sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.253"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.796" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <EditText
+                android:id="@+id/RegistroDatosReferenciaPersonalTxtNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:backgroundTint="#8F8F8F"
+                android:ems="10"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="Nombre"
+                android:inputType="textPersonName"
+                android:paddingBottom="7dp"
+                android:textColorHint="#8F8F8F"
+                android:textSize="19sp" />
+
+            <EditText
+                android:id="@+id/RegistroDatosReferenciaPersonalTxtApellido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:backgroundTint="#8F8F8F"
+                android:ems="10"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="Apellido"
+                android:inputType="textPersonName"
+                android:paddingBottom="7dp"
+                android:textColorHint="#8F8F8F"
+                android:textSize="19sp" />
+
+            <EditText
+                android:id="@+id/RegistroDatosReferenciaPersonalTxtDUI"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:backgroundTint="#8F8F8F"
+                android:ems="10"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="DUI"
+                android:inputType="textPersonName"
+                android:paddingBottom="7dp"
+                android:textColorHint="#8F8F8F"
+                android:textSize="19sp" />
+
+            <EditText
+                android:id="@+id/RegistroDatosReferenciaPersonalTxtCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:backgroundTint="#8F8F8F"
+                android:ems="10"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="Correo"
+                android:inputType="textPersonName"
+                android:paddingBottom="7dp"
+                android:textColorHint="#8F8F8F"
+                android:textSize="19sp" />
+
+            <EditText
+                android:id="@+id/RegistroDatosReferenciaPersonalTxtTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:backgroundTint="#8F8F8F"
+                android:ems="10"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="Telefono"
+                android:inputType="textPersonName"
+                android:paddingBottom="7dp"
+                android:textColorHint="#8F8F8F"
+                android:textSize="19sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/RegistroDatosReferenciaPersonalBtnMasculino"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_corners_all"
+                    android:backgroundTint="#D8D8D8"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="0dp"
+                    android:text="Masculino"
+                    android:textAllCaps="false"
+                    android:textColor="#686868"
+                    android:textSize="19sp" />
+
+                <Button
+                    android:id="@+id/RegistroDatosReferenciaPersonalBtnFemenino"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_corners_all"
+                    android:backgroundTint="#D8D8D8"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="0dp"
+                    android:text="Femenino"
+                    android:textAllCaps="false"
+                    android:textColor="#686868"
+                    android:textSize="19sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Fecha de nacimiento"
+                android:textColor="#777777"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_margin="10dp"
+                android:background="#00FFFFFF"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/RegistroDatosReferenciaPersonalDbDia"
+                    android:theme="@style/SpinnerFontStyle"
+                    android:textSize="19sp"
+                    android:layout_width="322dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_corners_all"
+                    android:backgroundTint="#FFFFFF"
+                    android:elevation="5dp" />
+
+                <Spinner
+                    android:id="@+id/RegistroDatosReferenciaPersonalDbMes"
+                    android:theme="@style/SpinnerFontStyle"
+                    android:textSize="19sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_corners_all"
+                    android:backgroundTint="#FFFFFF"
+                    android:elevation="5dp" />
+
+                <Spinner
+                    android:id="@+id/RegistroDatosReferenciaPersonalDbAño"
+                    android:theme="@style/SpinnerFontStyle"
+                    android:textSize="19sp"
+                    android:layout_width="324dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_corners_all"
+                    android:backgroundTint="#FFFFFF"
+                    android:elevation="5dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="276dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center_vertical"
+                    android:text="Estado civil"
+                    android:textColor="#777777"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/RegistroDatosReferenciaPersonalDbEstadoCivil"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_corners_all"
+                    android:elevation="5dp"
+                    android:gravity="center_vertical"
+                    android:theme="@style/SpinnerFontStyle" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView53"
+                    android:layout_width="282dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center_vertical"
+                    android:text="Tipo de sangre"
+                    android:textColor="#777777"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/RegistroDatosReferenciaPersonalDbTipoSangre"
+                    android:layout_width="243dp"
+                    android:layout_height="42dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_corners_all"
+                    android:elevation="5dp"
+                    android:gravity="center_vertical"
+                    android:theme="@style/SpinnerFontStyle" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:id="@+id/textView72"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="0dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Idiomas hablados"
+                    android:textColor="#777777"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/RegistroDatosReferenciaPersonalbtnAñadirIdioma"
+                    android:layout_width="166dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="10dp"
+                    android:backgroundTint="#4399FF"
+                    android:background="@drawable/rounded_corners_all"
+                    android:padding="0dp"
+                    android:text="+"
+                    android:textColor="#FFFFFF"
+                    android:textSize="30dp" />
+
+                <LinearLayout
+                    android:id="@+id/RegistroDatosReferenciaPersonalLinearLayoutIdiomasSeleccionados"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical"></LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView74"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="0dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Nacionalidades"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/RegistroDatosReferenciaPersonalbtnAñadirNacionalidad"
+                    android:layout_width="166dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="10dp"
+                    android:backgroundTint="#4399FF"
+                    android:background="@drawable/rounded_corners_all"
+                    android:padding="0dp"
+                    android:text="+"
+                    android:textColor="#FFFFFF"
+                    android:textSize="30dp" />
+
+                <LinearLayout
+                    android:id="@+id/RegistroDatosReferenciaPersonalLinearLayoutNacionalidadSeleccionados"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical"></LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView25"
+                    android:layout_width="276dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center_vertical"
+                    android:text="Departamento"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/RegistroDatosReferenciaPersonalDbDepartamento"
+                    android:layout_width="318dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_corners_all"
+                    android:elevation="5dp"
+                    android:gravity="center_vertical"
+                    android:theme="@style/SpinnerFontStyle" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView52"
+                    android:layout_width="276dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center_vertical"
+                    android:text="Municipio"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/RegistroDatosReferenciaPersonalDbMunicipio"
+                    android:layout_width="317dp"
+                    android:layout_height="43dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_corners_all"
+                    android:elevation="5dp"
+                    android:gravity="center_vertical"
+                    android:theme="@style/SpinnerFontStyle" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/RegistroDatosReferenciaPersonalTxtDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_corners_all"
+                android:backgroundTint="#FFFFFF"
+                android:elevation="10dp"
+                android:ems="10"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="Dirección"
+                android:inputType="textMultiLine"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="20dp"
+                android:singleLine="false"
+                android:textColorHint="#8F8F8F"
+                android:textSize="19sp" />
+
+            <Button
+                android:id="@+id/RegistroDatosReferenciaPersonalBtnSiguiente"
+                android:layout_width="match_parent"
+                android:layout_height="59dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/rounded_corners_all"
+                android:backgroundTint="#4399FF"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Siguiente"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="19sp" />
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RecuperacionCredencialesElegirCredencial">
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="318dp"
+        android:layout_height="130dp"
+        android:fontFamily="@font/poppins_extrabold"
+        android:text="Credencial a recuperar"
+        android:textAlignment="textStart"
+        android:textColor="#403F71"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.537"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.256" />
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="151dp"
+        android:layout_height="77dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.19"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.066"
+        app:srcCompat="@drawable/logo_name_right" />
+
+    <Button
+        android:id="@+id/RecuperacionCredencialesElegirCredencialesBtnUsuario"
+        android:layout_width="334dp"
+        android:layout_height="55dp"
+        android:background="@drawable/rounded_corners_all"
+        android:backgroundTint="#4399FF"
+        android:elevation="20dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:padding="10dp"
+        android:text="Usuario"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/RecuperacionCredencialesElegirCredencialesBtnContraseña"
+        android:layout_width="334dp"
+        android:layout_height="55dp"
+        android:background="@drawable/rounded_corners_all"
+        android:backgroundTint="#4399FF"
+        android:elevation="20dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:padding="10dp"
+        android:text="Contraseña"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.677" />
+</androidx.constraintlayout.widget.ConstraintLayout>

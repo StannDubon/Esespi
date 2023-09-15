@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EDF2F6"
+    tools:context=".Infractores_agregar">
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="73dp"
+            android:background="#FFFFFF"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/Infractores_Agregar_btnQuit"
+                android:layout_width="0dp"
+                android:layout_height="59dp"
+                android:layout_weight="1"
+                android:src="@drawable/buttton_back" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="242dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center_vertical"
+                android:text="Infractores"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView16"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:src="@drawable/decorative_line" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="730dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/Infractores_Agregar_imgInfractor"
+                        android:layout_width="140dp"
+                        android:layout_height="140dp"
+                        android:layout_gravity="center"
+                        android:padding="5dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/void_image"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:shapeAppearanceOverlay="@style/shapeAppearanceOverlay.App.CornerSize" />
+
+                    <LinearLayout
+                        android:id="@+id/Infractores_Agregar_btnQuitarFoto"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_marginBottom="4dp"
+                        android:background="@drawable/rounded_corners_circular"
+                        android:backgroundTint="#3D96FF"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <ImageView
+                            android:id="@+id/imageView19"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            app:srcCompat="@drawable/button_minnus" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="205dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/Infractores_Agregar_btnTomarFoto"
+                        android:layout_width="172dp"
+                        android:layout_height="44dp"
+                        android:layout_marginBottom="15dp"
+                        android:background="@drawable/rounded_corners_all"
+                        android:backgroundTint="#3D96FF"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/imageV675iew20"
+                            android:layout_width="160dp"
+                            android:layout_height="44dp"
+                            android:layout_weight="1"
+                            android:paddingLeft="6dp"
+                            android:paddingTop="6dp"
+                            android:paddingRight="6dp"
+                            android:paddingBottom="8dp"
+                            app:srcCompat="@drawable/button_camera" />
+
+                        <TextView
+                            android:id="@+id/textView27"
+                            android:layout_width="207dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Tomar foto"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/Infractores_Agregar_btnSubirFoto"
+                        android:layout_width="172dp"
+                        android:layout_height="44dp"
+                        android:background="@drawable/rounded_corners_all"
+                        android:backgroundTint="#3D96FF"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/imag56756eView20"
+                            android:layout_width="160dp"
+                            android:layout_height="44dp"
+                            android:layout_weight="1"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="10dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="12dp"
+                            app:srcCompat="@drawable/button_upload" />
+
+                        <TextView
+                            android:id="@+id/textVie567567w27"
+                            android:layout_width="207dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Subir foto"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textV456456456iew28"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Datos generales"
+                    android:textColor="#5B5B5B"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/Infractores_Agregar_txtNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:background="@drawable/rounded_corners_all"
+                    android:ems="10"
+                    android:fontFamily="@font/poppins_medium"
+                    android:hint="Nombre"
+                    android:maxLength="50"
+                    android:inputType="textPersonName"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#8E8E8E"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/Infractores_Agregar_txtApellido"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:background="@drawable/rounded_corners_all"
+                    android:ems="10"
+                    android:fontFamily="@font/poppins_medium"
+                    android:hint="Apellido"
+                    android:maxLength="50"
+                    android:inputType="textPersonName"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#8E8E8E"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/Infractores_Agregar_txtDUI"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:background="@drawable/rounded_corners_all"
+                    android:ems="10"
+                    android:fontFamily="@font/poppins_medium"
+                    android:hint="Dui"
+                    android:maxLength="9"
+                    android:inputType="number"
+                    android:paddingHorizontal="20dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#8E8E8E"
+                    android:textSize="16sp"
+                    android:paddingVertical="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="20dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/Infractores_Agregar_btnMasculino"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_corners_all"
+                    android:backgroundTint="#D8D8D8"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/Infractores_Agregar_btnMasculino_vec"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/vec_masculino_unselected" />
+
+                    <TextView
+                        android:id="@+id/Infractores_Agregar_btnMasculino_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Masculino"
+                        android:textColor="#686868"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/Infractores_Agregar_btnFemenino"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_corners_all"
+                    android:backgroundTint="#D8D8D8"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/Infractores_Agregar_btnFemenino_vec"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/vec_femenino_unselected" />
+
+                    <TextView
+                        android:id="@+id/Infractores_Agregar_btnFemenino_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Femenino"
+                        android:textColor="#686868"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="15dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textVi345345ew30"
+                        android:layout_width="297dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:gravity="center_vertical"
+                        android:text="Departamento"
+                        android:textAlignment="textEnd"
+                        android:textColor="#777777"
+                        android:textSize="16sp" />
+
+                    <Spinner
+                        android:id="@+id/Infractores_Agregar_DbDepartamento"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_corners_all"
+                        android:backgroundTint="#FFFFFF" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView4564630"
+                        android:layout_width="297dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:gravity="center_vertical"
+                        android:text="Municipio"
+                        android:textAlignment="textEnd"
+                        android:textColor="#777777"
+                        android:textSize="16sp" />
+
+                    <Spinner
+                        android:id="@+id/Infractores_Agregar_DbMunicipio"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_corners_all"
+                        android:backgroundTint="#FFFFFF" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/Infractores_Agregar_txtDireccion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:background="@drawable/rounded_corners_all"
+                    android:backgroundTint="#FFFFFF"
+                    android:ems="10"
+                    android:fontFamily="@font/poppins_medium"
+                    android:hint="Dirección"
+                    android:maxLength="50"
+                    android:inputType="textMultiLine"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="20dp"
+                    android:singleLine="false"
+                    android:textColorHint="#8F8F8F"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLadsfsdsdyout5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textV45645dfgdf6456iew28"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Datos policiales"
+                    android:textColor="#5B5B5B"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/infractores_Agregar_txtDescripcion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="7dp"
+                    android:background="@drawable/rounded_corners_all"
+                    android:backgroundTint="#FFFFFF"
+                    android:ems="10"
+                    android:fontFamily="@font/poppins_medium"
+                    android:hint="Descripción"
+                    android:maxLength="50"
+                    android:inputType="textMultiLine"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="20dp"
+                    android:singleLine="false"
+                    android:textColorHint="#8F8F8F"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textView28"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Ultima vez visto"
+                    android:textColor="#777777"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#00FFFFFF"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/Infractores_Agregar_DbDia"
+                        android:layout_width="289dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_corners_all"
+                        android:backgroundTint="#FFFFFF"
+                        android:textSize="19sp"
+                        android:theme="@style/SpinnerFontStyle" />
+
+                    <Spinner
+                        android:id="@+id/Infractores_Agregar_DbMes"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_corners_all"
+                        android:backgroundTint="#FFFFFF"
+                        android:textSize="19sp"
+                        android:theme="@style/SpinnerFontStyle" />
+
+                    <Spinner
+                        android:id="@+id/Infractores_Agregar_DbAño"
+                        android:layout_width="286dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_corners_all"
+                        android:backgroundTint="#FFFFFF"
+                        android:textSize="19sp"
+                        android:theme="@style/SpinnerFontStyle" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="30dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/Infractores_Agregar_btnDescartar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_corners_all"
+                    android:backgroundTint="#A8AAAB"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView30"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:gravity="center"
+                        android:text="Descartar"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/Infractores_Agregar_btnAgregar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_corners_all"
+                    android:backgroundTint="#3D96FF"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView32"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:gravity="center"
+                        android:text="Guardar"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

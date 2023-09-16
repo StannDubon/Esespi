@@ -3,6 +3,7 @@ package com.example.esespi
 import android.content.Context
 import android.widget.EditText
 import android.widget.Toast
+import java.util.regex.Pattern
 
 class Validaciones {
 
@@ -90,6 +91,23 @@ class Validaciones {
 
         if (isReal == false) {Toast.makeText(contexto, "Fecha no válida", Toast.LENGTH_SHORT).show()}
         return isReal
+    }
+
+    fun validarCorreoElectronico(emailEditText: EditText, contexto: Context): Boolean {
+        val email = emailEditText.text.toString().trim()
+
+        // Patrón de expresión regular para validar correos electrónicos
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+
+        val pattern = Pattern.compile(emailPattern)
+        val matcher = pattern.matcher(email)
+
+        if (!matcher.matches()) {
+            Toast.makeText(contexto, "Correo electrónico no válido", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        return true
     }
 
 

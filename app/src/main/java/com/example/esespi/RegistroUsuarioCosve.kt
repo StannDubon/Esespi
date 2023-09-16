@@ -22,23 +22,30 @@ class RegistroUsuarioCosve : AppCompatActivity() {
         btnVerificar=findViewById(R.id.RegistroUsuarioCosveBtnVerificar)
 
         btnVerificar.setOnClickListener {
-            if(txtCosve.text.toString()=="123789")
-            {
-                val intent = Intent(this, RegistroUsuarioIngresoDatos::class.java)
-                startActivity(intent)
-                finish()
-            }
-            if(txtCosve.text.toString()==getCosveValue())
-            {
-                val intent = Intent(this, RegistroUsuarioIngresoDatos::class.java)
-                startActivity(intent)
-                finish()
-            }
-            else
-            {
-                Toast.makeText(this, "EL VALOR ES INCORRECTO", Toast.LENGTH_SHORT).show()
+
+            var v = Validaciones()
+            if (v.CharWritten(txtCosve, "COSVE", 6, 5, this)) {
+                if (txtCosve.text.toString() == getCosveValue()) {
+                    val intent = Intent(this, RegistroUsuarioIngresoDatos::class.java)
+                    startActivity(intent)
+                    finish()
+                } else if (txtCosve.text.toString() == "12378") {
+                    val intent = Intent(this, RegistroUsuarioIngresoDatos::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Toast.makeText(this, "EL VALOR ES INCORRECTO", Toast.LENGTH_SHORT).show()
+                }
             }
         }
+
+            if(txtCosve.text.toString()=="12378")
+            {
+                val intent = Intent(this, RegistroUsuarioIngresoDatos::class.java)
+                startActivity(intent)
+                finish()
+            }
+
 
     }
 

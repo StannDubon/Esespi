@@ -91,7 +91,7 @@
                 android:ems="10"
                 android:fontFamily="@font/poppins_medium"
                 android:hint="DUI"
-                android:inputType="textPersonName"
+                android:inputType="number"
                 android:paddingBottom="7dp"
                 android:textColorHint="#8F8F8F"
                 android:textSize="19sp" />
@@ -119,7 +119,7 @@
                 android:ems="10"
                 android:fontFamily="@font/poppins_medium"
                 android:hint="Telefono"
-                android:inputType="textPersonName"
+                android:inputType="number"
                 android:paddingBottom="7dp"
                 android:textColorHint="#8F8F8F"
                 android:textSize="19sp" />

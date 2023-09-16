@@ -242,86 +242,105 @@ class RegistroUsuarioIngresoDatosReferenciaPersonal : AppCompatActivity() {
 
         btnSiguiente.setOnClickListener {
 
-            if (validarCampos()) {
-                val dia = dbDia.selectedItem.toString().toIntOrNull()
-                val mes = obtenerNumeroMes(dbMes.selectedItem.toString())
-                val año = dbAño.selectedItem.toString().toIntOrNull()
+            var v = Validaciones()
+            val dia = dbDia.selectedItem.toString().toInt()
+            val mes = v.obtenerNumeroMes(dbMes.selectedItem.toString())
+            val año = dbAño.selectedItem.toString().toInt()
 
-                if (dia != null && mes != null && año != null) {
-                    if (validarFechaNacimiento(dia, mes, año)) {
-                        if (genero == 1 || genero == 2) {
+            if (
+                v.CharWritten(txtNombre, "Nombre", 30, 3, this) &&
+                v.CharWritten(txtApellido, "Apelido", 30, 3, this) &&
+                v.CharWritten(txtDUI, "Dui", 9, 9, this) &&
+                v.CharWritten(txtDomicilio, "Dirección", 50, 1, this) &&
+                v.validarCorreoElectronico(txtCorreo, this)&&
+                v.CharWritten(txtTelefono, "Telefono", 8, 8, this) &&
+                v.GenderSelected(genero, this) &&
+                v.FechaReal(dia, mes, año, this)
+            ) {
 
-                            val userData = HashMap<String, String>()
+                if (validarCampos()) {
+                    val dia = dbDia.selectedItem.toString().toIntOrNull()
+                    val mes = obtenerNumeroMes(dbMes.selectedItem.toString())
+                    val año = dbAño.selectedItem.toString().toIntOrNull()
 
-                            userData["nombre"] = txtNombre.text.toString()
-                            userData["apellido"] = txtApellido.text.toString()
-                            userData["dui"] = txtDUI.text.toString()
-                            userData["telefono"] = txtTelefono.text.toString()
-                            userData["correo"] = txtCorreo.text.toString()
+                    if (dia != null && mes != null && año != null) {
+                        if (validarFechaNacimiento(dia, mes, año)) {
+                            if (genero == 1 || genero == 2) {
 
-                            val fechaNacimiento = "$año/$mes/$dia"
-                            userData["fechaNacimiento"] = fechaNacimiento
+                                val userData = HashMap<String, String>()
 
-                            if (IdiomasSeleccionados != null) {
-                                val idiomasString = IdiomasSeleccionados.joinToString(",")
-                                userData["idiomas"] = idiomasString
+                                userData["nombre"] = txtNombre.text.toString()
+                                userData["apellido"] = txtApellido.text.toString()
+                                userData["dui"] = txtDUI.text.toString()
+                                userData["telefono"] = txtTelefono.text.toString()
+                                userData["correo"] = txtCorreo.text.toString()
+
+                                val fechaNacimiento = "$año/$mes/$dia"
+                                userData["fechaNacimiento"] = fechaNacimiento
+
+                                if (IdiomasSeleccionados != null) {
+                                    val idiomasString = IdiomasSeleccionados.joinToString(",")
+                                    userData["idiomas"] = idiomasString
+                                }
+
+                                if (NacionalidadesSeleccionados != null) {
+                                    val nacionalidadesString =
+                                        NacionalidadesSeleccionados.joinToString(",")
+                                    userData["nacionalidades"] = nacionalidadesString
+                                }
+
+                                val dep = dbDepartamento.selectedItem.toString()
+                                val mun = dbMunicipio.selectedItem.toString()
+                                val di = txtDomicilio.text.toString()
+                                userData["domicilio"] = "$dep, $mun, $di"
+
+                                var generotxt = ""
+                                if (genero == 1) {
+                                    generotxt = "Masculino"
+                                } else if (genero == 2) {
+                                    generotxt = "Femenino"
+                                }
+                                userData["genero"] = generotxt
+
+                                userData["estadoCivil"] = dbEstCivil.selectedItem.toString()
+                                userData["tipoSangre"] = dbTipoSangre.selectedItem.toString()
+
+                                val intent =
+                                    Intent(this, RegistroUsuarioReferenciasPersonales::class.java)
+                                intent.putExtra("userData", userData)
+                                setResult(Activity.RESULT_OK, intent)
+                                IdiomasSeleccionados.clear()
+                                NacionalidadesSeleccionados.clear()
+                                connection.close()
+                                finish()
+
+
+                            } else {
+                                Toast.makeText(
+                                    this,
+                                    "Por favor seleccione su genero",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
-
-                            if (NacionalidadesSeleccionados != null) {
-                                val nacionalidadesString =
-                                    NacionalidadesSeleccionados.joinToString(",")
-                                userData["nacionalidades"] = nacionalidadesString
-                            }
-
-                            val dep = dbDepartamento.selectedItem.toString()
-                            val mun = dbMunicipio.selectedItem.toString()
-                            val di = txtDomicilio.text.toString()
-                            userData["domicilio"] = "$dep, $mun, $di"
-
-                            var generotxt = ""
-                            if (genero == 1) {
-                                generotxt = "Masculino"
-                            } else if (genero == 2) {
-                                generotxt = "Femenino"
-                            }
-                            userData["genero"] = generotxt
-
-                            userData["estadoCivil"] = dbEstCivil.selectedItem.toString()
-                            userData["tipoSangre"] = dbTipoSangre.selectedItem.toString()
-
-                            val intent =
-                                Intent(this, RegistroUsuarioReferenciasPersonales::class.java)
-                            intent.putExtra("userData", userData)
-                            setResult(Activity.RESULT_OK, intent)
-                            IdiomasSeleccionados.clear()
-                            NacionalidadesSeleccionados.clear()
-                            connection.close()
-                            finish()
-
-
                         } else {
                             Toast.makeText(
                                 this,
-                                "Por favor seleccione su genero",
+                                "Por favor ingrese una fecha valida",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
                     } else {
                         Toast.makeText(
                             this,
-                            "Por favor ingrese una fecha valida",
+                            "Error al convertir los valores seleccionados",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
-                } else {
-                    Toast.makeText(
-                        this,
-                        "Error al convertir los valores seleccionados",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
             }
+
         }
+
 
 
 //RE INTEGRACION DE DATOS PARA EDICIÓN---------------------------------------------------------------------------------------------------------------------------------------

@@ -36,7 +36,7 @@
         app:layout_constraintVertical_bias="0.241" />
 
     <EditText
-        android:id="@+id/RegistroUsuarioCorreoTxtCorreo"
+        android:id="@+id/TxtCorreo"
         android:layout_width="332dp"
         android:layout_height="51dp"
         android:background="@drawable/rounded_corners_all"
@@ -59,7 +59,7 @@
         app:layout_constraintVertical_bias="0.398" />
 
     <Button
-        android:id="@+id/RegistroUsuarioCorreoBtnReenviarCodigo"
+        android:id="@+id/btnReenviarCodigo"
         android:layout_width="334dp"
         android:layout_height="55dp"
         android:background="@drawable/rounded_corners_all"
@@ -79,7 +79,7 @@
         app:layout_constraintVertical_bias="0.597" />
 
     <Button
-        android:id="@+id/RegistroUsuarioCorreoBtnVerificar"
+        android:id="@+id/BtnVerificar"
         android:layout_width="334dp"
         android:layout_height="55dp"
         android:background="@drawable/rounded_corners_all"
@@ -99,7 +99,7 @@
         app:layout_constraintVertical_bias="0.948" />
 
     <EditText
-        android:id="@+id/RegistroUsuarioCorreoTxtCodigo"
+        android:id="@+id/TxtCodigo"
         android:layout_width="333dp"
         android:layout_height="51dp"
         android:layout_gravity="center"

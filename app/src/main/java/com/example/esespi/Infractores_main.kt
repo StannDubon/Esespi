@@ -43,7 +43,7 @@ class Infractores_main : AppCompatActivity() {
             try {
                 // Sacamos los datos que mostraremos en la card
                 val statement = conn.createStatement()
-                val query = "dbo.Infractores_Visualizar;"
+                val query = "exec dbo.Infractores_Visualizar;"
                 val resultSet = statement.executeQuery(query)
 
                 // Sacamos los datos que obtuvimos de la búsqueda SQL

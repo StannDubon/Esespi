@@ -23,6 +23,7 @@ import java.sql.SQLException
 
 private var mode:String="noResult"
 private val SelectedInfractores = ArrayList<Triple<String, String, ByteArray?>>()
+var selectedView: LinearLayout? = null
 
 private lateinit var conn: Connection
 private lateinit var LlInfractores:LinearLayout
@@ -87,7 +88,7 @@ class Infractores_seleccion : AppCompatActivity() {
             try {
                 //Sacamos los datos que mostraremos en la card
                 val statement = conn.createStatement()
-                val query = "exec dbo.Infractores_Visualizar;"
+                val query = "exec dbo.Infractores_NoDetenidos_Visualizar;"
                 val resultSet = statement.executeQuery(query)
 
                 //Sacamos los datos que obtuvimos de la busqueda sql
@@ -132,28 +133,45 @@ class Infractores_seleccion : AppCompatActivity() {
                     if(mode=="UnInfractor"){
 
                         btnInfo.setOnClickListener {
-                            if (SelectedInfractores.size >= 1) {
-                                // Ya se seleccionó un elemento, mostrar mensaje en la consola
-                                println("No se pueden seleccionar más de 1 dato.")
+                            val infractor = Triple(DUI, Nombre, Foto)
+                            val isSelected = SelectedInfractores.contains(infractor)
+
+                            if (isSelected) {
+                                SelectedInfractores.remove(infractor)
+                                select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
+                                if (selectedView == select) {
+                                    selectedView = null
+                                }
                             } else {
-                                // No hay elementos seleccionados, agregar el nuevo elemento
-                                val infractor = Triple(DUI, Nombre, Foto)
+                                SelectedInfractores.clear()
+                                selectedView?.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
+                                selectedView = null
+
                                 SelectedInfractores.add(infractor)
                                 select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#3D96FF"))
+                                selectedView = select
                             }
                         }
+
                     }
                     else{
 
                         btnInfo.setOnClickListener {
-                            val infractor = Triple(DUI, Nombre, Foto)
+                            // Si ya hay una vista seleccionada, restaura su color de fondo a blanco
+                            selectedView?.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
 
-                            if (SelectedInfractores.contains(infractor)) {
+                            val infractor = Triple(DUI, Nombre, Foto)
+                            val isSelected = SelectedInfractores.contains(infractor)
+
+                            if (isSelected) {
+                                // Si el infractor ya está seleccionado, deselecciónalo y establece selectedView en null
                                 SelectedInfractores.remove(infractor)
-                                select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
+                                selectedView = null
                             } else {
+                                // Si el infractor no está seleccionado, selecciónalo y establece el color de fondo
                                 SelectedInfractores.add(infractor)
                                 select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#3D96FF"))
+                                selectedView = select
                             }
                         }
                     }

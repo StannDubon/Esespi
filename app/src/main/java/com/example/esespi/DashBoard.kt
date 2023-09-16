@@ -32,8 +32,7 @@ class DashBoard : AppCompatActivity() {
         }
 
         DenunciaCiudadana.setOnClickListener {
-            val intent = Intent(this, Detenidos_main::class.java)
-            startActivity(intent)
+
         }
 
         Decomiso.setOnClickListener {
@@ -46,7 +45,8 @@ class DashBoard : AppCompatActivity() {
         }
 
         Detenidos.setOnClickListener {
-
+            val intent = Intent(this, Detenidos_main::class.java)
+            startActivity(intent)
         }
 
     }

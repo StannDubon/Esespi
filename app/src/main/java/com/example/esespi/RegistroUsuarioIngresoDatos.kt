@@ -214,7 +214,6 @@ class RegistroUsuarioIngresoDatos : AppCompatActivity() {
             val intent = Intent(this, RegistroUsuarioSeleccionNacionalidad::class.java)
             intent.putExtra("tarjetasSeleccionadasNacionalidades", NacionalidadesSeleccionados)
             startActivityForResult(intent, REQUEST_CODE_SEGUNDA_ACTIVIDAD)
-
         }
 
 
@@ -231,70 +230,85 @@ class RegistroUsuarioIngresoDatos : AppCompatActivity() {
         btnSiguiente = findViewById(R.id.RegistroUsuarioBtnSiguiente)
         btnSiguiente.setOnClickListener {
 
-            if(validarCampos())
-            {
-                val dia = dbDia.selectedItem.toString().toIntOrNull()
-                val mes = obtenerNumeroMes(dbMes.selectedItem.toString())
-                val año = dbAño.selectedItem.toString().toIntOrNull()
+            var v = Validaciones()
+            val dia = dbDia.selectedItem.toString().toInt()
+            val mes = v.obtenerNumeroMes(dbMes.selectedItem.toString())
+            val año = dbAño.selectedItem.toString().toInt()
 
-                if (dia != null && mes != null && año != null) {
-                    if (validarFechaNacimiento(dia, mes, año)) {
-                        if(genero==1 || genero==2)
-                        {
-                            val Reg = RegistroUsuarioValoresDeRegistro.edit()
-                            Reg.putString("Nombre", txtNombre.text.toString())
-                            Reg.putString("Apellido", txtApellido.text.toString())
-                            Reg.putString("DUI", txtDUI.text.toString())
+            if (
+                v.CharWritten(txtNombre, "Nombre", 30, 3, this) &&
+                v.CharWritten(txtApellido, "Apelido", 30, 3, this) &&
+                v.CharWritten(txtDUI, "Dui", 9, 9, this) &&
+                v.CharWritten(txtDomicilio, "Dirección", 50, 1, this) &&
+                v.GenderSelected(genero, this) &&
+                v.FechaReal(dia, mes, año, this)
+            ){
 
-                            var fechaNacimiento = "$año/$mes/$dia"
-                            Reg.putString("FechaNacimiento", fechaNacimiento)
+                if(validarCampos())
+                {
+                    val dia = dbDia.selectedItem.toString().toIntOrNull()
+                    val mes = obtenerNumeroMes(dbMes.selectedItem.toString())
+                    val año = dbAño.selectedItem.toString().toIntOrNull()
 
-                            if (IdiomasSeleccionados != null) {
-                                val idiomasString = IdiomasSeleccionados.joinToString(",")
-                                Reg.putString("IdiomasSeleccionados", idiomasString)
-                            }
-
-                            if (NacionalidadesSeleccionados != null) {
-                                val nacionalidadesString = NacionalidadesSeleccionados.joinToString(",")
-                                Reg.putString("NacionalidadesSeleccionados", nacionalidadesString)
-                            }
-
-                            var dep = dbDepartamento.selectedItem.toString()
-                            var mun = dbMunicipio.selectedItem.toString()
-                            var di = txtDomicilio.text.toString()
-                            Reg.putString("Direccion", "$dep, $mun, $di")
-
-                            if(genero==1)
+                    if (dia != null && mes != null && año != null) {
+                        if (validarFechaNacimiento(dia, mes, año)) {
+                            if(genero==1 || genero==2)
                             {
-                                generotxt="Masculino"
+                                val Reg = RegistroUsuarioValoresDeRegistro.edit()
+                                Reg.putString("Nombre", txtNombre.text.toString())
+                                Reg.putString("Apellido", txtApellido.text.toString())
+                                Reg.putString("DUI", txtDUI.text.toString())
+
+                                var fechaNacimiento = "$año/$mes/$dia"
+                                Reg.putString("FechaNacimiento", fechaNacimiento)
+
+                                if (IdiomasSeleccionados != null) {
+                                    val idiomasString = IdiomasSeleccionados.joinToString(",")
+                                    Reg.putString("IdiomasSeleccionados", idiomasString)
+                                }
+
+                                if (NacionalidadesSeleccionados != null) {
+                                    val nacionalidadesString = NacionalidadesSeleccionados.joinToString(",")
+                                    Reg.putString("NacionalidadesSeleccionados", nacionalidadesString)
+                                }
+
+                                var dep = dbDepartamento.selectedItem.toString()
+                                var mun = dbMunicipio.selectedItem.toString()
+                                var di = txtDomicilio.text.toString()
+                                Reg.putString("Direccion", "$dep, $mun, $di")
+
+                                if(genero==1)
+                                {
+                                    generotxt="Masculino"
+                                }
+                                else if (genero==2)
+                                {
+                                    generotxt="Femenino"
+                                }
+
+                                Reg.putString("Genero", generotxt)
+
+                                Reg.putString("EstadoCivil", dbEstCivil.selectedItem.toString())
+                                Reg.putString("TipoSangre", dbTipoSangre.selectedItem.toString())
+
+                                Reg.apply()
+
+                                val intent = Intent(this, RegistroUsuarioDatosPolicia::class.java)
+                                startActivity(intent)
                             }
-                            else if (genero==2)
+                            else
                             {
-                                generotxt="Femenino"
+                                Toast.makeText(this, "Por favor seleccione su genero", Toast.LENGTH_SHORT).show()
                             }
-
-                            Reg.putString("Genero", generotxt)
-
-                            Reg.putString("EstadoCivil", dbEstCivil.selectedItem.toString())
-                            Reg.putString("TipoSangre", dbTipoSangre.selectedItem.toString())
-
-                            Reg.apply()
-
-                            val intent = Intent(this, RegistroUsuarioDatosPolicia::class.java)
-                            startActivity(intent)
-
-                        }
-                        else
-                        {
-                            Toast.makeText(this, "Por favor seleccione su genero", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, "Por favor ingrese una fecha valida", Toast.LENGTH_SHORT).show()
                         }
                     } else {
-                        Toast.makeText(this, "Por favor ingrese una fecha valida", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Error al convertir los valores seleccionados", Toast.LENGTH_SHORT).show()
                     }
-                } else {
-                    Toast.makeText(this, "Error al convertir los valores seleccionados", Toast.LENGTH_SHORT).show()
                 }
             }
+
 
 
 

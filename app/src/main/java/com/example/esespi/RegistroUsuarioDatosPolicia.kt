@@ -23,15 +23,25 @@ class RegistroUsuarioDatosPolicia : AppCompatActivity() {
         btnSiguiente=findViewById(R.id.RegistroUsuarioDatosPoliciaSiguiente)
 
         btnSiguiente.setOnClickListener {
-            val RegistroUsuarioValoresDeRegistro =
-                getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
-            val editor = RegistroUsuarioValoresDeRegistro.edit()
-            editor.putString("ONI", txtONI.text.toString())
-            editor.putString("NumeroPlaca", txtNumeroPlaca.text.toString())
-            editor.apply()
+            var v = Validaciones()
 
-            val intent = Intent(this, RegistroUsuarioVerificarCorreo::class.java)
-            startActivity(intent)
+            if (
+                v.CharWritten(txtONI, "ONI", 8, 8, this) &&
+                v.CharWritten(txtNumeroPlaca, "Numero de Placa", 5, 5, this)
+
+            ){
+                val RegistroUsuarioValoresDeRegistro =
+                    getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
+                val editor = RegistroUsuarioValoresDeRegistro.edit()
+                editor.putString("ONI", txtONI.text.toString())
+                editor.putString("NumeroPlaca", txtNumeroPlaca.text.toString())
+                editor.apply()
+
+                val intent = Intent(this, RegistroUsuarioVerificarCorreo::class.java)
+                startActivity(intent)
+            }
+
+
         }
     }
 }

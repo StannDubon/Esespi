@@ -1,21 +1,21 @@
 package com.example.esespi
 
 import android.content.Context
-import android.os.Handler
 import android.widget.EditText
 import android.widget.Toast
 
 class Validaciones {
 
-    fun CharWritten(EditText: EditText, NombreCampo: String, Longitud: Int, Contexto: Context): Boolean {
+    fun CharWritten(EditText: EditText, NombreCampo: String, LongitudMax: Int, LongitudMin: Int, Contexto: Context): Boolean {
         val texto = EditText.text.toString().trim()
         var resultado = false
-        if (texto.length != Longitud) {
-            Toast.makeText(Contexto, "$NombreCampo requiere $Longitud caracteres", Toast.LENGTH_SHORT).show()
-            Handler().postDelayed({
-                resultado = false
-            }, 500)
-        } else {
+        if (texto.length < LongitudMin) {
+            Toast.makeText(Contexto, "$NombreCampo requiere almenos $LongitudMin caracteres", Toast.LENGTH_SHORT).show()
+        }
+        else if(texto.length > LongitudMax){
+            Toast.makeText(Contexto, "$NombreCampo acepta hasta $LongitudMax caracteres", Toast.LENGTH_SHORT).show()
+        }
+        else {
             resultado = true
         }
         return resultado
@@ -27,6 +27,30 @@ class Validaciones {
             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
         )
         return meses.indexOfFirst { it.equals(nombreMes, ignoreCase = true) } + 1
+    }
+
+    fun GenderSelected(genero: Int, Contexto:Context): Boolean {
+        var value = false
+        if(genero==1 || genero==2){
+            value=true
+        }
+        else{
+            Toast.makeText(Contexto, "Por favor seleccione el genero", Toast.LENGTH_SHORT).show()
+            value=false
+        }
+        return value
+    }
+
+    fun PictureSelected(foto: ByteArray, Contexto:Context): Boolean {
+        var value = false
+        if(foto!=null){
+            value=true
+        }
+        else{
+            Toast.makeText(Contexto, "Por favor ingrese una foto", Toast.LENGTH_SHORT).show()
+            value=false
+        }
+        return value
     }
 
     fun FechaReal(dia: Int, mes: Int, año: Int, contexto: Context): Boolean {
@@ -64,8 +88,7 @@ class Validaciones {
             }
         }
 
-        if (isReal) {Toast.makeText(contexto, "Fecha válida", Toast.LENGTH_SHORT).show()}
-        else {Toast.makeText(contexto, "Fecha no válida", Toast.LENGTH_SHORT).show()}
+        if (isReal == false) {Toast.makeText(contexto, "Fecha no válida", Toast.LENGTH_SHORT).show()}
         return isReal
     }
 

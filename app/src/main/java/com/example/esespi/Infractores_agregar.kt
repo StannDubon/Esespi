@@ -243,19 +243,19 @@ class Infractores_agregar : AppCompatActivity() {
         if(ActivityMode=="Agregar"){
             btnGuardar.setOnClickListener {
 
+                var v = Validaciones()
                 val dia = dbDia.selectedItem.toString().toInt()
-                val mes = obtenerNumeroMes(dbMes.selectedItem.toString())
+                val mes = v.obtenerNumeroMes(dbMes.selectedItem.toString())
                 val año = dbAño.selectedItem.toString().toInt()
 
                 if (
-                    validarFecha(dia, mes, año) &&
-                    genero!=0 &&
-                    txtNombre.text.toString()!=null &&
-                    txtApellido.text.toString()!=null &&
-                    txtDUI.text.toString()!=null &&
-                    txtDUI.text.toString().length==9 &&
-                    txtDireccion.text.toString()!=null &&
-                    txtDescripcion.text.toString()!=null
+                    v.CharWritten(txtNombre, "Nombre", 30, 3, this) &&
+                    v.CharWritten(txtApellido, "Apelido", 30, 3, this) &&
+                    v.CharWritten(txtDUI, "Dui", 9, 9, this) &&
+                    v.CharWritten(txtDireccion, "Dirección", 50, 1, this) &&
+                    v.CharWritten(txtDescripcion, "Descripción", 50, 1, this) &&
+                    v.GenderSelected(genero, this) &&
+                    v.FechaReal(dia, mes, año, this)
                 ){
 
                     try {
@@ -293,7 +293,7 @@ class Infractores_agregar : AppCompatActivity() {
                         setResult(RESULT_OK, Intent())
                     }
                 } else{
-                    Toast.makeText(this, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show()
+
                 }
             }
         }

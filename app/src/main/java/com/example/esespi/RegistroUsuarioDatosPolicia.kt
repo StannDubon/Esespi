@@ -23,8 +23,8 @@ class RegistroUsuarioDatosPolicia : AppCompatActivity() {
         btnSiguiente=findViewById(R.id.RegistroUsuarioDatosPoliciaSiguiente)
 
         btnSiguiente.setOnClickListener {
-
-            val RegistroUsuarioValoresDeRegistro = getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
+            val RegistroUsuarioValoresDeRegistro =
+                getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
             val editor = RegistroUsuarioValoresDeRegistro.edit()
             editor.putString("ONI", txtONI.text.toString())
             editor.putString("NumeroPlaca", txtNumeroPlaca.text.toString())

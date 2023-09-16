@@ -277,6 +277,8 @@ class Detenidos_agregar : AppCompatActivity() {
             val GotFoto = intent.getByteArrayExtra("Foto")
             val GotDui = intent.getStringExtra("Dui")
 
+            findViewById<LinearLayout>(R.id.Detenidos_agregar_LlAgregarInvolucradoContainer).visibility = View.GONE
+
             val GotDireccionFull = GotLugar?.split(", ")
 
             val SplitDepartamento = GotDireccionFull?.get(0)
@@ -383,7 +385,7 @@ class Detenidos_agregar : AppCompatActivity() {
 
                     try {
                         val addProducto: PreparedStatement =  conn.prepareStatement(
-                            "EXEC dbo.ActualizarAcercamiento \n" +
+                            "EXEC dbo.ActualizarDetenido \n" +
                                     "   @IdDetenido = ?,\n" +
                                     "   @LugarDetencion = ?,\n" +
                                     "   @Fecha_Detencion = ?,\n" +
@@ -408,7 +410,6 @@ class Detenidos_agregar : AppCompatActivity() {
                         Toast.makeText(this, "Error al ingresar: "+ex, Toast.LENGTH_SHORT).show()
                         println(ex)
                         setResult(RESULT_OK, Intent())
-                        finish()
                     }
                 } else{
                     Toast.makeText(this, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show()

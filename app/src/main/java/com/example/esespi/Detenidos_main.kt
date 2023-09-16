@@ -27,7 +27,7 @@ class Detenidos_main : AppCompatActivity() {
         Actualizar()
 
         btnAgregar.setOnClickListener {
-            val intent = Intent(this, Acercamientos_agregar::class.java)
+            val intent = Intent(this, Detenidos_agregar::class.java)
             intent.putExtra("mode", "Agregar")
             startActivityForResult(intent, 1)
         }

@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.sql.Connection
 import java.sql.PreparedStatement
@@ -41,34 +42,87 @@ class RegistroUsuarioIngresoCredenciales : AppCompatActivity() {
 
 
         btnRegistrarse.setOnClickListener {
+            val usuario = txtUsuario.text.toString().trim()
 
-            if(txtContraseña.text.toString()== txtConfirmarContraseña.text.toString())
-            {
-                val RegistroUsuarioValoresDeRegistro = getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
-                val valores = RegistroUsuarioValoresDeRegistro.all
+            var v = Validaciones()
 
-                DUI = sharedPrefs.getString("DUI", "").toString()
-                numPlaca = sharedPrefs.getString("NumeroPlaca", "").toString()
-                contraseñaEncriptada=Encriptacion().convertirSHA256(txtConfirmarContraseña.text.toString())
+            if (usuarioExiste(usuario)) {
+                // El usuario ya existe, muestra un mensaje de error o realiza alguna acción adecuada.
+                Toast.makeText(this, "El nombre de usuario ya está en uso.", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                if (v.CharWritten(txtContraseña, "La Contraseña", 15, 8, this)) {
+                    if (v.CharWritten(
+                            txtConfirmarContraseña,
+                            "La verificación de contraseña",
+                            15,
+                            8,
+                            this
+                        )
+                    ) {
+                        if (txtContraseña.text.toString() == txtConfirmarContraseña.text.toString()) {
+                            val RegistroUsuarioValoresDeRegistro =
+                                getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
+                            val valores = RegistroUsuarioValoresDeRegistro.all
 
-                for ((clave, valor) in valores) {
-                    println("Clave: $clave - Valor: $valor")
+                            DUI = sharedPrefs.getString("DUI", "").toString()
+                            numPlaca = sharedPrefs.getString("NumeroPlaca", "").toString()
+                            contraseñaEncriptada =
+                                Encriptacion().convertirSHA256(txtConfirmarContraseña.text.toString())
+
+                            for ((clave, valor) in valores) {
+                                println("Clave: $clave - Valor: $valor")
+                            }
+
+                            insertarDatosEnBaseDeDatos()
+                            InsertarIdiomasPorUsuario()
+                            InsertarNacionalidadesPorUsuario()
+                            generarConsultasSQLReferenciasPersonales(userDataList)
+                            println(numPlaca)
+                            val sharedPreferences =
+                                getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
+                            val editor = sharedPreferences.edit()
+                            editor.clear() // Elimina todos los datos almacenados en SharedPreferences
+                            editor.apply()
+                            val customDialog = ShowCustomDialogImage(this)
+                            customDialog.showCustomDialog(
+                                R.drawable.dialog_check,
+                                "Registro exitoso",
+                                "Aceptar",
+                                MainActivity::class.java,
+                                1
+                            )
+                        } else {
+                            Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                    return@setOnClickListener
                 }
-
-                insertarDatosEnBaseDeDatos()
-                InsertarIdiomasPorUsuario()
-                InsertarNacionalidadesPorUsuario()
-                generarConsultasSQLReferenciasPersonales(userDataList)
-                println(numPlaca)
-                val sharedPreferences = getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
-                val editor = sharedPreferences.edit()
-                editor.clear() // Elimina todos los datos almacenados en SharedPreferences
-                editor.apply()
-                val customDialog = ShowCustomDialogImage(this)
-                customDialog.showCustomDialog(R.drawable.dialog_check, "Registro exitoso", "Aceptar", MainActivity::class.java, 1)
             }
 
+
+
+
         }
+    }
+
+    fun usuarioExiste(usuario: String): Boolean {
+        try {
+            val statement = connection.createStatement()
+            val query = "SELECT COUNT(*) AS count FROM tbUsuarios WHERE Usuario = ?"
+            val preparedStatement = connection.prepareStatement(query)
+            preparedStatement.setString(1, usuario)
+            val resultSet = preparedStatement.executeQuery()
+
+            if (resultSet.next()) {
+                val count = resultSet.getInt("count")
+                return count > 0 // Si count es mayor que 0, significa que el usuario ya existe.
+            }
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+        return false // Si ocurre una excepción o no se encuentra el usuario, asumimos que no existe.
     }
 
     fun insertarDatosEnBaseDeDatos() {

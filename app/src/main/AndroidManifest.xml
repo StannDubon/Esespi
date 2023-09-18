@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:targetApi="31">
-
+        <activity
+            android:name=".Detenidos_seleccion"
+            android:exported="false" />
         <activity
             android:name=".Denuncias_agregar"
             android:exported="false" />

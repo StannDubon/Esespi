@@ -7,8 +7,6 @@ import android.content.res.ColorStateList
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Parcel
-import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -23,7 +21,7 @@ import java.sql.SQLException
 
 private var mode:String="noResult"
 private val SelectedInfractores = ArrayList<Triple<String, String, ByteArray?>>()
-var selectedViewInfractores: LinearLayout? = null
+var selectedViewDetenidos: LinearLayout? = null
 
 private lateinit var conn: Connection
 private lateinit var LlInfractores:LinearLayout
@@ -31,19 +29,19 @@ private lateinit var btnGuardar:TextView
 private lateinit var txtBuscar:EditText
 private lateinit var btnAgregar:LinearLayout
 
-class Infractores_seleccion : AppCompatActivity() {
-    @SuppressLint("MissingInflatedId")
+
+class Detenidos_seleccion : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_infractores_seleccion)
+        setContentView(R.layout.activity_detenidos_seleccion)
 
         SelectedInfractores.clear()
         mode = intent.getStringExtra("mode").toString()
 
-        txtBuscar = findViewById(R.id.Infractores_Seleccion_txtBusqueda)
-        btnAgregar = findViewById(R.id.Infractores_Seleccion_btnAgregar)
-        LlInfractores=findViewById(R.id.Infractores_Seleccion_LlInfractores)
-        btnGuardar=findViewById(R.id.Infractores_Seleccion_btnGuardar)
+        txtBuscar = findViewById(R.id.Detenidos_Seleccion_txtBusqueda)
+        btnAgregar = findViewById(R.id.Detenidos_Seleccion_btnAgregar)
+        LlInfractores=findViewById(R.id.Detenidos_Seleccion_LlInfractores)
+        btnGuardar=findViewById(R.id.Detenidos_Seleccion_btnGuardar)
         Actualizar()
 
         btnAgregar.setOnClickListener {
@@ -74,7 +72,7 @@ class Infractores_seleccion : AppCompatActivity() {
                 selectedInfractoresParcelable.add(myParcelableTriple)
             }
 
-            intent.putParcelableArrayListExtra("selectedInfractores", selectedInfractoresParcelable)
+            intent.putParcelableArrayListExtra("selectedDetenidos", selectedInfractoresParcelable)
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
@@ -88,52 +86,49 @@ class Infractores_seleccion : AppCompatActivity() {
             try {
                 //Sacamos los datos que mostraremos en la card
                 val statement = conn.createStatement()
-                val query = "exec dbo.Infractores_NoDetenidos_Visualizar;"
+                val query = "exec dbo.VerDetenidos;"
                 val resultSet = statement.executeQuery(query)
 
                 //Sacamos los datos que obtuvimos de la busqueda sql
                 while (resultSet.next()) {
                     //Vamo a sacar el id pq asi sabremos cual es la card que queremos eliminar, no se mostrara en la card, pero se guardara
-                    val Id = resultSet.getString("IdPersona")
+                    val Id = resultSet.getString("IdDetenido")
+                    val TipoDetecion = resultSet.getString("Tipo_Detencion")
                     val Nombre = resultSet.getString("Nombre")
-                    val Apellido = resultSet.getString("Apellido")
-                    val DUI = resultSet.getString("Dui")
-                    val Direccion = resultSet.getString("DireccionDomicilio")
-                    val IdGenero = resultSet.getInt("IdGenero")
-                    val Descripcion = resultSet.getString("Descripcion")
-                    val UltimaVezVisto = resultSet.getString("UltimaVezVisto")
+                    val Fecha = resultSet.getString("Fecha_Detencion")
+                    val Lugar = resultSet.getString("Lugar_Detencion")
                     val Foto: ByteArray? = resultSet.getBytes("Foto")
+                    val Dui = resultSet.getString("Dui")
 
-                    val cardView = layoutInflater.inflate(R.layout.infractores_card_infractor_select, null)
+                    val cardView = layoutInflater.inflate(R.layout.detenidos_card_detenido_select, null)
 
-                    val lblNombre = cardView.findViewById<TextView>(R.id.Infractores_card_infractor_seleccion_lblNombre)
-                    val lblDui = cardView.findViewById<TextView>(R.id.Infractores_card_infractor_seleccion_lblDui)
-                    val imgInfractor = cardView.findViewById<ImageView>(R.id.Infractores_card_infractor_seleccion_imgInfractor)
-                    val btnInfo = cardView.findViewById<LinearLayout>(R.id.Infractores_card_infractor_seleccion_info)
+                    val lblNombre = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblNombre)
+                    val lblDui = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblDui)
+                    val imgDetenido = cardView.findViewById<ImageView>(R.id.Detenidos_card_detenido_seleccion_imgInfractor)
+                    val btnInfo = cardView.findViewById<LinearLayout>(R.id.Detenidos_card_detenido_seleccion_info)
 
-                    val select = cardView.findViewById<LinearLayout>(R.id.Infractores_card_infractor_seleccion_llSelect)
+                    val select = cardView.findViewById<LinearLayout>(R.id.Detenidos_card_detenido_seleccion_llSelect)
                     select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
 
-                    imgInfractor.setOnClickListener {
-                        val i = Intent(this, Infractores_Info::class.java)
-                        i.putExtra("id", Id)
-                        i.putExtra("nom", Nombre)
-                        i.putExtra("ape", Apellido)
-                        i.putExtra("dui", DUI)
-                        i.putExtra("dir", Direccion)
-                        i.putExtra("gen", IdGenero)
-                        i.putExtra("des", Descripcion)
-                        i.putExtra("las", UltimaVezVisto)
-                        if (Foto != null && Foto.isNotEmpty()) {
-                            i.putExtra("img", Foto) // Pasar el ByteArray directamente
-                        }
-                        startActivityForResult(i, 1)
+
+                    imgDetenido.setOnClickListener {
+                        val intent = Intent(this, Detenidos_info::class.java)
+                        intent.putExtra("IdDetenido", Id)
+                        intent.putExtra("TipoDetencion", TipoDetecion)
+                        intent.putExtra("Nombre", Nombre)
+                        intent.putExtra("Fecha", Fecha)
+                        intent.putExtra("LugarDetencion", Lugar)
+                        intent.putExtra("Foto", Foto)
+                        intent.putExtra("Dui", Dui)
+                        startActivityForResult(intent, 1)
                     }
 
-                    if(mode=="UnInfractor"){
+
+
+                    if(mode=="UnInfractor" && false){
 
                         btnInfo.setOnClickListener {
-                            val infractor = Triple(DUI, Nombre, Foto)
+                            val infractor = Triple(Dui, Nombre, Foto)
                             val isSelected = SelectedInfractores.contains(infractor)
 
                             if (isSelected) {
@@ -144,11 +139,12 @@ class Infractores_seleccion : AppCompatActivity() {
                                 }
                             } else {
                                 SelectedInfractores.clear()
-                                selectedViewInfractores?.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
+                                selectedViewInfractores?.backgroundTintList = ColorStateList.valueOf(
+                                    Color.parseColor("#FFFFFF"))
                                 selectedViewInfractores = null
 
                                 SelectedInfractores.add(infractor)
-                                select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#3D96FF"))
+                                select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5FE35B"))
                                 selectedViewInfractores = select
                             }
                         }
@@ -157,35 +153,31 @@ class Infractores_seleccion : AppCompatActivity() {
                     else{
 
                         btnInfo.setOnClickListener {
-                            // Si ya hay una vista seleccionada, restaura su color de fondo a blanco
-                            selectedViewInfractores?.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
-
-                            val infractor = Triple(DUI, Nombre, Foto)
+                            val infractor = Triple(Dui, Nombre, Foto)
                             val isSelected = SelectedInfractores.contains(infractor)
 
                             if (isSelected) {
                                 // Si el infractor ya está seleccionado, deselecciónalo y establece selectedView en null
                                 SelectedInfractores.remove(infractor)
-                                selectedViewInfractores = null
+                                select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
                             } else {
                                 // Si el infractor no está seleccionado, selecciónalo y establece el color de fondo
                                 SelectedInfractores.add(infractor)
-                                select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#3D96FF"))
-                                selectedViewInfractores = select
+                                select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5FE35B"))
                             }
                         }
                     }
 
                     //Definir valores de las cards
                     lblNombre.text = Nombre
-                    lblDui.text = DUI
+                    lblDui.text = Dui
 
                     if (Foto != null && Foto.isNotEmpty()) {
                         val bitmap = BitmapFactory.decodeByteArray(Foto, 0, Foto.size)
-                        imgInfractor.setImageBitmap(bitmap)
+                        imgDetenido.setImageBitmap(bitmap)
                     }else {
                         // Si no hay imagen en la base de datos, mostrar una imagen por defecto
-                        imgInfractor.setImageResource(R.drawable.void_image) // Cambia por el recurso de imagen por defecto
+                        imgDetenido.setImageResource(R.drawable.void_image) // Cambia por el recurso de imagen por defecto
                     }
 
                     //Finalmente sampar la card a el LinearLayout
@@ -207,8 +199,8 @@ class Infractores_seleccion : AppCompatActivity() {
 
         for (i in 0 until LlInfractores.childCount) {
             val cardView = LlInfractores.getChildAt(i) as ConstraintLayout
-            val nombreView = cardView.findViewById<TextView>(R.id.Infractores_card_infractor_seleccion_lblNombre)
-            val duiView = cardView.findViewById<TextView>(R.id.Infractores_card_infractor_seleccion_lblDui)
+            val nombreView = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblNombre)
+            val duiView = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblDui)
 
             val nombre = nombreView.text.toString().toLowerCase()
             val dui = duiView.text.toString().toLowerCase()
@@ -235,34 +227,5 @@ class Infractores_seleccion : AppCompatActivity() {
         super.onResume()
         LlInfractores.removeAllViews()
         Actualizar()
-    }
-}
-
-
-data class MyParcelableTriple(val first: String?, val second: String?, val third: ByteArray?) : Parcelable {
-    constructor(parcel: Parcel) : this(
-        parcel.readString(),
-        parcel.readString(),
-        parcel.createByteArray()
-    )
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(first)
-        parcel.writeString(second)
-        parcel.writeByteArray(third)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<MyParcelableTriple> {
-        override fun createFromParcel(parcel: Parcel): MyParcelableTriple {
-            return MyParcelableTriple(parcel)
-        }
-
-        override fun newArray(size: Int): Array<MyParcelableTriple?> {
-            return arrayOfNulls(size)
-        }
     }
 }

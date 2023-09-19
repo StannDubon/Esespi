@@ -110,5 +110,23 @@ class Validaciones {
         return true
     }
 
+    fun validarDUI(duiEditText: EditText, contexto: Context): Boolean {
+        val dui = duiEditText.text.toString().trim()
+
+        // Patrón de expresión regular para validar el formato del DUI
+        val duiPattern = "\\d{8}-\\d"
+
+        val pattern = Pattern.compile(duiPattern)
+        val matcher = pattern.matcher(dui)
+
+        if (!matcher.matches()) {
+            Toast.makeText(contexto, "DUI no válido. El formato correcto es XXXXXXXX-Y.", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        return true
+    }
+
+
 
 }

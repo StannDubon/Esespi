@@ -250,7 +250,7 @@ class RegistroUsuarioIngresoDatosReferenciaPersonal : AppCompatActivity() {
             if (
                 v.CharWritten(txtNombre, "Nombre", 30, 3, this) &&
                 v.CharWritten(txtApellido, "Apelido", 30, 3, this) &&
-                v.CharWritten(txtDUI, "Dui", 9, 9, this) &&
+                v.validarDUI(txtDUI, this) &&
                 v.CharWritten(txtDomicilio, "Dirección", 50, 1, this) &&
                 v.validarCorreoElectronico(txtCorreo, this)&&
                 v.CharWritten(txtTelefono, "Telefono", 8, 8, this) &&

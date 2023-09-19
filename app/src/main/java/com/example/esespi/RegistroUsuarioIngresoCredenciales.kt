@@ -157,7 +157,7 @@ class RegistroUsuarioIngresoCredenciales : AppCompatActivity() {
             resultSet3.close()
 
 
-/*
+
             // Preparar la sentencia SQL para la inserción de datos
             val sentencia = "insert into tbPersonas (Nombre, Apellido, FechaNacimiento, DireccionDomicilio, Dui, IdEstadoCivil, IdTipoSangre, IdGenero, CorreoElectronico, NumeroTel) " +
                     "VALUES (?,?,?,?,?,?,?,?,?,?);\n"+
@@ -209,7 +209,7 @@ class RegistroUsuarioIngresoCredenciales : AppCompatActivity() {
             preparedStatement.executeUpdate()
 
             println("Datos insertados correctamente en la base de datos.")
- */
+
 
             try {
                 // Preparar la sentencia SQL para la inserción de datos en tbPersonas

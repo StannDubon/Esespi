@@ -228,6 +228,7 @@ class RegistroUsuarioIngresoDatos : AppCompatActivity() {
         }
 
         btnSiguiente = findViewById(R.id.RegistroUsuarioBtnSiguiente)
+
         btnSiguiente.setOnClickListener {
 
             var v = Validaciones()
@@ -238,7 +239,7 @@ class RegistroUsuarioIngresoDatos : AppCompatActivity() {
             if (
                 v.CharWritten(txtNombre, "Nombre", 30, 3, this) &&
                 v.CharWritten(txtApellido, "Apelido", 30, 3, this) &&
-                v.CharWritten(txtDUI, "Dui", 9, 9, this) &&
+                v.validarDUI(txtDUI, this) &&
                 v.CharWritten(txtDomicilio, "Dirección", 50, 1, this) &&
                 v.GenderSelected(genero, this) &&
                 v.FechaReal(dia, mes, año, this)

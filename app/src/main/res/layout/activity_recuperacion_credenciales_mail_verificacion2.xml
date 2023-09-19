@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RecuperacionCredencialesMailVerificacion">
+    tools:context=".activity_recuperacion_credenciales_mail_verificacion">
 
     <Button
-        android:id="@+id/RecuperacionCredencialesMailVerificacionBtnVerificar"
+        android:id="@+id/recuperacionCredencialesMailVerificacionBtnVerificar"
         android:layout_width="334dp"
         android:layout_height="55dp"
         android:background="@drawable/rounded_corners_all"
@@ -27,7 +27,7 @@
         app:layout_constraintVertical_bias="0.948" />
 
     <TextView
-        android:id="@+id/textView16"
+        android:id="@+id/textView34"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_extrabold"
@@ -44,7 +44,7 @@
         app:layout_constraintVertical_bias="0.241" />
 
     <ImageView
-        android:id="@+id/imageView10"
+        android:id="@+id/imageView22"
         android:layout_width="151dp"
         android:layout_height="77dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -56,16 +56,17 @@
         app:srcCompat="@drawable/logo_name_right" />
 
     <EditText
-        android:id="@+id/RecuperacionCredencialesMailVerificacionTxtEmail"
-        android:layout_width="332dp"
+        android:id="@+id/recuperacionCredencialesMailVerificacionTxtCodigo"
+        android:layout_width="333dp"
         android:layout_height="51dp"
+        android:layout_gravity="center"
         android:background="@drawable/rounded_corners_all"
         android:elevation="20dp"
         android:ems="10"
         android:fontFamily="@font/poppins_semibold"
-        android:gravity="center_vertical"
-        android:hint="Correo electronico"
-        android:inputType="textPersonName"
+        android:hint="Codigo de verificación"
+        android:inputType="number"
+        android:maxLength="8"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:textColor="#000000"
@@ -73,9 +74,28 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.543"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.398" />
+        app:layout_constraintVertical_bias="0.413" />
 
+    <Button
+        android:id="@+id/recuperacionCredencialesMailVerificacionBtnReenviarCodigo"
+        android:layout_width="334dp"
+        android:layout_height="55dp"
+        android:background="@drawable/rounded_corners_all"
+        android:backgroundTint="#4399FF"
+        android:elevation="20dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:padding="10dp"
+        android:text="reenviar codigo"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.557" />
 </androidx.constraintlayout.widget.ConstraintLayout>

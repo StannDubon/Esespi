@@ -63,6 +63,7 @@ class RegistroUsuarioDatosPolicia : AppCompatActivity() {
             preparedStatement.setString(2, numeroPlaca)
             val resultSet = preparedStatement.executeQuery()
 
+
             if (resultSet.next()) {
                 val count = resultSet.getInt("count")
                 return count > 0 // Si count es mayor que 0, significa que ya existe un registro con ese ONI o número de placa.

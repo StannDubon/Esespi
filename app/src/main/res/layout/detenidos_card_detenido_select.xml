@@ -68,7 +68,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:background="@drawable/rounded_corners_circular"
-                    android:backgroundTint="#5FE35B"
+                    android:backgroundTint="#FFFFFF"
                     android:orientation="vertical" />
 
             </LinearLayout>

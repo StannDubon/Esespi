@@ -4,10 +4,15 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.sql.Connection
 import java.sql.SQLException
 
@@ -25,7 +30,6 @@ class Acercamientos_main : AppCompatActivity() {
         LlAcercamientos=findViewById(R.id.Acercamientos_Main_LlAcercamiento)
         btnAgregar=findViewById(R.id.Acercamientos_Main_btnAgregar)
         LlAcercamientos.removeAllViews()
-        Actualizar()
 
         btnAgregar.setOnClickListener {
             val intent = Intent(this, Acercamientos_agregar::class.java)
@@ -40,18 +44,19 @@ class Acercamientos_main : AppCompatActivity() {
     }
 
     @SuppressLint("MissingInflatedId")
-    private fun Actualizar(){
-        conn = conexionSQL().dbConn() ?: throw SQLException("No se pudo establecer la conexión a la base de datos")
-        if (conn != null) {
+    private fun Actualizar(callback: (result: Boolean) -> Unit) {
+        GlobalScope.launch(Dispatchers.IO) {
+            var conn: Connection? = null
+            var xd = false
             try {
-                //Sacamos los datos que mostraremos en la card
+                conn = conexionSQL().dbConn() ?: throw SQLException("No se pudo establecer la conexión a la base de datos")
                 val statement = conn.createStatement()
                 val query = "SELECT * FROM tbAcercamientos ORDER BY IdAcercamiento DESC;"
                 val resultSet = statement.executeQuery(query)
 
-                //Sacamos los datos que obtuvimos de la busqueda sql
+                val handler = Handler(Looper.getMainLooper())
+
                 while (resultSet.next()) {
-                    //Vamo a sacar el id pq asi sabremos cual es la card que queremos eliminar, no se mostrara en la card, pero se guardara
                     val Id = resultSet.getString("IdAcercamiento")
                     val IdInforme = resultSet.getString("IdInforme")
                     val Lugar = resultSet.getString("Lugar")
@@ -59,37 +64,39 @@ class Acercamientos_main : AppCompatActivity() {
                     val NombrePersona = resultSet.getString("NombrePersona")
                     val Acercamiento = resultSet.getString("Acercamiento")
 
-                    val cardView = layoutInflater.inflate(R.layout.acercamientos_card_acercamiento, null)
+                    handler.post {
+                        val cardView = layoutInflater.inflate(R.layout.acercamientos_card_acercamiento, null)
 
-                    val lblNombre = cardView.findViewById<TextView>(R.id.Acercamientos_Card_Acercamiento_lblNombre)
-                    val lblId = cardView.findViewById<TextView>(R.id.Acercamientos_Card_Acercamiento_lblID)
-                    val btnInfo = cardView.findViewById<LinearLayout>(R.id.Acercamientos_Card_Acercamiento_btnInfo)
+                        val lblNombre = cardView.findViewById<TextView>(R.id.Acercamientos_Card_Acercamiento_lblNombre)
+                        val lblId = cardView.findViewById<TextView>(R.id.Acercamientos_Card_Acercamiento_lblID)
+                        val btnInfo = cardView.findViewById<LinearLayout>(R.id.Acercamientos_Card_Acercamiento_btnInfo)
 
-                    btnInfo.setOnClickListener {
-                        val i = Intent(this, Acercamientos_info::class.java)
-                        i.putExtra("id", Id)
-                        i.putExtra("inf", IdInforme)
-                        i.putExtra("lug", Lugar)
-                        i.putExtra("fec", Fecha)
-                        i.putExtra("nomp", NombrePersona)
-                        i.putExtra("ace", Acercamiento)
-                        startActivityForResult(i, 1)
+                        btnInfo.setOnClickListener {
+                            val i = Intent(this@Acercamientos_main, Acercamientos_info::class.java)
+                            i.putExtra("id", Id)
+                            i.putExtra("inf", IdInforme)
+                            i.putExtra("lug", Lugar)
+                            i.putExtra("fec", Fecha)
+                            i.putExtra("nomp", NombrePersona)
+                            i.putExtra("ace", Acercamiento)
+                            startActivityForResult(i, 1)
+                        }
+
+                        lblNombre.text = NombrePersona
+                        lblId.text = Id
+
+                        LlAcercamientos.addView(cardView)
                     }
-
-                    //Definir valores de las cards
-                    lblNombre.text = NombrePersona
-                    lblId.text = Id
-
-                    //Finalmente sampar la card a el LinearLayout
-                    LlAcercamientos.addView(cardView)
                 }
-
+                xd=true
                 resultSet.close()
                 statement.close()
-                conn.close()
             } catch (ex: SQLException) {
-                // Manejo de excepciones en caso de error en la consulta
+                xd=false
                 ex.printStackTrace()
+            } finally {
+                conn?.close()
+                callback(xd)
             }
         }
     }
@@ -99,7 +106,7 @@ class Acercamientos_main : AppCompatActivity() {
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 LlAcercamientos.removeAllViews()
-                Actualizar()
+                Actualizar { result ->}
             }
         }
     }
@@ -107,7 +114,7 @@ class Acercamientos_main : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         LlAcercamientos.removeAllViews()
-        Actualizar()
+        Actualizar { result ->}
     }
 
 }

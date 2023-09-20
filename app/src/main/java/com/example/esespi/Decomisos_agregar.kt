@@ -6,6 +6,8 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.widget.ArrayAdapter
 import android.widget.EditText
@@ -14,9 +16,14 @@ import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.sql.Connection
 import java.sql.SQLException
+
+
 
 private lateinit var btnQuit:ImageView
 
@@ -168,48 +175,43 @@ class Decomisos_agregar : AppCompatActivity() {
         }
 
         else if (requestCode == INFRACTORES_REQUEST && resultCode == Activity.RESULT_OK) {
-            // Comprueba si el extra "selectedInfractores" está presente en el Intent resultante
             if (data != null && data.hasExtra("selectedDetenidos")) {
+
                 val selectedDetenidos = data.getParcelableArrayListExtra<MyParcelableTriple>("selectedDetenidos")
-                LlAgregarInvolucrado.removeAllViews()
-                // Realiza la conversión de tipos
-                val convertedList = ArrayList<Triple<String, String, ByteArray?>>()
-                selectedDetenidos?.forEach { item ->
-                    val triple = Triple(item.first, item.second, item.third)
-                    convertedList.add(triple as Triple<String, String, ByteArray?>)
-                }
+                MyApp.selectedDetenidos = selectedDetenidos
+                LlInfractoresSeleccionados.removeAllViews()
 
-                // Asigna la lista convertida a la variable global
-                SelectedDetenidos = convertedList
+                GlobalScope.launch(Dispatchers.IO) {
+                    selectedDetenidos?.forEach { item ->
+                        val DUI = item.first
+                        val Nombre = item.second
+                        val Foto = item.third
 
-                for (data in SelectedDetenidos) {
-                    // Desempaqueta los datos del array
-                    val DUI = data.first
-                    val Nombre = data.second
-                    val Foto = data.third
+                        val handler = Handler(Looper.getMainLooper())
+                        handler.post {
+                            // Infla una CardView
+                            val cardView = layoutInflater.inflate(R.layout.detenidos_card_detenido_select, null)
 
-                    // Infla una CardView
-                    val cardView = layoutInflater.inflate(R.layout.detenidos_card_detenido_select, null)
+                            val lblNombre = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblNombre)
+                            val lblDui = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblDui)
+                            val imgInfractor = cardView.findViewById<ImageView>(R.id.Detenidos_card_detenido_seleccion_imgInfractor)
 
-                    val lblNombre = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblNombre)
-                    val lblDui = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblDui)
-                    val imgInfractor = cardView.findViewById<ImageView>(R.id.Detenidos_card_detenido_seleccion_imgInfractor)
+                            // Definir valores de las cards
+                            lblNombre.text = Nombre
+                            lblDui.text = DUI
 
-                    // Definir valores de las cards
-                    lblNombre.text = Nombre
-                    lblDui.text = DUI
+                            if (Foto != null && Foto.isNotEmpty()) {
+                                val bitmap = BitmapFactory.decodeByteArray(Foto, 0, Foto.size)
+                                imgInfractor.setImageBitmap(bitmap)
+                            } else {
+                                // Si no hay imagen en el array, mostrar una imagen por defecto
+                                imgInfractor.setImageResource(R.drawable.void_image) // Cambia por el recurso de imagen por defecto
+                            }
 
-                    if (Foto != null && Foto.isNotEmpty()) {
-                        val bitmap = BitmapFactory.decodeByteArray(Foto, 0, Foto.size)
-                        imgInfractor.setImageBitmap(bitmap)
-                    } else {
-                        // Si no hay imagen en el array, mostrar una imagen por defecto
-                        imgInfractor.setImageResource(R.drawable.void_image) // Cambia por el recurso de imagen por defecto
+                            // Finalmente añadir la card al LinearLayout
+                            LlInfractoresSeleccionados.addView(cardView)
+                        }
                     }
-
-
-                    // Finalmente añadir la card al LinearLayout
-                    LlInfractoresSeleccionados.addView(cardView)
                 }
             }
         }

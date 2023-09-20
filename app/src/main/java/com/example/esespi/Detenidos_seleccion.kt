@@ -7,6 +7,8 @@ import android.content.res.ColorStateList
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -16,6 +18,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.sql.Connection
 import java.sql.SQLException
 
@@ -42,7 +47,6 @@ class Detenidos_seleccion : AppCompatActivity() {
         btnAgregar = findViewById(R.id.Detenidos_Seleccion_btnAgregar)
         LlInfractores=findViewById(R.id.Detenidos_Seleccion_LlInfractores)
         btnGuardar=findViewById(R.id.Detenidos_Seleccion_btnGuardar)
-        Actualizar()
 
         btnAgregar.setOnClickListener {
             val intent = Intent(this, Infractores_agregar::class.java)
@@ -79,52 +83,7 @@ class Detenidos_seleccion : AppCompatActivity() {
 
     }
 
-    @SuppressLint("MissingInflatedId")
-    private fun Actualizar(){
-        conn = conexionSQL().dbConn() ?: throw SQLException("No se pudo establecer la conexión a la base de datos")
-        if (conn != null) {
-            try {
-                //Sacamos los datos que mostraremos en la card
-                val statement = conn.createStatement()
-                val query = "exec dbo.VerDetenidos;"
-                val resultSet = statement.executeQuery(query)
-
-                //Sacamos los datos que obtuvimos de la busqueda sql
-                while (resultSet.next()) {
-                    //Vamo a sacar el id pq asi sabremos cual es la card que queremos eliminar, no se mostrara en la card, pero se guardara
-                    val Id = resultSet.getString("IdDetenido")
-                    val TipoDetecion = resultSet.getString("Tipo_Detencion")
-                    val Nombre = resultSet.getString("Nombre")
-                    val Fecha = resultSet.getString("Fecha_Detencion")
-                    val Lugar = resultSet.getString("Lugar_Detencion")
-                    val Foto: ByteArray? = resultSet.getBytes("Foto")
-                    val Dui = resultSet.getString("Dui")
-
-                    val cardView = layoutInflater.inflate(R.layout.detenidos_card_detenido_select, null)
-
-                    val lblNombre = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblNombre)
-                    val lblDui = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblDui)
-                    val imgDetenido = cardView.findViewById<ImageView>(R.id.Detenidos_card_detenido_seleccion_imgInfractor)
-                    val btnInfo = cardView.findViewById<LinearLayout>(R.id.Detenidos_card_detenido_seleccion_info)
-
-                    val select = cardView.findViewById<LinearLayout>(R.id.Detenidos_card_detenido_seleccion_llSelect)
-                    select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
-
-
-                    imgDetenido.setOnClickListener {
-                        val intent = Intent(this, Detenidos_info::class.java)
-                        intent.putExtra("IdDetenido", Id)
-                        intent.putExtra("TipoDetencion", TipoDetecion)
-                        intent.putExtra("Nombre", Nombre)
-                        intent.putExtra("Fecha", Fecha)
-                        intent.putExtra("LugarDetencion", Lugar)
-                        intent.putExtra("Foto", Foto)
-                        intent.putExtra("Dui", Dui)
-                        startActivityForResult(intent, 1)
-                    }
-
-
-
+/*
                     if(mode=="UnInfractor" && false){
 
                         btnInfo.setOnClickListener {
@@ -167,32 +126,106 @@ class Detenidos_seleccion : AppCompatActivity() {
                             }
                         }
                     }
+ */
 
-                    //Definir valores de las cards
-                    lblNombre.text = Nombre
-                    lblDui.text = Dui
 
-                    if (Foto != null && Foto.isNotEmpty()) {
-                        val bitmap = BitmapFactory.decodeByteArray(Foto, 0, Foto.size)
-                        imgDetenido.setImageBitmap(bitmap)
-                    }else {
-                        // Si no hay imagen en la base de datos, mostrar una imagen por defecto
-                        imgDetenido.setImageResource(R.drawable.void_image) // Cambia por el recurso de imagen por defecto
+    @SuppressLint("MissingInflatedId")
+    private fun Actualizar(callback: () -> Unit) {
+        GlobalScope.launch(Dispatchers.IO) {
+            var conn: Connection? = null
+            try {
+                conn = conexionSQL().dbConn() ?: throw SQLException("No se pudo establecer la conexión a la base de datos")
+                val statement = conn.createStatement()
+                val query = "exec dbo.VerDetenidos;"
+                val resultSet = statement.executeQuery(query)
+
+                while (resultSet.next()) {
+                    val Id = resultSet.getString("IdDetenido")
+                    val TipoDetecion = resultSet.getString("Tipo_Detencion")
+                    val Nombre = resultSet.getString("Nombre")
+                    val Fecha = resultSet.getString("Fecha_Detencion")
+                    val Lugar = resultSet.getString("Lugar_Detencion")
+                    val Foto: ByteArray? = resultSet.getBytes("Foto")
+                    val Dui = resultSet.getString("Dui")
+
+                    val handler = Handler(Looper.getMainLooper())
+                    handler.post {
+                        val cardView = layoutInflater.inflate(R.layout.detenidos_card_detenido_select, null)
+
+                        val lblNombre = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblNombre)
+                        val lblDui = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblDui)
+                        val imgDetenido = cardView.findViewById<ImageView>(R.id.Detenidos_card_detenido_seleccion_imgInfractor)
+                        val btnInfo = cardView.findViewById<LinearLayout>(R.id.Detenidos_card_detenido_seleccion_info)
+                        val select = cardView.findViewById<LinearLayout>(R.id.Detenidos_card_detenido_seleccion_llSelect)
+
+                        lblNombre.text = Nombre
+                        lblDui.text = Dui
+
+                        if (Foto != null && Foto.isNotEmpty()) {
+                            val bitmap = BitmapFactory.decodeByteArray(Foto, 0, Foto.size)
+                            imgDetenido.setImageBitmap(bitmap)
+                        } else {
+                            imgDetenido.setImageResource(R.drawable.void_image) // Cambia por el recurso de imagen por defecto
+                        }
+
+                        imgDetenido.setOnClickListener {
+                            val intent = Intent(this@Detenidos_seleccion, Detenidos_info::class.java)
+                            intent.putExtra("IdDetenido", Id)
+                            intent.putExtra("TipoDetencion", TipoDetecion)
+                            intent.putExtra("Nombre", Nombre)
+                            intent.putExtra("Fecha", Fecha)
+                            intent.putExtra("LugarDetencion", Lugar)
+                            intent.putExtra("Foto", Foto)
+                            intent.putExtra("Dui", Dui)
+                            startActivityForResult(intent, 1)
+                        }
+
+
+
+                        btnInfo.setOnClickListener {
+                            val infractor = Triple(Dui, Nombre, Foto)
+                            val isSelected = SelectedInfractores.contains(infractor)
+
+                            if (isSelected) {
+                                // Si el infractor ya está seleccionado, deselecciónalo y establece selectedView en null
+                                SelectedInfractores.remove(infractor)
+                                select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
+                            } else {
+                                // Si el infractor no está seleccionado, selecciónalo y establece el color de fondo
+                                SelectedInfractores.add(infractor)
+                                select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5FE35B"))
+                            }
+                        }
+
+                        //Definir valores de las cards
+                        lblNombre.text = Nombre
+                        lblDui.text = Dui
+
+                        if (Foto != null && Foto.isNotEmpty()) {
+                            val bitmap = BitmapFactory.decodeByteArray(Foto, 0, Foto.size)
+                            imgDetenido.setImageBitmap(bitmap)
+                        }else {
+                            // Si no hay imagen en la base de datos, mostrar una imagen por defecto
+                            imgDetenido.setImageResource(R.drawable.void_image) // Cambia por el recurso de imagen por defecto
+                        }
+
+                        LlInfractores.addView(cardView)
                     }
-
-                    //Finalmente sampar la card a el LinearLayout
-                    LlInfractores.addView(cardView)
                 }
 
                 resultSet.close()
                 statement.close()
-                conn.close()
             } catch (ex: SQLException) {
                 // Manejo de excepciones en caso de error en la consulta
                 ex.printStackTrace()
+            } finally {
+                conn?.close()
+                callback()
             }
         }
     }
+
+
 
     private fun buscarInfractores(query: String) {
         val queryLowerCase = query.toLowerCase()
@@ -218,7 +251,7 @@ class Detenidos_seleccion : AppCompatActivity() {
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 LlInfractores.removeAllViews()
-                Actualizar()
+                Actualizar{}
             }
         }
     }
@@ -226,6 +259,6 @@ class Detenidos_seleccion : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         LlInfractores.removeAllViews()
-        Actualizar()
+        Actualizar{}
     }
 }

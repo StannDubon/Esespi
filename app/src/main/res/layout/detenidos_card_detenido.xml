@@ -68,7 +68,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_corners_right"
-                android:backgroundTint="#5FE35B"
+                android:backgroundTint="@color/DetenidosSelected"
                 android:orientation="vertical" />
         </LinearLayout>
     </LinearLayout>

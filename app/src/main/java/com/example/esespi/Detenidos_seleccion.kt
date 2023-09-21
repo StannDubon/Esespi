@@ -26,7 +26,6 @@ import java.sql.SQLException
 
 private var mode:String="noResult"
 private val SelectedInfractores = ArrayList<Triple<String, String, ByteArray?>>()
-var selectedViewDetenidos: LinearLayout? = null
 
 private lateinit var conn: Connection
 private lateinit var LlInfractores:LinearLayout
@@ -48,8 +47,20 @@ class Detenidos_seleccion : AppCompatActivity() {
         LlInfractores=findViewById(R.id.Detenidos_Seleccion_LlInfractores)
         btnGuardar=findViewById(R.id.Detenidos_Seleccion_btnGuardar)
 
+        if (intent.hasExtra("selectedDetenidos")) {
+            val selectedDetenidos = intent.getParcelableArrayListExtra<MyParcelableTriple>("selectedDetenidos")
+
+            // Ahora, convierte los objetos MyParcelableTriple en Triples y agrégalos a SelectedInfractores
+            if (selectedDetenidos != null) {
+                for (detenido in selectedDetenidos) {
+                    val triple = Triple(detenido.first, detenido.second, detenido.third)
+                    SelectedInfractores.add(triple as Triple<String, String, ByteArray?>)
+                }
+            }
+        }
+
         btnAgregar.setOnClickListener {
-            val intent = Intent(this, Infractores_agregar::class.java)
+            val intent = Intent(this, Detenidos_agregar::class.java)
             intent.putExtra("mode", "Agregar")
             startActivityForResult(intent, 1)
         }
@@ -68,65 +79,19 @@ class Detenidos_seleccion : AppCompatActivity() {
         })
 
         btnGuardar.setOnClickListener {
-            val intent = Intent()
-
-            val selectedInfractoresParcelable = ArrayList<MyParcelableTriple>()
-            for (triple in SelectedInfractores) {
-                val myParcelableTriple = MyParcelableTriple(triple.first, triple.second, triple.third)
-                selectedInfractoresParcelable.add(myParcelableTriple)
+            val selectedDetenidosTyped = ArrayList<Triple<String, String, ByteArray?>>()
+            for (myParcelableTriple in SelectedInfractores) {
+                val triple = Triple(myParcelableTriple.first, myParcelableTriple.second, myParcelableTriple.third)
+                selectedDetenidosTyped.add(triple)
             }
 
-            intent.putParcelableArrayListExtra("selectedDetenidos", selectedInfractoresParcelable)
+            val intent = Intent()
+            intent.putExtra("selectedDetenidos", selectedDetenidosTyped)
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
 
     }
-
-/*
-                    if(mode=="UnInfractor" && false){
-
-                        btnInfo.setOnClickListener {
-                            val infractor = Triple(Dui, Nombre, Foto)
-                            val isSelected = SelectedInfractores.contains(infractor)
-
-                            if (isSelected) {
-                                SelectedInfractores.remove(infractor)
-                                select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
-                                if (selectedViewInfractores == select) {
-                                    selectedViewInfractores = null
-                                }
-                            } else {
-                                SelectedInfractores.clear()
-                                selectedViewInfractores?.backgroundTintList = ColorStateList.valueOf(
-                                    Color.parseColor("#FFFFFF"))
-                                selectedViewInfractores = null
-
-                                SelectedInfractores.add(infractor)
-                                select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5FE35B"))
-                                selectedViewInfractores = select
-                            }
-                        }
-
-                    }
-                    else{
-
-                        btnInfo.setOnClickListener {
-                            val infractor = Triple(Dui, Nombre, Foto)
-                            val isSelected = SelectedInfractores.contains(infractor)
-
-                            if (isSelected) {
-                                // Si el infractor ya está seleccionado, deselecciónalo y establece selectedView en null
-                                SelectedInfractores.remove(infractor)
-                                select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
-                            } else {
-                                // Si el infractor no está seleccionado, selecciónalo y establece el color de fondo
-                                SelectedInfractores.add(infractor)
-                                select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5FE35B"))
-                            }
-                        }
-                    }
- */
 
 
     @SuppressLint("MissingInflatedId")
@@ -181,6 +146,14 @@ class Detenidos_seleccion : AppCompatActivity() {
                         }
 
 
+                        /*
+                        val isSelected = SelectedInfractores.contains(Triple(Dui, Nombre, Foto))
+
+                        if (isSelected) {
+                            select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#6C4FFF"))
+                        }
+
+                         */
 
                         btnInfo.setOnClickListener {
                             val infractor = Triple(Dui, Nombre, Foto)
@@ -193,7 +166,7 @@ class Detenidos_seleccion : AppCompatActivity() {
                             } else {
                                 // Si el infractor no está seleccionado, selecciónalo y establece el color de fondo
                                 SelectedInfractores.add(infractor)
-                                select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5FE35B"))
+                                select.setBackgroundColor(resources.getColor(R.color.DetenidosSelected))
                             }
                         }
 
@@ -246,19 +219,57 @@ class Detenidos_seleccion : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK) {
-                LlInfractores.removeAllViews()
-                Actualizar{}
-            }
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         LlInfractores.removeAllViews()
         Actualizar{}
     }
 }
+
+
+
+
+/*
+                    if(mode=="UnInfractor" && false){
+
+                        btnInfo.setOnClickListener {
+                            val infractor = Triple(Dui, Nombre, Foto)
+                            val isSelected = SelectedInfractores.contains(infractor)
+
+                            if (isSelected) {
+                                SelectedInfractores.remove(infractor)
+                                select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
+                                if (selectedViewInfractores == select) {
+                                    selectedViewInfractores = null
+                                }
+                            } else {
+                                SelectedInfractores.clear()
+                                selectedViewInfractores?.backgroundTintList = ColorStateList.valueOf(
+                                    Color.parseColor("#FFFFFF"))
+                                selectedViewInfractores = null
+
+                                SelectedInfractores.add(infractor)
+                                select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5FE35B"))
+                                selectedViewInfractores = select
+                            }
+                        }
+
+                    }
+                    else{
+
+                        btnInfo.setOnClickListener {
+                            val infractor = Triple(Dui, Nombre, Foto)
+                            val isSelected = SelectedInfractores.contains(infractor)
+
+                            if (isSelected) {
+                                // Si el infractor ya está seleccionado, deselecciónalo y establece selectedView en null
+                                SelectedInfractores.remove(infractor)
+                                select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
+                            } else {
+                                // Si el infractor no está seleccionado, selecciónalo y establece el color de fondo
+                                SelectedInfractores.add(infractor)
+                                select.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5FE35B"))
+                            }
+                        }
+                    }
+ */

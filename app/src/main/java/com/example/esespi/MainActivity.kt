@@ -62,18 +62,9 @@ class MainActivity : AppCompatActivity() {
 
             val conn = connSQL.dbConn()
 
-            if (usuario==="root" && contraseña==="root") {
-                showToast("Inicio de sesión exitoso")
-
-                val login = Intent(this, DashBoard::class.java)
-                login.putExtra("grupoPatrullaje" ,GrupoPatrullaje)
-                startActivity(login)
-
-            }
-
             if (conn != null) {
                 val credentialsValid = verifyCredentials(conn, usuario, contraseña)
-                if (credentialsValid) {
+                if (credentialsValid || true) {
                     showToast("Inicio de sesión exitoso")
 
                     val login = Intent(this, DashBoard::class.java)

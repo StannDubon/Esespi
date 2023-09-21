@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="colorPrimary">#3D96FF</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="DetenidosSelected">#A591FF</color>
 </resources>

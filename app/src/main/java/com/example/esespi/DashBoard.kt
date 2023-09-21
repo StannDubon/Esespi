@@ -36,7 +36,7 @@ class DashBoard : AppCompatActivity() {
         }
 
         Decomiso.setOnClickListener {
-            val intent = Intent(this, Decomisos_agregar::class.java)
+            val intent = Intent(this, Decomisos_main::class.java)
             startActivity(intent)
         }
 

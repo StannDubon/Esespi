@@ -7,8 +7,6 @@ import android.content.res.ColorStateList
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Parcel
-import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -235,34 +233,5 @@ class Infractores_seleccion : AppCompatActivity() {
         super.onResume()
         LlInfractores.removeAllViews()
         Actualizar()
-    }
-}
-
-
-data class MyParcelableTriple(val first: String?, val second: String?, val third: ByteArray?) : Parcelable {
-    constructor(parcel: Parcel) : this(
-        parcel.readString(),
-        parcel.readString(),
-        parcel.createByteArray()
-    )
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(first)
-        parcel.writeString(second)
-        parcel.writeByteArray(third)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<MyParcelableTriple> {
-        override fun createFromParcel(parcel: Parcel): MyParcelableTriple {
-            return MyParcelableTriple(parcel)
-        }
-
-        override fun newArray(size: Int): Array<MyParcelableTriple?> {
-            return arrayOfNulls(size)
-        }
     }
 }

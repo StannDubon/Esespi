@@ -30,6 +30,7 @@ class Decomisos_main : AppCompatActivity() {
 
         btnAgregar.setOnClickListener{
             val intent = Intent(this, Decomisos_agregar::class.java)
+            intent.putExtra("mode", "Agregar")
             startActivity(intent)
         }
     }
@@ -56,9 +57,6 @@ class Decomisos_main : AppCompatActivity() {
                         val Detalles = resultSet.getString("Detalles")
                         val Foto: ByteArray? = resultSet.getBytes("FOTO")
                         val TipoDecomiso = resultSet.getString("TipoDecomiso")
-                        val Nombre = resultSet.getString("Nombre")
-                        val LugarDetencion = resultSet.getString("Lugar_Detencion")
-                        val fechaDetencion = resultSet.getString("Fecha_Detencion")
 
                         handler.post {
                             val cardView = layoutInflater.inflate(R.layout.decomisos_card_decomiso, null)
@@ -70,24 +68,16 @@ class Decomisos_main : AppCompatActivity() {
                             val btnInfo =
                                 cardView.findViewById<LinearLayout>(R.id.Decomisos_card_decomisos_btnInfo)
 
-                            /*
                             btnInfo.setOnClickListener {
-                                val i = Intent(this@Infractores_main, Infractores_Info::class.java)
+                                val i = Intent(this@Decomisos_main, Decomisos_info::class.java)
                                 i.putExtra("id", Id)
-                                i.putExtra("nom", Nombre)
-                                i.putExtra("ape", Apellido)
-                                i.putExtra("dui", DUI)
-                                i.putExtra("dir", Direccion)
-                                i.putExtra("gen", IdGenero)
-                                i.putExtra("des", Descripcion)
-                                i.putExtra("las", UltimaVezVisto)
+                                i.putExtra("det", Detalles)
+                                i.putExtra("tip", TipoDecomiso)
                                 if (Foto != null && Foto.isNotEmpty()) {
                                     i.putExtra("img", Foto) // Pasar el ByteArray directamente
                                 }
                                 startActivityForResult(i, 1)
                             }
-
-                             */
 
                             // Definir valores de las cards
                             lblTipoDecomiso.text = Detalles

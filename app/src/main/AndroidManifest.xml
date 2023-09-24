@@ -120,6 +120,7 @@
             android:exported="false" />
         <activity
             android:name=".SplashScreen"
+            android:theme="@style/Theme.Esespi.NoActionBarAndStatusBar_SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

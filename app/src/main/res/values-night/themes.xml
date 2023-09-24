@@ -13,4 +13,28 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.Esespi.NoActionBarAndStatusBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+
+        <!-- Cambia el color del texto y de los iconos de la barra de estado -->
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="Theme.Esespi.NoActionBarAndStatusBar_SplashScreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+
+        <!-- Cambia el color del texto y de los iconos de la barra de estado -->
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
 </resources>

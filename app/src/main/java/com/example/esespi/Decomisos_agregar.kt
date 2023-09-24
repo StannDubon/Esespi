@@ -3,13 +3,14 @@ package com.example.esespi
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import java.io.ByteArrayOutputStream
 import java.sql.Connection
 import java.sql.PreparedStatement
@@ -36,6 +37,8 @@ private var foto: ByteArray? = null
 
 private lateinit var conn: Connection
 
+private var ActivityMode: String? = null
+
 private val PICK_IMAGE_REQUEST = 1
 private val REQUEST_IMAGE_CAPTURE = 2
 
@@ -47,6 +50,8 @@ class Decomisos_agregar : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_decomisos_agregar)
+
+        ActivityMode = intent.getStringExtra("mode")
 
         conn = conexionSQL().dbConn() ?: throw SQLException("No se pudo establecer la conexión a la base de datos")
 
@@ -125,29 +130,156 @@ class Decomisos_agregar : AppCompatActivity() {
 
 //SUBIR A LA BASE DE DATOS ---------------------------------------------------------------------------
 
-        btnGuardar.setOnClickListener{
-            for (triple in SelectedDetenidos) {
+        if(ActivityMode=="Agregar") {
+            btnGuardar.setOnClickListener {
+                for (triple in SelectedDetenidos) {
+                    if (
+                        dbTipo.selectedItemPosition != 0
+                    ) {
+                        try {
+                            println("No")
+                            val addProducto: PreparedStatement = conn.prepareStatement(
+                                "EXEC dbo.InsertarDecomisos1\n" +
+                                        "\t@DetallesDecomiso = ?,\n" +
+                                        "\t@TipoDecomiso = ?,\n" +
+                                        "\t@DuiInfractor_Detenido = ?," +
+                                        "\t@FOTO = ?\n"
+                            )
+
+                            addProducto.setString(1, txtDescripcion.text.toString())
+                            addProducto.setString(2, dbTipo.selectedItem.toString())
+                            addProducto.setString(3, triple.first)
+                            addProducto.setBytes(4, foto)
+                            addProducto.executeUpdate()
+
+                            Toast.makeText(
+                                this,
+                                "Se ha registrado correctamente",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            setResult(RESULT_OK, Intent())
+                            finish()
+                        } catch (ex: SQLException) {
+                            Toast.makeText(this, "Error al ingresar: " + ex, Toast.LENGTH_SHORT)
+                                .show()
+                            println(ex)
+                            setResult(RESULT_OK, Intent())
+                        }
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "Por favor complete todos los campos",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+                conn.close()
+            }
+        }
+
+        else if (ActivityMode=="Editar"){
+
+            val GotId = intent.getStringExtra("id")
+            val GotDetalles = intent.getStringExtra("det")
+            val GotTipoDecomiso = intent.getStringExtra("tip")
+            val GotFoto = intent.getByteArrayExtra("img")
+
+            txtDescripcion.setText(GotDetalles)
+
+            val indiceSeleccion = clasificaciones.indexOf(GotTipoDecomiso)
+
+            if (indiceSeleccion != -1) {
+                // Si se encontró el texto, establecerlo como la selección actual del Spinner
+                dbTipo.setSelection(indiceSeleccion)
+            }
+
+            val bitmap = GotFoto?.let { BitmapFactory.decodeByteArray(GotFoto, 0, it.size) }
+            imgDecomiso.setImageBitmap(bitmap)
+            foto = GotFoto
+
+            val selectedInfractores = intent.getParcelableArrayListExtra<MyParcelableTriple>("selectedDetenidos")
+            LlInfractoresSeleccionados.removeAllViews()
+
+            val convertedList = ArrayList<Triple<String, String, ByteArray?>>()
+
+            selectedInfractores?.forEach { item ->
+                val triple = Triple(item.first, item.second, item.third)
+                convertedList.add(triple as Triple<String, String, ByteArray?>)
+            }
+
+
+            // Asigna la lista convertida a la variable global
+            SelectedDetenidos = convertedList
+
+            for (item in SelectedDetenidos) {
+                val DUI = item.first
+                val Nombre = item.second
+                val Foto = item.third
+
+                // Crear una vista para cada detenido seleccionado
+                val cardView = layoutInflater.inflate(R.layout.detenidos_card_detenido_select, null)
+
+                val lblNombre = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblNombre)
+                val lblDui = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblDui)
+                val imgInfractor = cardView.findViewById<ImageView>(R.id.Detenidos_card_detenido_seleccion_imgInfractor)
+                val btnDel = cardView.findViewById<LinearLayout>(R.id.Detenidos_card_detenido_seleccion_info)
+
+                cardView.findViewById<LinearLayout>(R.id.Detenidos_card_detenido_seleccion_llSelect).backgroundTintList = ColorStateList.valueOf(
+                    ContextCompat.getColor(this@Decomisos_agregar, R.color.DetenidosSelected))
+
+                btnDel.setOnClickListener{
+                    LlInfractoresSeleccionados.removeView(cardView)
+                    SelectedDetenidos.remove(item)
+                }
+
+                lblNombre.text = Nombre
+                lblDui.text = DUI
+
+                if (Foto != null && Foto.isNotEmpty()) {
+                    val bitmap = BitmapFactory.decodeByteArray(Foto, 0, Foto.size)
+                    imgInfractor.setImageBitmap(bitmap)
+                } else {
+                    imgInfractor.setImageResource(R.drawable.void_image)
+                }
+
+                // Agregar la vista al contenedor
+                LlInfractoresSeleccionados.addView(cardView)
+            }
+
+            btnGuardar.setOnClickListener {
                 if (
-                    //Validaciones
-                    true &&
-                    dbTipo.selectedItemPosition != 0
+                    true
                 ){
+
                     try {
                         val addProducto: PreparedStatement =  conn.prepareStatement(
-                            "EXEC dbo.InsertarDecomisos1\n" +
-                                    "\t@DetallesDecomiso = ?,\n" +
-                                    "\t@TipoDecomiso = ?,\n" +
-                                    "\t@DuiInfractor_Detenido = ?," +
-                                    "\t@FOTO = ?\n"
-                        )
+                            "EXEC dbo.ActualizarYEliminarInvolucradosDecomiso\n" +
+                                    "@IdDecomiso = ?,\n" +
+                                    "@Detalles = ?,\n" +
+                                    "@Foto = ?,\n" +
+                                    "@TipoDecomiso = ?"
+                        )!!
 
-                        addProducto.setString(1, txtDescripcion.text.toString())
-                        addProducto.setString(2, dbTipo.selectedItem.toString())
-                        addProducto.setString(3, triple.first)
-                        addProducto.setBytes(4, foto)
+                        addProducto.setString(1, GotId)
+                        addProducto.setString(2, txtDescripcion.text.toString())
+                        addProducto.setBytes(3, foto)
+                        addProducto.setString(4, dbTipo.selectedItem.toString())
                         addProducto.executeUpdate()
 
-                        Toast.makeText(this, "Se ha registrado correctamente", Toast.LENGTH_SHORT).show()
+                        for (triple in SelectedDetenidos){
+                            val addProductoxd: PreparedStatement =  conn.prepareStatement(
+                                "EXEC dbo.ActualizarInvolucradosDecomiso \n" +
+                                        "@IdDecomiso = ?,\n" +
+                                        "@DuiDetendio = ?"
+                            )!!
+
+                            addProductoxd.setString(1, GotId)
+                            addProductoxd.setString(2, triple.first)
+                            addProductoxd.executeUpdate()
+                        }
+
+                        Toast.makeText(this, "Se ha actualizado correctamente", Toast.LENGTH_SHORT).show()
 
                         setResult(RESULT_OK, Intent())
                         conn.close()
@@ -157,6 +289,7 @@ class Decomisos_agregar : AppCompatActivity() {
                         Toast.makeText(this, "Error al ingresar: "+ex, Toast.LENGTH_SHORT).show()
                         println(ex)
                         setResult(RESULT_OK, Intent())
+                        finish()
                     }
                 } else{
                     Toast.makeText(this, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show()
@@ -201,21 +334,27 @@ class Decomisos_agregar : AppCompatActivity() {
         else if (requestCode == INFRACTORES_REQUEST && resultCode == Activity.RESULT_OK) {
             if (data != null && data.hasExtra("selectedDetenidos")) {
                 val selectedDetenidos = data.getSerializableExtra("selectedDetenidos") as? ArrayList<Triple<String, String, ByteArray?>>
-                val uniqueSelectedDetenidos = selectedDetenidos?.distinct()
 
-                if (uniqueSelectedDetenidos != null) {
+                if (selectedDetenidos != null) {
+
+                    val uniqueMap = mutableMapOf<String, Triple<String, String, ByteArray?>>()
+
+                    selectedDetenidos.forEach { triple ->
+                        val key = triple.first
+                        if (!uniqueMap.containsKey(key)) {
+                            uniqueMap[key] = triple
+                        }
+                    }
+
                     LlInfractoresSeleccionados.removeAllViews()
                     SelectedDetenidos.clear()
-                    SelectedDetenidos.addAll(uniqueSelectedDetenidos)
+                    SelectedDetenidos = ArrayList(uniqueMap.values)
                     println("No me voy a suicidar")
 
-                    for (item in uniqueSelectedDetenidos) {
+                    for (item in SelectedDetenidos) {
                         val DUI = item.first
                         val Nombre = item.second
                         val Foto = item.third
-
-                        // Imprimir los datos
-                        Log.d("DatosSeleccionados", "DUI: $DUI, Nombre: $Nombre, Foto: ${Foto?.size} bytes")
 
                         // Crear una vista para cada detenido seleccionado
                         val cardView = layoutInflater.inflate(R.layout.detenidos_card_detenido_select, null)
@@ -223,6 +362,15 @@ class Decomisos_agregar : AppCompatActivity() {
                         val lblNombre = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblNombre)
                         val lblDui = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblDui)
                         val imgInfractor = cardView.findViewById<ImageView>(R.id.Detenidos_card_detenido_seleccion_imgInfractor)
+                        val btnDel = cardView.findViewById<LinearLayout>(R.id.Detenidos_card_detenido_seleccion_info)
+
+                        cardView.findViewById<LinearLayout>(R.id.Detenidos_card_detenido_seleccion_llSelect).backgroundTintList = ColorStateList.valueOf(
+                            ContextCompat.getColor(this@Decomisos_agregar, R.color.DetenidosSelected))
+
+                        btnDel.setOnClickListener{
+                            LlInfractoresSeleccionados.removeView(cardView)
+                            SelectedDetenidos.remove(item)
+                        }
 
                         lblNombre.text = Nombre
                         lblDui.text = DUI

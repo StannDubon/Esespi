@@ -5,10 +5,24 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+
+    <color name="register_loginUpSideText">#403F71</color>
+
+    <color name="transparent">#00FF4081</color>
     <color name="black">#FF000000</color>
+    <color name="gray">#313131</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="background">#EDF2F6</color>
+    <color name="HintColor">#8C8C8C</color>
+    <color name="TextColor">#000000</color>
+    <color name="EditTextBackground">#FFFFFFFF</color>
+
+    <color name="PrimaryColorButtonText">#FFFFFFFF</color>
+
     <color name="colorPrimary">#3D96FF</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#D9EAFF</color>
+
 
     <color name="DetenidosSelected">#A591FF</color>
+
 </resources>

@@ -18,6 +18,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -166,7 +167,7 @@ class Detenidos_seleccion : AppCompatActivity() {
                             } else {
                                 // Si el infractor no está seleccionado, selecciónalo y establece el color de fondo
                                 SelectedInfractores.add(infractor)
-                                select.setBackgroundColor(resources.getColor(R.color.DetenidosSelected))
+                                select.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this@Detenidos_seleccion, R.color.DetenidosSelected))
                             }
                         }
 

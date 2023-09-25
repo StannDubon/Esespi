@@ -58,8 +58,8 @@ class activity_recuperacion_credenciales_mail_verificacion : AppCompatActivity()
                 editor.apply()
                 correo_usuario_a_recuperar=correo
 
-                val intent = Intent(this, RegistroUsuarioVerificarTelefono::class.java)
-                startActivity(intent)
+                //val intent = Intent(this, RegistroUsuarioVerificarTelefono::class.java)
+                //startActivity(intent)
             } else {
                 // El código es incorrecto, muestra un mensaje de error
                 Toast.makeText(this, "El código ingresado es incorrecto.", Toast.LENGTH_SHORT).show()

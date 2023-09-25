@@ -2,19 +2,11 @@ package com.example.esespi
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.content.res.ColorStateList
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.*
-import androidx.cardview.widget.CardView
-import java.sql.Connection
-import java.sql.SQLException
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -52,7 +44,7 @@ class RegistroUsuarioReferenciasPersonales : AppCompatActivity() {
 
             if (userData != null) {
                 val inflater = LayoutInflater.from(this)
-                val tarjeta = inflater.inflate(R.layout.registro_usuario_card_referencia, linLay, false)
+                val tarjeta = inflater.inflate(R.layout.card_registro_usuario_referencia, linLay, false)
 
                 val txtNombre: TextView = tarjeta.findViewById(R.id.RegistroUsuarioCardReferenciaTxtNombre)
                 val txtCorreo: TextView = tarjeta.findViewById(R.id.RegistroUsuarioCardReferenciaTxtCorreo)

@@ -280,7 +280,7 @@ class Denuncias_agregar : AppCompatActivity() {
                     val Foto = data.third
 
                     // Infla una CardView
-                    val cardView = layoutInflater.inflate(R.layout.infractores_card_infractor_select, null)
+                    val cardView = layoutInflater.inflate(R.layout.card_infractores_infractor_select, null)
 
                     val lblNombre = cardView.findViewById<TextView>(R.id.Infractores_card_infractor_seleccion_lblNombre)
                     val lblDui = cardView.findViewById<TextView>(R.id.Infractores_card_infractor_seleccion_lblDui)

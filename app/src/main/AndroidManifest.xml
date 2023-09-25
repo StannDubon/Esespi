@@ -99,15 +99,16 @@
             android:name=".RegistroUsuarioCosve"
             android:exported="false" />
         <activity
-            android:name=".RegistroUsuarioVerificarTelefono"
-            android:exported="false" />
-        <activity
             android:name=".RegistroUsuarioVerificarCorreo"
             android:exported="false" />
         <activity
             android:name=".RegistroUsuarioSeleccionNacionalidad"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".RegistroVerificarCorreoParte2"
+            android:exported="false" />
+
         <activity
             android:name=".RegistroUsuarioIngresoDatos"
             android:exported="false" />

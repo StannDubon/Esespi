@@ -85,7 +85,7 @@
             <EditText
                 android:id="@+id/RegistroUsuarioTxtDUI"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="53dp"
                 android:layout_margin="20dp"
                 android:backgroundTint="#8F8F8F"
                 android:ems="10"
@@ -93,6 +93,21 @@
                 android:hint="DUI"
                 android:inputType="phone"
                 android:maxLength="10"
+                android:paddingBottom="7dp"
+                android:textColorHint="#8F8F8F"
+                android:textSize="19sp" />
+
+            <EditText
+                android:id="@+id/txtTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:backgroundTint="#8F8F8F"
+                android:ems="10"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="Telefono"
+                android:inputType="phone"
+                android:maxLength="8"
                 android:paddingBottom="7dp"
                 android:textColorHint="#8F8F8F"
                 android:textSize="19sp" />

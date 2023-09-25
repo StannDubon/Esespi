@@ -8,49 +8,65 @@ import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-
 class ShowCustomDialogImage(private val context: Context) {
 
     fun showCustomDialog(imageId: Int, content: String, button: String, activityToOpen: Class<out Activity>, Resultado: Int) {
+        val activity = context as Activity
 
-        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_layout_img, null)
-
-        val imageView = dialogView.findViewById<ImageView>(R.id.DialogLayoutImg_img)
-        val contentTextView = dialogView.findViewById<TextView>(R.id.DialogLayoutImg_content)
-        val buttonTextView = dialogView.findViewById<TextView>(R.id.DialogLayoutImg_Btn)
-
-        imageView.setImageResource(imageId)
-        contentTextView.text = content
-        buttonTextView.text = button
-
-        buttonTextView.setBackgroundColor(Color.parseColor("#52A1FF"))
-
-        val alertDialogBuilder = AlertDialog.Builder(context)
-            .setView(dialogView)
-
-        val alertDialog = alertDialogBuilder.create()
-        alertDialog.show()
-
-        // clic en el botón
-        if(Resultado==1){
-            buttonTextView.setOnClickListener {
-                val intent = Intent(context, activityToOpen)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                context.startActivity(intent)
-                alertDialog.dismiss()
-            }
+        // Verificar si la actividad aún está en curso
+        if (activity.isFinishing) {
+            return
         }
-        if(Resultado==2){
-            buttonTextView.setOnClickListener {
-                val intent = Intent(context, activityToOpen)
-                context.startActivity(intent)
-                alertDialog.dismiss()
+
+        try {
+            val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_layout_img, null)
+
+            val imageView = dialogView.findViewById<ImageView>(R.id.DialogLayoutImg_img)
+            val contentTextView = dialogView.findViewById<TextView>(R.id.DialogLayoutImg_content)
+            val buttonTextView = dialogView.findViewById<TextView>(R.id.DialogLayoutImg_Btn)
+
+            imageView.setImageResource(imageId)
+            contentTextView.text = content
+            buttonTextView.text = button
+
+            buttonTextView.setBackgroundColor(Color.parseColor("#52A1FF"))
+
+            val alertDialogBuilder = AlertDialog.Builder(context)
+                .setView(dialogView)
+
+            val alertDialog = alertDialogBuilder.create()
+
+            // Clic en el botón
+            when (Resultado) {
+                1 -> {
+                    buttonTextView.setOnClickListener {
+                        alertDialog.dismiss() // Cierra el diálogo antes de iniciar la actividad
+                        val intent = Intent(context, activityToOpen)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                        context.startActivity(intent)
+                    }
+                }
+                2 -> {
+                    buttonTextView.setOnClickListener {
+                        alertDialog.dismiss() // Cierra el diálogo antes de iniciar la actividad
+                        val intent = Intent(context, activityToOpen)
+                        context.startActivity(intent)
+                    }
+                }
+                3 -> {
+                    buttonTextView.setOnClickListener {
+                        alertDialog.dismiss() // Cierra el diálogo sin iniciar una actividad
+                    }
+                }
             }
-        }
-        if(Resultado==3){
-            buttonTextView.setOnClickListener {
-                alertDialog.dismiss()
+
+            // Mostrar el diálogo en el subproceso principal de la interfaz de usuario
+            activity.runOnUiThread {
+                alertDialog.show()
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            // Manejar la excepción de manera adecuada si es necesario
         }
     }
 }

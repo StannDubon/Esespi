@@ -37,6 +37,7 @@ class RegistroUsuarioIngresoDatos : AppCompatActivity() {
     private lateinit var txtNombre: EditText
     private lateinit var txtApellido:EditText
     private lateinit var txtDUI: EditText
+    private lateinit var txtTelefono: EditText
     private lateinit var txtDomicilio: EditText
 
     private lateinit var btnHombre: Button
@@ -71,6 +72,7 @@ class RegistroUsuarioIngresoDatos : AppCompatActivity() {
         txtNombre=findViewById(R.id.RegistroUsuarioTxtNombre)
         txtApellido=findViewById(R.id.RegistroUsuarioTxtApellido)
         txtDUI=findViewById(R.id.RegistroUsuarioTxtDUI)
+        txtTelefono = findViewById(R.id.txtTelefono)
         txtDomicilio=findViewById(R.id.RegistroUsuarioTxtDireccion)
 
 //GENERO--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -215,6 +217,7 @@ class RegistroUsuarioIngresoDatos : AppCompatActivity() {
                 v.CharWritten(txtNombre, "Nombre", 30, 3, this) &&
                 v.CharWritten(txtApellido, "Apelido", 30, 3, this) &&
                 v.validarDUI(txtDUI, this) &&
+                v.CharWritten(txtTelefono, "Telefono", 8, 8, this) &&
                 v.CharWritten(txtDomicilio, "Dirección", 50, 1, this) &&
                 v.GenderSelected(genero, this) &&
                 v.FechaReal(dia, mes, año, this)
@@ -234,6 +237,7 @@ class RegistroUsuarioIngresoDatos : AppCompatActivity() {
                                 Reg.putString("Nombre", txtNombre.text.toString())
                                 Reg.putString("Apellido", txtApellido.text.toString())
                                 Reg.putString("DUI", txtDUI.text.toString())
+                                Reg.putString("Telefono", txtTelefono.text.toString())
 
                                 var fechaNacimiento = "$año/$mes/$dia"
                                 Reg.putString("FechaNacimiento", fechaNacimiento)
@@ -408,7 +412,7 @@ class RegistroUsuarioIngresoDatos : AppCompatActivity() {
 
             for (dato in coso) {
                 val inflater = LayoutInflater.from(this)
-                val tarjeta = inflater.inflate(R.layout.registro_usuario_card_element_selected, LL, false)
+                val tarjeta = inflater.inflate(R.layout.card_registro_usuario_element_selected, LL, false)
 
                 val textoTarjeta = tarjeta.findViewById<TextView>(R.id.lblCardTextElement)
                 val quitar = tarjeta.findViewById<TextView>(R.id.lblMinus)

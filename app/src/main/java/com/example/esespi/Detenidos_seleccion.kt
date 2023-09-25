@@ -116,7 +116,7 @@ class Detenidos_seleccion : AppCompatActivity() {
 
                     val handler = Handler(Looper.getMainLooper())
                     handler.post {
-                        val cardView = layoutInflater.inflate(R.layout.detenidos_card_detenido_select, null)
+                        val cardView = layoutInflater.inflate(R.layout.card_detenidos_detenido_select, null)
 
                         val lblNombre = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblNombre)
                         val lblDui = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblDui)

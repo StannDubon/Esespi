@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
             if (conn != null) {
                 val credentialsValid = verifyCredentials(conn, usuario, contraseña)
-                if (credentialsValid || true) {
+                if (credentialsValid ) {
                     showToast("Inicio de sesión exitoso")
 
                     val login = Intent(this, DashBoard::class.java)

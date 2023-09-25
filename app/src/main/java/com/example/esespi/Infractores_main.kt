@@ -71,7 +71,7 @@ class Infractores_main : AppCompatActivity() {
 
                         handler.post {
                             val cardView =
-                                layoutInflater.inflate(R.layout.infractores_card_infractor, null)
+                                layoutInflater.inflate(R.layout.card_infractores_infractor, null)
 
                             val lblNombre =
                                 cardView.findViewById<TextView>(R.id.Infractores_card_infractor_lblNombre)

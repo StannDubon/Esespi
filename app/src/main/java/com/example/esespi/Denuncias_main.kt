@@ -60,7 +60,7 @@ class Denuncias_main : AppCompatActivity() {
                     val Foto: ByteArray? = resultSet.getBytes("Foto")
                     val Dui = resultSet.getString("Dui")
 
-                    val cardView = layoutInflater.inflate(R.layout.detenidos_card_detenido, null)
+                    val cardView = layoutInflater.inflate(R.layout.card_detenidos_detenido, null)
 
                     val lblNombre = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_lblNombre)
                     val lblDui = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_lblDui)

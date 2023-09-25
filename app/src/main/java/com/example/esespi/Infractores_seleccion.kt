@@ -117,7 +117,7 @@ class Infractores_seleccion : AppCompatActivity() {
 
                     handler.post {
                         val cardView =
-                            layoutInflater.inflate(R.layout.infractores_card_infractor_select, null)
+                            layoutInflater.inflate(R.layout.card_infractores_infractor_select, null)
 
                         val lblNombre =
                             cardView.findViewById<TextView>(R.id.Infractores_card_infractor_seleccion_lblNombre)

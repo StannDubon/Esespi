@@ -91,7 +91,7 @@ class RegistroUsuarioSeleccionNacionalidad : AppCompatActivity() {
             val lblNacionalidad = resultSet.getString("Nacionalidad")
 
             // Crea la tarjeta (card) para cada elemento
-            val card = layoutInflater.inflate(R.layout.registro_usuario_card_idioma, null)
+            val card = layoutInflater.inflate(R.layout.card_registro_usuario_idioma, null)
             val selector = card.findViewById<View>(R.id.selectedBooleanCircle)
             val textView = card.findViewById<TextView>(R.id.lblIdiomaOnCard)
             textView.text = lblNacionalidad

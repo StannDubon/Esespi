@@ -1,7 +1,6 @@
 package com.example.esespi
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -515,7 +514,7 @@ class RegistroUsuarioIngresoDatosReferenciaPersonal : AppCompatActivity() {
 
             for (dato in coso) {
                 val inflater = LayoutInflater.from(this)
-                val tarjeta = inflater.inflate(R.layout.registro_usuario_card_element_selected, LL, false)
+                val tarjeta = inflater.inflate(R.layout.card_registro_usuario_element_selected, LL, false)
 
                 val textoTarjeta = tarjeta.findViewById<TextView>(R.id.lblCardTextElement)
                 val quitar = tarjeta.findViewById<TextView>(R.id.lblMinus)

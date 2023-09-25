@@ -1,7 +1,6 @@
 package com.example.esespi
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -65,7 +64,7 @@ class Acercamientos_main : AppCompatActivity() {
                     val Acercamiento = resultSet.getString("Acercamiento")
 
                     handler.post {
-                        val cardView = layoutInflater.inflate(R.layout.acercamientos_card_acercamiento, null)
+                        val cardView = layoutInflater.inflate(R.layout.card_acercamientos_acercamiento, null)
 
                         val lblNombre = cardView.findViewById<TextView>(R.id.Acercamientos_Card_Acercamiento_lblNombre)
                         val lblId = cardView.findViewById<TextView>(R.id.Acercamientos_Card_Acercamiento_lblID)
@@ -97,16 +96,6 @@ class Acercamientos_main : AppCompatActivity() {
             } finally {
                 conn?.close()
                 callback(xd)
-            }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK) {
-                LlAcercamientos.removeAllViews()
-                Actualizar { result ->}
             }
         }
     }

@@ -1,20 +1,23 @@
 package com.example.esespi
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.sql.Connection
 import java.sql.SQLException
 
 private lateinit var LlDetenidos:LinearLayout
 private lateinit var btnAgregar:LinearLayout
-private lateinit var conn: Connection
 
 class Detenidos_main : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +27,6 @@ class Detenidos_main : AppCompatActivity() {
         LlDetenidos=findViewById(R.id.Detenidos_Main_LlAcercamiento)
         btnAgregar=findViewById(R.id.Detenidos_Main_btnAgregar)
         LlDetenidos.removeAllViews()
-        Actualizar()
 
         btnAgregar.setOnClickListener {
             val intent = Intent(this, Detenidos_agregar::class.java)
@@ -39,14 +41,16 @@ class Detenidos_main : AppCompatActivity() {
     }
 
     @SuppressLint("MissingInflatedId")
-    private fun Actualizar(){
-        conn = conexionSQL().dbConn() ?: throw SQLException("No se pudo establecer la conexión a la base de datos")
-        if (conn != null) {
+    private fun Actualizar(callback: (result: Boolean) -> Unit) {
+        GlobalScope.launch(Dispatchers.IO) {
+            var conn: Connection? = null
+            var xd = false
             try {
-                //Sacamos los datos que mostraremos en la card
+                conn = conexionSQL().dbConn() ?: throw SQLException("No se pudo establecer la conexión a la base de datos")
                 val statement = conn.createStatement()
                 val query = "EXEC dbo.VerDetenidos;"
                 val resultSet = statement.executeQuery(query)
+                val handler = Handler(Looper.getMainLooper())
 
                 //Sacamos los datos que obtuvimos de la busqueda sql
                 while (resultSet.next()) {
@@ -59,42 +63,48 @@ class Detenidos_main : AppCompatActivity() {
                     val Foto: ByteArray? = resultSet.getBytes("Foto")
                     val Dui = resultSet.getString("Dui")
 
-                    val cardView = layoutInflater.inflate(R.layout.detenidos_card_detenido, null)
+                    handler.post {
+                        val cardView =
+                            layoutInflater.inflate(R.layout.card_detenidos_detenido, null)
 
-                    val lblNombre = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_lblNombre)
-                    val lblDui = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_lblDui)
-                    val imgDetenidos = cardView.findViewById<ImageView>(R.id.Detenidos_card_detenido_imgInfractor)
-                    val btnInfo = cardView.findViewById<LinearLayout>(R.id.Detenidos_card_detenido_btnInfo)
+                        val lblNombre =
+                            cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_lblNombre)
+                        val lblDui =
+                            cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_lblDui)
+                        val imgDetenidos =
+                            cardView.findViewById<ImageView>(R.id.Detenidos_card_detenido_imgInfractor)
+                        val btnInfo =
+                            cardView.findViewById<LinearLayout>(R.id.Detenidos_card_detenido_btnInfo)
 
-                    btnInfo.setOnClickListener {
-                        val intent = Intent(this, Detenidos_info::class.java)
-                        intent.putExtra("IdDetenido", Id)
-                        intent.putExtra("TipoDetencion", TipoDetecion)
-                        intent.putExtra("Nombre", Nombre)
-                        intent.putExtra("Fecha", Fecha)
-                        intent.putExtra("LugarDetencion", Lugar)
-                        intent.putExtra("Foto", Foto)
-                        intent.putExtra("Dui", Dui)
-                        startActivityForResult(intent, 1)
+                        btnInfo.setOnClickListener {
+                            val intent = Intent(this@Detenidos_main, Detenidos_info::class.java)
+                            intent.putExtra("IdDetenido", Id)
+                            intent.putExtra("TipoDetencion", TipoDetecion)
+                            intent.putExtra("Nombre", Nombre)
+                            intent.putExtra("Fecha", Fecha)
+                            intent.putExtra("LugarDetencion", Lugar)
+                            intent.putExtra("Foto", Foto)
+                            intent.putExtra("Dui", Dui)
+                            startActivityForResult(intent, 1)
+                        }
+
+                        //Definir valores de las cards
+                        lblNombre.text = Nombre
+                        lblDui.text = Dui
+
+                        if (Foto != null && Foto.isNotEmpty()) {
+                            val bitmap = BitmapFactory.decodeByteArray(Foto, 0, Foto.size)
+                            imgDetenidos.setImageBitmap(bitmap)
+                        } else {
+                            // Si no hay imagen en la base de datos, mostrar una imagen por defecto
+                            imgDetenidos.setImageResource(R.drawable.void_image) // Cambia por el recurso de imagen por defecto
+                        }
+
+
+                        //Finalmente sampar la card a el LinearLayout
+                        LlDetenidos.addView(cardView)
                     }
-
-                    //Definir valores de las cards
-                    lblNombre.text = Nombre
-                    lblDui.text = Dui
-
-                    if (Foto != null && Foto.isNotEmpty()) {
-                        val bitmap = BitmapFactory.decodeByteArray(Foto, 0, Foto.size)
-                        imgDetenidos.setImageBitmap(bitmap)
-                    } else {
-                        // Si no hay imagen en la base de datos, mostrar una imagen por defecto
-                        imgDetenidos.setImageResource(R.drawable.void_image) // Cambia por el recurso de imagen por defecto
-                    }
-
-
-                    //Finalmente sampar la card a el LinearLayout
-                    LlDetenidos.addView(cardView)
                 }
-
                 resultSet.close()
                 statement.close()
                 conn.close()
@@ -105,20 +115,10 @@ class Detenidos_main : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK) {
-                LlDetenidos.removeAllViews()
-                Actualizar()
-            }
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         LlDetenidos.removeAllViews()
-        Actualizar()
+        Actualizar{}
     }
 
 }

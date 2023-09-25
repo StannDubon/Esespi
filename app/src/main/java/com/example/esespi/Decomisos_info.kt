@@ -148,7 +148,7 @@ class Decomisos_info : AppCompatActivity() {
 
                         handler.post {
                             val cardView =
-                                layoutInflater.inflate(R.layout.detenidos_card_detenido, null)
+                                layoutInflater.inflate(R.layout.card_detenidos_detenido, null)
 
                             val lblNombre =
                                 cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_lblNombre)

@@ -408,7 +408,7 @@ class RegistroUsuarioIngresoDatos : AppCompatActivity() {
 
             for (dato in coso) {
                 val inflater = LayoutInflater.from(this)
-                val tarjeta = inflater.inflate(R.layout.registro_usuario_card_element_selected, LL, false)
+                val tarjeta = inflater.inflate(R.layout.card_registro_usuario_element_selected, LL, false)
 
                 val textoTarjeta = tarjeta.findViewById<TextView>(R.id.lblCardTextElement)
                 val quitar = tarjeta.findViewById<TextView>(R.id.lblMinus)

@@ -59,7 +59,7 @@ class Decomisos_main : AppCompatActivity() {
                         val TipoDecomiso = resultSet.getString("TipoDecomiso")
 
                         handler.post {
-                            val cardView = layoutInflater.inflate(R.layout.decomisos_card_decomiso, null)
+                            val cardView = layoutInflater.inflate(R.layout.card_decomisos_decomiso, null)
 
                             val imgDecomiso =
                                 cardView.findViewById<ImageView>(R.id.Decomisos_card_decomisos_foto)

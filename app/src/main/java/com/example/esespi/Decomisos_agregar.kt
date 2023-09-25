@@ -218,7 +218,7 @@ class Decomisos_agregar : AppCompatActivity() {
                 val Foto = item.third
 
                 // Crear una vista para cada detenido seleccionado
-                val cardView = layoutInflater.inflate(R.layout.detenidos_card_detenido_select, null)
+                val cardView = layoutInflater.inflate(R.layout.card_detenidos_detenido_select, null)
 
                 val lblNombre = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblNombre)
                 val lblDui = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblDui)
@@ -357,7 +357,7 @@ class Decomisos_agregar : AppCompatActivity() {
                         val Foto = item.third
 
                         // Crear una vista para cada detenido seleccionado
-                        val cardView = layoutInflater.inflate(R.layout.detenidos_card_detenido_select, null)
+                        val cardView = layoutInflater.inflate(R.layout.card_detenidos_detenido_select, null)
 
                         val lblNombre = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblNombre)
                         val lblDui = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblDui)

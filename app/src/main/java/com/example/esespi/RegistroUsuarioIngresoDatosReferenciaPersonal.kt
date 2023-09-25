@@ -15,38 +15,6 @@ import java.sql.SQLException
 import java.util.*
 import kotlin.collections.ArrayList
 
-private val municipiosPorDepartamento = mapOf(
-    "Ahuachapán" to arrayOf("Ahuachapán", "Atiquizaya", "Jujutla", "San Francisco Menéndez", "Turín"),
-    "Cabañas" to arrayOf("Sensuntepeque", "Ilobasco", "Victoria", "San Isidro", "San Sebastián"),
-    "Chalatenango" to arrayOf("Chalatenango", "Nueva Concepción", "La Palma", "San Ignacio", "Las Vueltas"),
-    "Cuscatlán" to arrayOf("Cojutepeque", "Santiago de María", "San Pedro Perulapán", "San Rafael Cedros", "Victoria"),
-    "La Libertad" to arrayOf("Santa Tecla", "Antiguo Cuscatlán", "La Libertad", "Colón", "San Juan Opico"),
-    "La Paz" to arrayOf("Zacatecoluca", "San Luis Talpa", "Cuyultitán", "San Juan Nonualco", "San Pedro Masahuat"),
-    "La Unión" to arrayOf("La Unión", "Conchagua", "El Carmen", "Pasaquina", "Santa Rosa de Lima"),
-    "Morazán" to arrayOf("San Francisco Gotera", "Guatajiagua", "Perquín", "Yamabal", "Sociedad"),
-    "San Miguel" to arrayOf("San Miguel", "Ciudad Barrios", "Carolina", "Chapeltique", "San Rafael Oriente"),
-    "San Salvador" to arrayOf("San Salvador", "Soyapango", "Delgado", "Mejicanos", "Ayutuxtepeque"),
-    "San Vicente" to arrayOf("San Vicente", "Apastepeque", "Guadalupe", "San Esteban Catarina", "San Cayetano Istepeque"),
-    "Santa Ana" to arrayOf("Santa Ana", "Chalchuapa", "Metapán", "Coatepeque", "Atiquizaya"),
-    "Sonsonate" to arrayOf("Sonsonate", "Sonzacate", "Acajutla", "Izalco", "Nahuizalco"),
-    "Usulután" to arrayOf("Usulután", "Santiago de María", "Jiquilisco", "San Francisco Javier", "Santa Elena")
-)
-private val departamentos = arrayOf(
-    "Ahuachapán",
-    "Cabañas",
-    "Chalatenango",
-    "Cuscatlán",
-    "La Libertad",
-    "La Paz",
-    "La Unión",
-    "Morazán",
-    "San Miguel",
-    "San Salvador",
-    "San Vicente",
-    "Santa Ana",
-    "Sonsonate",
-    "Usulután"
-)
 private var genero: Int = 0
 private var generotxt: String? = null
 

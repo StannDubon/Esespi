@@ -1,9 +1,445 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
     tools:context=".Denuncias_agregar">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="73dp"
+            android:background="#FFFFFF"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/Denuncias_agregar_btnQuit"
+                android:layout_width="0dp"
+                android:layout_height="59dp"
+                android:layout_weight="1"
+                android:src="@drawable/buttton_back" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="242dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center_vertical"
+                android:text="Infractores"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:src="@drawable/decorative_line" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Denunciante"
+                    android:textColor="#5B5B5B"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/Denuncias_agregar_txtDUI_Denunciante"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:background="@drawable/rounded_corners_all"
+                    android:ems="10"
+                    android:fontFamily="@font/poppins_medium"
+                    android:hint="DUI"
+                    android:inputType="textPersonName"
+                    android:maxLength="50"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#8E8E8E"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Lugar"
+                    android:textColor="#5B5B5B"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="297dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:gravity="center_vertical"
+                        android:text="Departamento"
+                        android:textColor="#3D96FF"
+                        android:textSize="16sp" />
+
+                    <Spinner
+                        android:id="@+id/Denuncias_agregar_DbDepartamento"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_corners_all"
+                        android:backgroundTint="#FFFFFF" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="297dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:gravity="center_vertical"
+                        android:text="Municipio"
+                        android:textColor="#3D96FF"
+                        android:textSize="16sp" />
+
+                    <Spinner
+                        android:id="@+id/Denuncias_agregar_DbMunicipio"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_corners_all"
+                        android:backgroundTint="#FFFFFF" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/Denuncias_agregar_txtDireccion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="20dp"
+                    android:background="@drawable/rounded_corners_all"
+                    android:backgroundTint="#FFFFFF"
+                    android:ems="10"
+                    android:fontFamily="@font/poppins_medium"
+                    android:hint="Dirección"
+                    android:inputType="textMultiLine"
+                    android:maxLength="50"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="20dp"
+                    android:singleLine="false"
+                    android:textColorHint="#8F8F8F"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Fecha"
+                    android:textColor="#5B5B5B"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center_vertical"
+                    android:text="Dia"
+                    android:textColor="#3D96FF"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:background="#00FFFFFF"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/Denuncias_agregar_DbDia"
+                        android:layout_width="289dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_corners_all"
+                        android:backgroundTint="#FFFFFF"
+                        android:textSize="19sp"
+                        android:theme="@style/SpinnerFontStyle" />
+
+                    <Spinner
+                        android:id="@+id/Denuncias_agregar_DbMes"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_corners_all"
+                        android:backgroundTint="#FFFFFF"
+                        android:textSize="19sp"
+                        android:theme="@style/SpinnerFontStyle" />
+
+                    <Spinner
+                        android:id="@+id/Denuncias_agregar_DbAño"
+                        android:layout_width="286dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_corners_all"
+                        android:backgroundTint="#FFFFFF"
+                        android:textSize="19sp"
+                        android:theme="@style/SpinnerFontStyle" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView37"
+                        android:layout_width="55dp"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:gravity="center_vertical"
+                        android:text="Hora"
+                        android:textColor="#3D96FF"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/Denuncias_agregar_txtHora"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_corners_all"
+                        android:backgroundTint="#3D96FF"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="Seleccionar hora"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/Denuncias_agregar_lblHora"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center_vertical"
+                    android:text="Porfavor seleccione una hora"
+                    android:textColor="#777777"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Delito"
+                    android:textColor="#5B5B5B"
+                    android:textSize="16sp" />
+
+                <Spinner
+                    android:id="@+id/Denuncias_agregar_DbTipoDenuncia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:background="@drawable/rounded_corners_all"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="10dp" />
+
+                <EditText
+                    android:id="@+id/Denuncias_agregar_txtDetalles"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="7dp"
+                    android:background="@drawable/rounded_corners_all"
+                    android:backgroundTint="#FFFFFF"
+                    android:ems="10"
+                    android:fontFamily="@font/poppins_medium"
+                    android:hint="Detalles"
+                    android:inputType="textMultiLine"
+                    android:maxLength="50"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="20dp"
+                    android:singleLine="false"
+                    android:textColorHint="#8F8F8F"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/Denuncias_agregar_LlAgregarInvolucradoContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/linearLadsfsdsdyout5"
+                tools:layout_editor_absoluteX="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Involucrado"
+                    android:textColor="#5B5B5B"
+                    android:textSize="16sp" />
+
+
+                <LinearLayout
+                    android:id="@+id/Denuncias_agregar_LlInfractoresSelected"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="7dp"
+                    android:orientation="vertical" />
+
+                <LinearLayout
+                    android:id="@+id/Denuncias_agregar_btnSeleccionarInfractor"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@drawable/rounded_corners_all"
+                    android:backgroundTint="#3D96FF"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="7dp"
+                        app:srcCompat="@drawable/button_plus" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                tools:layout_editor_absoluteX="20dp">
+
+                <LinearLayout
+                    android:id="@+id/Denuncias_agregar_btnDescartar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_corners_all"
+                    android:backgroundTint="#A8AAAB"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:gravity="center"
+                        android:text="Descartar"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/Denuncias_agregar_btnAgregar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_corners_all"
+                    android:backgroundTint="#3D96FF"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:gravity="center"
+                        android:text="Guardar"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

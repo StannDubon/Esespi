@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
             editor.apply()
 
             val intent = Intent(this, RegistroUsuarioCosve::class.java)
+            intent.putExtra("grupoPatrullaje", GrupoPatrullaje)
             startActivity(intent)
         }
 

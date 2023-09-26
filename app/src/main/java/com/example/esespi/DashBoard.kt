@@ -65,7 +65,7 @@ class DashBoard : AppCompatActivity() {
         }
 
         DenunciaCiudadana.setOnClickListener {
-            val intent = Intent(this, Denuncias_agregar::class.java)
+            val intent = Intent(this, Denuncias_main::class.java)
             startActivity(intent)
         }
 

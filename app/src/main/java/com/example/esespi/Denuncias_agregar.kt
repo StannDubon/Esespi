@@ -3,6 +3,7 @@ package com.example.esespi
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
@@ -15,6 +16,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.SQLException
@@ -22,6 +24,8 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 
 private lateinit var txtDui_Denunciante: EditText
+private lateinit var txtNombre_Denunciante: EditText
+private lateinit var txtApellido_Denunciante: EditText
 
 private lateinit var txtDireccion: EditText
 private lateinit var txtDetalles: EditText
@@ -58,6 +62,9 @@ class Denuncias_agregar : AppCompatActivity() {
         conn = conexionSQL().dbConn() ?: throw SQLException("No se pudo establecer la conexión a la base de datos")
 
         txtDui_Denunciante = findViewById(R.id.Denuncias_agregar_txtDUI_Denunciante)
+        txtNombre_Denunciante = findViewById(R.id.Denuncias_agregar_txtNombre_Denunciante)
+        txtApellido_Denunciante = findViewById(R.id.Denuncias_agregar_txtApellido_Denunciante)
+
         txtDetalles = findViewById(R.id.Denuncias_agregar_txtDetalles)
         txtDireccion = findViewById(R.id.Denuncias_agregar_txtDireccion)
         dbDepartamento = findViewById(R.id.Denuncias_agregar_DbDepartamento)
@@ -180,7 +187,7 @@ class Denuncias_agregar : AppCompatActivity() {
 
 //SUBIR A LA BASE DE DATOS -------------------------------------------------------------------------
 
-        if(ActivityMode=="Agregar" || true){
+        if(ActivityMode=="Agregar"){
             btnGuardar.setOnClickListener {
                 for (triple in SelectedInfractores) {
 
@@ -200,6 +207,8 @@ class Denuncias_agregar : AppCompatActivity() {
                                         "\t@DuiInfractor = ?,\n" +
                                         "\t@Delito = ?,\n" +
                                         "\t@CategoriaDelito = ?,\n" +
+                                        "\t@NombreDenun = ?,\n" +
+                                        "\t@ApellidoDenun = ?,\n" +
                                         "\t@IdGrupoPatrullaje = ?;"
                             )
 
@@ -209,7 +218,9 @@ class Denuncias_agregar : AppCompatActivity() {
                             addProducto.setString(4, triple.first)
                             addProducto.setString(5, txtDetalles.text.toString())
                             addProducto.setString(6, dbTipo.selectedItem.toString())
-                            addProducto.setInt(7, IdGrupoGot)
+                            addProducto.setString(7, txtNombre_Denunciante.text.toString())
+                            addProducto.setString(8, txtApellido_Denunciante.text.toString())
+                            addProducto.setInt(9, IdGrupoGot)
                             addProducto.executeUpdate()
 
                             Toast.makeText(
@@ -238,7 +249,247 @@ class Denuncias_agregar : AppCompatActivity() {
             }
         }
 
+        else if (ActivityMode=="Editar"){
 
+            val GotId = intent.getIntExtra("id", 0)
+            val GotDireccion = intent.getStringExtra("dir")
+            val GotFecha = intent.getStringExtra("fec")
+            val GotDuiDenunciante = intent.getStringExtra("dui_denunciante")
+            val GotIdInforme = intent.getStringExtra("infor")
+            val GotNombre = intent.getStringExtra("nom")
+            val GotApellido = intent.getStringExtra("ape")
+
+            val GotTipoDelito = intent.getStringExtra("tipdel")
+            val GotDelito = intent.getStringExtra("delit")
+
+            val DireccionFull = GotDireccion?.split(", ")
+
+            val departamento = DireccionFull?.get(0)
+            val municipio = DireccionFull?.get(1)
+            val direccion = DireccionFull?.drop(2)?.joinToString(", ")
+
+            txtDui_Denunciante.setText(GotDuiDenunciante)
+            txtNombre_Denunciante.setText(GotNombre)
+            txtApellido_Denunciante.setText(GotApellido)
+
+            txtDetalles.setText(GotDelito)
+            txtDireccion.setText(direccion)
+
+            val indiceSeleccion = clasificaciones.indexOf(GotTipoDelito)
+
+            if (indiceSeleccion != -1) {
+                dbTipo.setSelection(indiceSeleccion)
+            }
+
+            val selectedInfractores = intent.getParcelableArrayListExtra<MyParcelableTriple>("selectedInfractores")
+            llAgregarInfractor.removeAllViews()
+
+            val convertedList = ArrayList<Triple<String, String, ByteArray?>>()
+
+            selectedInfractores?.forEach { item ->
+                val triple = Triple(item.first, item.second, item.third)
+                convertedList.add(triple as Triple<String, String, ByteArray?>)
+            }
+
+            // Asigna la lista convertida a la variable global
+            SelectedInfractores = convertedList
+
+            //VOLVER A PONER VALORES DE FECHA -------------------------------------------------------------------------------------
+
+            val fecha = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(GotFecha) // Analizar la cadena en formato con milisegundos
+            val calendar = Calendar.getInstance()
+            calendar.time = fecha
+
+            val año = calendar.get(Calendar.YEAR)
+            val mes = calendar.get(Calendar.MONTH) + 1 // Los meses en Calendar van de 0 a 11
+            val día = calendar.get(Calendar.DAY_OF_MONTH)
+
+            val GotHora = calendar.get(Calendar.HOUR)
+            val minutos = calendar.get(Calendar.MINUTE)
+            val segundos = calendar.get(Calendar.SECOND)
+            val amPm = calendar.get(Calendar.AM_PM)
+
+            val amPmStr = if (amPm == Calendar.AM) "AM" else "PM"
+
+            hora = "$GotHora:$minutos:$segundos $amPmStr"
+            lblHora.text = "$GotHora:$minutos $amPmStr"
+
+            // Configurar los adaptadores para los spinners
+            val diaAdapter = ArrayAdapter.createFromResource(this, R.array.dias, R.drawable.custom_spinner_adapter)
+            diaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            dbDia.adapter = diaAdapter
+
+            val mesAdapter = ArrayAdapter.createFromResource(this, R.array.meses, R.drawable.custom_spinner_adapter)
+            mesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            dbMes.adapter = mesAdapter
+
+            val años = resources.getStringArray(R.array.años)
+            val añoAdapter = ArrayAdapter(this, R.drawable.custom_spinner_adapter, años)
+            añoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            dbAño.adapter = añoAdapter
+
+            // Encontrar el índice del año actual en el arreglo de años
+            val currentYearIndex = años.indexOf(año.toString())
+            if (currentYearIndex != -1) {
+                dbAño.setSelection(currentYearIndex)
+            }
+
+            // Configurar la selección de los spinners de día y mes
+            dbDia.setSelection(día - 1) // El índice del spinner comienza en 0
+            dbMes.setSelection(mes - 1) // El índice del spinner comienza en 0
+
+            //VOLVER A PONER LOS VALORES DE DEPARTAMENTO Y MUNICIPIO --------------------------------------------------------------------------
+
+            // Configurar el Spinner de Departamentos y Municipios
+            val departamentoAdapter = ArrayAdapter(this, R.drawable.custom_spinner_adapter, departamentos)
+            departamentoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            dbDepartamento.adapter = departamentoAdapter
+
+            // Añadir interacción a departamentos y municipios
+            dbDepartamento.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                    val departamento = parent.getItemAtPosition(position).toString()
+                    val municipios = municipiosPorDepartamento[departamento] ?: arrayOf()
+                    val municipioAdapter = ArrayAdapter(this@Denuncias_agregar, R.drawable.custom_spinner_adapter, municipios)
+                    municipioAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    dbMunicipio.adapter = municipioAdapter
+
+                    // Encontrar el índice del municipio actual en el arreglo de municipios
+                    val municipioIndex = municipios.indexOf(municipio)
+                    if (municipioIndex != -1) {
+                        dbMunicipio.setSelection(municipioIndex)
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // No se seleccionó ningún departamento
+                }
+            }
+
+            // Suponiendo que SplitDepartamento y SplitMunicipio tienen los valores correctos
+            val departamentoIndex = departamentos.indexOf(departamento)
+            if (departamentoIndex != -1) {
+                dbDepartamento.setSelection(departamentoIndex)
+            }
+
+
+            for (item in SelectedInfractores) {
+                val DUI = item.first
+                val Nombre = item.second
+                val Foto = item.third
+
+                // Crear una vista para cada detenido seleccionado
+                val cardView = layoutInflater.inflate(R.layout.card_detenidos_detenido_select, null)
+
+                val lblNombre = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblNombre)
+                val lblDui = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_seleccion_lblDui)
+                val imgInfractor = cardView.findViewById<ImageView>(R.id.Detenidos_card_detenido_seleccion_imgInfractor)
+                val btnDel = cardView.findViewById<LinearLayout>(R.id.Detenidos_card_detenido_seleccion_info)
+
+                cardView.findViewById<LinearLayout>(R.id.Detenidos_card_detenido_seleccion_llSelect).backgroundTintList = ColorStateList.valueOf(
+                    ContextCompat.getColor(this@Denuncias_agregar, R.color.DetenidosSelected))
+
+                btnDel.setOnClickListener{
+                    //LlInfractoresSeleccionados.removeView(cardView)
+                    //SelectedDetenidos.remove(item)
+                }
+
+                lblNombre.text = Nombre
+                lblDui.text = DUI
+
+                if (Foto != null && Foto.isNotEmpty()) {
+                    val bitmap = BitmapFactory.decodeByteArray(Foto, 0, Foto.size)
+                    imgInfractor.setImageBitmap(bitmap)
+                } else {
+                    imgInfractor.setImageResource(R.drawable.void_image)
+                }
+
+                // Agregar la vista al contenedor
+                llAgregarInfractor.addView(cardView)
+            }
+
+            btnGuardar.setOnClickListener {
+
+                val dia = dbDia.selectedItem.toString().toInt()
+                val mes = Validaciones().obtenerNumeroMes(dbMes.selectedItem.toString())
+                val año = dbAño.selectedItem.toString().toInt()
+
+                if (
+                    true
+                ){
+
+                    try {
+                        val addProducto: PreparedStatement =  conn.prepareStatement(
+                            "EXEC dbo.ActualizarDenuncia\n" +
+                                    "@Lugar = ?,\n" +
+                                    "@Fecha = ?,\n" +
+                                    "@DuiDenunciante = ?,\n" +
+                                    "@NombreDenunciante = ?,\n" +
+                                    "@ApellidoDenunciante = ?,\n" +
+                                    "@IdDenuncia = ?;"
+                        )!!
+
+                        addProducto.setString(1, dbDepartamento.selectedItem.toString() + ", " + dbMunicipio.selectedItem.toString() + ", " + txtDireccion.text.toString())
+                        addProducto.setString(2, "$año/$mes/$dia $hora")
+                        addProducto.setString(3, txtDui_Denunciante.text.toString())
+                        addProducto.setString(4, txtNombre_Denunciante.text.toString())
+                        addProducto.setString(5, txtApellido_Denunciante.text.toString())
+                        addProducto.setInt(6, GotId)
+                        addProducto.executeUpdate()
+
+                        println(
+                            "EXEC dbo.ActualizarDenuncia\n" +
+                                    "@Lugar = ${dbDepartamento.selectedItem.toString() + ", " + dbMunicipio.selectedItem.toString() + ", " + txtDireccion.text.toString()},\n" +
+                                    "@Fecha = ${"$año/$mes/$dia $hora"},\n" +
+                                    "@DuiDenunciante = ${txtDui_Denunciante.text.toString()},\n" +
+                                    "@NombreDenunciante = ${txtNombre_Denunciante.text.toString()},\n" +
+                                    "@ApellidoDenunciante = ${txtApellido_Denunciante.text.toString()},\n" +
+                                    "@IdDenuncia = ${GotId};"
+                        )
+
+                        for (triple in SelectedInfractores){
+                            val addProductoxd: PreparedStatement =  conn.prepareStatement(
+                                "EXEC dbo.ActualizarDenunciaAddInvlDeli \n" +
+                                        "@DuiInfr = ?,\n" +
+                                        "@IdDenuncia = ?,\n" +
+                                        "@Delito = ?,\n" +
+                                        "@CategoriaDelito = ?"
+                            )!!
+
+                            addProductoxd.setString(1, triple.first)
+                            addProductoxd.setInt(2, GotId)
+                            addProductoxd.setString(3, txtDetalles.text.toString())
+                            addProductoxd.setString(4, dbTipo.selectedItem.toString())
+                            addProductoxd.executeUpdate()
+
+                            println(
+                                "EXEC dbo.ActualizarDenunciaAddInvlDeli \n" +
+                                        "@DuiInfr = ${triple.first},\n" +
+                                        "@IdDenuncia = ${GotId},\n" +
+                                        "@Delito = ${txtDetalles.text.toString()},\n" +
+                                        "@CategoriaDelito = ${dbTipo.selectedItem.toString()}"
+                            )
+                        }
+
+
+
+                        Toast.makeText(this, "Se ha actualizado correctamente", Toast.LENGTH_SHORT).show()
+
+                        setResult(RESULT_OK, Intent())
+                        conn.close()
+                        finish()
+                    }
+                    catch (ex: SQLException){
+                        Toast.makeText(this, "Error al ingresar: "+ex, Toast.LENGTH_SHORT).show()
+                        println(ex)
+                        setResult(RESULT_OK, Intent())
+                        finish()
+                    }
+                } else{
+                    Toast.makeText(this, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
 
     }
 

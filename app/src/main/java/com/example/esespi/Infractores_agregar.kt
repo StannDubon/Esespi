@@ -25,6 +25,8 @@ import java.sql.PreparedStatement
 import java.sql.SQLException
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 private lateinit var imgInfractor:ImageView
 private lateinit var btnQuitarFoto:LinearLayout
@@ -557,5 +559,40 @@ class Infractores_agregar : AppCompatActivity() {
             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
         )
         return meses.indexOfFirst { it.equals(nombreMes, ignoreCase = true) } + 1
+    }
+
+    private suspend fun validarExistenciaAsync(callback: (Boolean) -> Unit) {
+        val result = suspendCoroutine<Boolean> { continuation ->
+            val query = "SELECT COUNT(*) FROM tbInfractores WHERE IdInfractor = \n" +
+                    "(SELECT IdInfractor \n" +
+                    "\tFROM tbInfractores\n" +
+                    "\tWHERE IdTipoPersonas_Personas =\n" +
+                    "\t(SELECT TOP 1 IdTipoPersonas_Personas \n" +
+                    "\t\tFROM tbTiposPersonas_Personas \n" +
+                    "\t\tWHERE IdPersona = (SELECT IdPersona FROM tbPersonas WHERE Dui = ?)))"
+
+            try {
+                val conn = conexionSQL().dbConn() ?: throw SQLException("No se pudo establecer la conexión a la base de datos")
+                val preparedStatement = conn.prepareStatement(query)
+                preparedStatement.setString(1, txtDUI.text.toString())
+
+                val resultSet = preparedStatement.executeQuery()
+                resultSet.next()
+                val count = resultSet.getInt(1)
+
+                resultSet.close()
+                preparedStatement.close()
+
+                continuation.resume(count == 0)
+
+            } catch (ex: Exception) {
+                continuation.resume(false)
+            }
+        }
+
+        if (!result) {
+            Toast.makeText(this@Infractores_agregar, "El infractor ya existe", Toast.LENGTH_SHORT).show()
+        }
+        callback(result)
     }
 }

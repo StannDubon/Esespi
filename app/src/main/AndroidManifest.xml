@@ -15,6 +15,9 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".Denuncias_info"
+            android:exported="false" />
+        <activity
             android:name=".Detenidos_seleccion"
             android:exported="false" />
         <activity
@@ -108,7 +111,6 @@
         <activity
             android:name=".RegistroVerificarCorreoParte2"
             android:exported="false" />
-
         <activity
             android:name=".RegistroUsuarioIngresoDatos"
             android:exported="false" />
@@ -121,8 +123,8 @@
             android:exported="false" />
         <activity
             android:name=".SplashScreen"
-            android:theme="@style/Theme.Esespi.NoActionBarAndStatusBar_SplashScreen"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.Esespi.NoActionBarAndStatusBar_SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

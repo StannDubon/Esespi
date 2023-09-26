@@ -1,14 +1,17 @@
 package com.example.esespi
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.sql.Connection
 import java.sql.SQLException
 
@@ -25,10 +28,9 @@ class Denuncias_main : AppCompatActivity() {
         LlDetenidos=findViewById(R.id.Denuncias_main_denucias_cards)
         btnAgregar=findViewById(R.id.Denuncias_main_denuncias_btnAgregar)
         LlDetenidos.removeAllViews()
-        Actualizar()
 
         btnAgregar.setOnClickListener {
-            val intent = Intent(this, Acercamientos_agregar::class.java)
+            val intent = Intent(this, Denuncias_agregar::class.java)
             intent.putExtra("mode", "Agregar")
             startActivityForResult(intent, 1)
         }
@@ -39,61 +41,63 @@ class Denuncias_main : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("MissingInflatedId")
-    private fun Actualizar(){
-        conn = conexionSQL().dbConn() ?: throw SQLException("No se pudo establecer la conexión a la base de datos")
-        if (conn != null) {
+    private fun Actualizar(callback: (result: Boolean) -> Unit) {
+        GlobalScope.launch(Dispatchers.IO) {
+            var conn: Connection? = null
+            var xd = false
             try {
                 //Sacamos los datos que mostraremos en la card
+                conn = conexionSQL().dbConn() ?: throw SQLException("No se pudo establecer la conexión a la base de datos")
                 val statement = conn.createStatement()
                 val query = "EXEC dbo.VerDenuncia;"
                 val resultSet = statement.executeQuery(query)
+                val handler = Handler(Looper.getMainLooper())
 
                 //Sacamos los datos que obtuvimos de la busqueda sql
                 while (resultSet.next()) {
                     //Vamo a sacar el id pq asi sabremos cual es la card que queremos eliminar, no se mostrara en la card, pero se guardara
-                    val Id = resultSet.getString("IdDetenido")
-                    val TipoDetecion = resultSet.getString("Tipo_Detencion")
+                    val Id = resultSet.getString("IdDenuncias")
+                    val Fecha = resultSet.getString("Fecha")
+                    val Denunciante = resultSet.getString("Dui_Denunciante")
                     val Nombre = resultSet.getString("Nombre")
-                    val Fecha = resultSet.getString("Fecha_Detencion")
-                    val Lugar = resultSet.getString("Lugar_Detencion")
-                    val Foto: ByteArray? = resultSet.getBytes("Foto")
-                    val Dui = resultSet.getString("Dui")
+                    val Apellido = resultSet.getString("Apellido")
 
-                    val cardView = layoutInflater.inflate(R.layout.card_detenidos_detenido, null)
+                    handler.post {
+                        val cardView =
+                            layoutInflater.inflate(R.layout.card_denuncias_denuncia, null)
 
-                    val lblNombre = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_lblNombre)
-                    val lblDui = cardView.findViewById<TextView>(R.id.Detenidos_card_detenido_lblDui)
-                    val imgDetenidos = cardView.findViewById<ImageView>(R.id.Detenidos_card_detenido_imgInfractor)
-                    val btnInfo = cardView.findViewById<LinearLayout>(R.id.Detenidos_card_detenido_btnInfo)
+                        val lblDenunciante =
+                            cardView.findViewById<TextView>(R.id.denuncias_card_denuncia_lblDenunciante)
+                        val lblFecha =
+                            cardView.findViewById<TextView>(R.id.denuncias_card_denuncia_lblFecha)
+                        val lblNombre =
+                            cardView.findViewById<TextView>(R.id.denuncias_card_denuncia_lblNombre)
+                        val btnInfo =
+                            cardView.findViewById<LinearLayout>(R.id.denuncias_card_denuncia_btnInfo)
 
-                    btnInfo.setOnClickListener {
-                        val intent = Intent(this, Detenidos_info::class.java)
-                        intent.putExtra("IdDetenido", Id)
-                        intent.putExtra("TipoDetencion", TipoDetecion)
-                        intent.putExtra("Nombre", Nombre)
-                        intent.putExtra("Fecha", Fecha)
-                        intent.putExtra("LugarDetencion", Lugar)
-                        intent.putExtra("Foto", Foto)
-                        intent.putExtra("Dui", Dui)
-                        startActivityForResult(intent, 1)
+                        btnInfo.setOnClickListener {
+                            val intent = Intent(this@Denuncias_main, Denuncias_info::class.java)
+                            intent.putExtra("IdDetenido", Id)
+                            startActivityForResult(intent, 1)
+                        }
+
+                        /*
+                        //Definir valores de las cards
+                        lblDenunciante.text = "DUI: "+Denunciante
+                        lblFecha.text = Validaciones().parsearFecha(Fecha)
+                        lblNombre.text = "$Nombre $Apellido"
+
+                         */
+
+                        //Definir valores de las cards
+                        lblDenunciante.text = "DUI: "+Denunciante
+                        lblFecha.text = Validaciones().parsearFecha(Fecha)
+                        lblNombre.text = "$Nombre $Apellido"
+
+
+                        //Finalmente sampar la card a el LinearLayout
+                        LlDetenidos.addView(cardView)
                     }
-
-                    //Definir valores de las cards
-                    lblNombre.text = Nombre
-                    lblDui.text = Dui
-
-                    if (Foto != null && Foto.isNotEmpty()) {
-                        val bitmap = BitmapFactory.decodeByteArray(Foto, 0, Foto.size)
-                        imgDetenidos.setImageBitmap(bitmap)
-                    } else {
-                        // Si no hay imagen en la base de datos, mostrar una imagen por defecto
-                        imgDetenidos.setImageResource(R.drawable.void_image) // Cambia por el recurso de imagen por defecto
-                    }
-
-
-                    //Finalmente sampar la card a el LinearLayout
-                    LlDetenidos.addView(cardView)
                 }
 
                 resultSet.close()
@@ -106,20 +110,10 @@ class Denuncias_main : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK) {
-                LlDetenidos.removeAllViews()
-                Actualizar()
-            }
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         LlDetenidos.removeAllViews()
-        Actualizar()
+        Actualizar{}
     }
 
 }

@@ -3,9 +3,31 @@ package com.example.esespi
 import android.content.Context
 import android.widget.EditText
 import android.widget.Toast
+import java.text.SimpleDateFormat
+import java.util.Locale
 import java.util.regex.Pattern
 
 class Validaciones {
+
+    fun parsearFecha(inputFecha: String): String {
+        try {
+            val formatoEntrada = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+            val formatoSalida = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault())
+
+            val fecha = formatoEntrada.parse(inputFecha)
+
+            if (fecha != null) {
+                return formatoSalida.format(fecha)
+            } else {
+                // La cadena no pudo ser parseada correctamente
+                return "Fecha no válida"
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            // Manejar la excepción si ocurre un error de parseo
+            return "Error de parseo"
+        }
+    }
 
     fun CharWritten(EditText: EditText, NombreCampo: String, LongitudMax: Int, LongitudMin: Int, Contexto: Context): Boolean {
         val texto = EditText.text.toString().trim()

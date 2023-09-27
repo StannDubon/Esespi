@@ -60,6 +60,7 @@
         android:fontFamily="@font/poppins_semibold"
         android:hint="Contraseña"
         android:inputType="textPassword"
+        android:maxLength="15"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:textColor="@color/TextColor"

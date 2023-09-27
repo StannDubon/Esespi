@@ -46,12 +46,12 @@ class RegistroUsuarioVerificarCorreo : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (correoElectronicoExiste(correo)) {
+            /*if (correoElectronicoExiste(correo)) {
                 // El correo ya existe en la base de datos, muestra un mensaje de error o realiza alguna acción adecuada.
                 Toast.makeText(this, "El correo electrónico ya está registrado.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
 
-            }else{
+            }else{*/
                 if(correo == "root@gmail.com"){
                     val intent = Intent(this, RegistroVerificarCorreoParte2::class.java)
                     startActivity(intent)
@@ -76,12 +76,13 @@ class RegistroUsuarioVerificarCorreo : AppCompatActivity() {
                 intent.putExtra("codigo", Codigo) // Usar la clave "codigo" aquí
 
                 startActivity(intent)
-            }
+            //}
 
         }
 
 
     }
+/*
     fun correoElectronicoExiste(correo: String): Boolean {
         try {
             val statement = connection.createStatement()
@@ -98,5 +99,5 @@ class RegistroUsuarioVerificarCorreo : AppCompatActivity() {
             e.printStackTrace()
         }
         return false // Si ocurre una excepción o no se encuentra el correo, asumimos que no existe.
-    }
+    }*/
 }

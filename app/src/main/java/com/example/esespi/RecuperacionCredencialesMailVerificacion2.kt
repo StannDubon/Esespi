@@ -3,7 +3,6 @@ package com.example.esespi
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
@@ -36,9 +35,11 @@ class activity_recuperacion_credenciales_mail_verificacion : AppCompatActivity()
         codigoSeguridad = sharedPrefs.getString("Codigo", "") ?: ""
 
         txtCodigo = findViewById(R.id.txtCodigo)
-        btnReenviarCodigo2 = findViewById(R.id.btnReenviarCodigo2)
-        btnVerificar2 = findViewById(R.id.btnVerificar2)
+        btnReenviarCodigo2 = findViewById(R.id.recuperacionCredencialesMailVerificacionBtnReenviarCodigo)
+
+        btnVerificar2 = findViewById(R.id.recuperacionCredencialesMailVerificacionBtnVerificar2)
         android.util.Log.d("Depuración", "Código de seguridad esperado (Ventana): $codigoSeguridad")
+
         btnVerificar2.setOnClickListener {
 
             val validaciones = Validaciones()

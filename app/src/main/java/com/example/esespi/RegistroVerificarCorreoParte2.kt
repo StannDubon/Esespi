@@ -60,7 +60,7 @@ class RegistroVerificarCorreoParte2 : AppCompatActivity() {
 
             val codigoIngresado = txtCodigo.text.toString().trim()
             if(codigoIngresado == "12345678"){
-                val intent = Intent(this, RegistroUsuarioIngresoCredenciales::class.java)
+                val intent = Intent(this, RegistroUsuarioReferenciasPersonales ::class.java)
                 startActivity(intent)
             }
             else{
@@ -72,7 +72,7 @@ class RegistroVerificarCorreoParte2 : AppCompatActivity() {
                     editor.putString("Correo", correo)
                     editor.apply()
 
-                    val intent = Intent(this, RegistroUsuarioIngresoCredenciales::class.java)
+                    val intent = Intent(this, RegistroUsuarioReferenciasPersonales::class.java)
                     startActivity(intent)
                 } else {
                     // El código es incorrecto, muestra un mensaje de error

@@ -63,9 +63,16 @@ class MainActivity : AppCompatActivity() {
 
             val conn = connSQL.dbConn()
 
+            var v = Validaciones()
+
+
             if (conn != null) {
                 val credentialsValid = verifyCredentials(conn, usuario, contraseña)
-                if (credentialsValid || true) {
+                if(v.CharWritten(Contraseña, "La contraseaña", 15,8,this)){
+
+                }
+
+                if (credentialsValid == true) {
                     showToast("Inicio de sesión exitoso")
 
                     val login = Intent(this, DashBoard::class.java)
@@ -80,6 +87,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 showToast("Error de conexión")
             }
+
         }
 
     }

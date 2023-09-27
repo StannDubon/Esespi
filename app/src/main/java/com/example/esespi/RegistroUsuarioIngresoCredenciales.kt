@@ -68,10 +68,26 @@ class RegistroUsuarioIngresoCredenciales : AppCompatActivity() {
 
                         for ((clave, valor) in valores) {
                             println("Clave: $clave - Valor: $valor")
+
+
                         }
+
+                        android.util.Log.d("Depuración", "Referencias")
+                        val userData =
+                            getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
+                        val valor = userData.all
+
+
+                        for ((clave, valor) in valor) {
+                            println("Clave: $clave - Valor: $valor")
+
+
+                        }
+
                         contraseñaEncriptada = Encriptacion().convertirSHA256(txtConfirmarContraseña.text.toString())
 
                         insertarDatosEnBaseDeDatos()
+                        insertarReferenciasDatosEnBaseDeDatos()
 
                         android.util.Log.d("Depuración", "Ingresa datos")
                         //InsertarIdiomasPorUsuario()
@@ -269,4 +285,92 @@ class RegistroUsuarioIngresoCredenciales : AppCompatActivity() {
             println("Error ocurrido en insercion de nacionalidades del policía")
         }
     }
+
+    fun insertarReferenciasDatosEnBaseDeDatos() {
+
+        val statement = connection.createStatement()
+
+        val SQLgenero = sharedPrefs.getString("Genero", "")
+        val SQLestadoCivil = sharedPrefs.getString("EstadoCivil", "")
+        val SQLtipoSangre = sharedPrefs.getString("TipoSangre", "")
+
+        var IdGenero = -1
+        var IdEstadoCivil = -1
+        var IdTipoSangre = -1
+
+        val resultSet1 =
+            statement.executeQuery("select IdGenero from tbGeneros where Genero='$SQLgenero'")
+        if (resultSet1.next()) {
+            IdGenero = resultSet1.getInt("IdGenero")
+        }
+        resultSet1.close()
+
+        val resultSet2 =
+            statement.executeQuery("select IdEstadoCivil from tbEstadosCivil where EstadoCivil='$SQLestadoCivil'")
+        if (resultSet2.next()) {
+            IdEstadoCivil = resultSet2.getInt("IdEstadoCivil")
+        }
+        resultSet2.close()
+
+        val resultSet3 =
+            statement.executeQuery("select IdTipoSangre from tbTiposSangre where TipoSangre='$SQLtipoSangre'")
+        if (resultSet3.next()) {
+            IdTipoSangre = resultSet3.getInt("IdTipoSangre")
+        }
+        resultSet3.close()
+
+        android.util.Log.d("Depuración", "Todos los id que manda")
+
+        try {
+            val addPolicia: PreparedStatement = connection.prepareStatement(
+                "EXEC dbo.InsertarReferenciasPoliciasAndroid " +
+                        "@Nombre = ?, " +
+                        "@Apellido = ?, " +
+                        "@FechaNacimiento = ?, " +
+                        "@Direccion = ?, " +
+                        "@Dui = ?, " +
+                        "@IdEstadoCivil = ?, " +
+                        "@IdTipoSangre = ?, " +
+                        "@IdGenero = ?, " +
+                        "@CorreoElectronico = ?, " +
+                        "@NumeroTel = ?"
+
+            )
+
+            addPolicia.setString(1, sharedPrefs.getString("Nombre", ""))
+            addPolicia.setString(2, sharedPrefs.getString("Apellido", ""))
+            addPolicia.setString(3, sharedPrefs.getString("FechaNacimiento", ""))
+            addPolicia.setString(4, sharedPrefs.getString("Direccion", ""))
+            addPolicia.setString(5, DUI)
+            addPolicia.setInt(6, IdEstadoCivil)
+            addPolicia.setInt(7, IdTipoSangre)
+            addPolicia.setInt(8, IdGenero)
+            addPolicia.setString(9, sharedPrefs.getString("Correo", ""))
+            addPolicia.setString(10, sharedPrefs.getString("Telefono", ""))
+
+            addPolicia.executeUpdate()
+
+            // Log success or handle it as needed.
+            android.util.Log.d("Depuración", "Datos de referencias ingresados correctamente")
+
+
+        } catch (ex: SQLException) {
+            // Log the error for debugging purposes.
+            android.util.Log.e("Error", "Error al ingresar datos", ex)
+
+            // Display a user-friendly message.
+            Toast.makeText(
+                this,
+                "Error al ingresar datos. Por favor, inténtelo de nuevo.",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            // Handle the error gracefully.
+            ex.printStackTrace()
+            setResult(RESULT_OK, Intent())
+        }
+    }
+
+
+
 }

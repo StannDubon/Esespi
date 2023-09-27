@@ -16,6 +16,7 @@ import android.content.SharedPreferences
 private lateinit var txtCorreo: EditText
 
 private lateinit var btnVerificar: Button
+private lateinit var btnReenviar: Button
 private lateinit var connection: Connection
 
 private var codigoSeguridad: String = "no varificado"
@@ -33,6 +34,8 @@ class RecuperacionCredencialesMailVerificacion : AppCompatActivity() {
         sharedPrefs = getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
 
         btnVerificar = findViewById(R.id.BtnVerificar)
+
+
 
         btnVerificar.setOnClickListener {
             val correo = txtCorreo.text.toString().trim()

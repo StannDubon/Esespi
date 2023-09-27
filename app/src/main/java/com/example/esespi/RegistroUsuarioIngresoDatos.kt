@@ -63,7 +63,6 @@ class RegistroUsuarioIngresoDatos : AppCompatActivity() {
         setContentView(R.layout.activity_registro_usuario_ingreso_datos)
 
         connection = conexionSQL().dbConn() ?: throw SQLException("No se pudo establecer la conexión a la base de datos")
-
         val RegistroUsuarioValoresDeRegistro = getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
 
 
@@ -208,10 +207,15 @@ class RegistroUsuarioIngresoDatos : AppCompatActivity() {
 
         btnSiguiente.setOnClickListener {
 
+
             var v = Validaciones()
+            val dui = txtDUI.text.toString().trim()
+            val tel = txtTelefono.text.toString().trim()
             val dia = dbDia.selectedItem.toString().toInt()
             val mes = v.obtenerNumeroMes(dbMes.selectedItem.toString())
             val año = dbAño.selectedItem.toString().toInt()
+
+
 
             if (
                 v.CharWritten(txtNombre, "Nombre", 30, 3, this) &&
@@ -223,70 +227,87 @@ class RegistroUsuarioIngresoDatos : AppCompatActivity() {
                 v.FechaReal(dia, mes, año, this)
             ){
 
-                if(validarCampos())
+                if(duiExiste(dui))
                 {
-                    val dia = dbDia.selectedItem.toString().toIntOrNull()
-                    val mes = obtenerNumeroMes(dbMes.selectedItem.toString())
-                    val año = dbAño.selectedItem.toString().toIntOrNull()
+                    Toast.makeText(this, "El DUI ya existe en la base de datos.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener // Salir de la función si el DUI existe}
 
-                    if (dia != null && mes != null && año != null) {
-                        if (validarFechaNacimiento(dia, mes, año)) {
-                            if(genero==1 || genero==2)
-                            {
-                                val Reg = RegistroUsuarioValoresDeRegistro.edit()
-                                Reg.putString("Nombre", txtNombre.text.toString())
-                                Reg.putString("Apellido", txtApellido.text.toString())
-                                Reg.putString("DUI", txtDUI.text.toString())
-                                Reg.putString("Telefono", txtTelefono.text.toString())
-
-                                var fechaNacimiento = "$año/$mes/$dia"
-                                Reg.putString("FechaNacimiento", fechaNacimiento)
-
-                                if (IdiomasSeleccionados != null) {
-                                    val idiomasString = IdiomasSeleccionados.joinToString(",")
-                                    Reg.putString("IdiomasSeleccionados", idiomasString)
-                                }
-
-                                if (NacionalidadesSeleccionados != null) {
-                                    val nacionalidadesString = NacionalidadesSeleccionados.joinToString(",")
-                                    Reg.putString("NacionalidadesSeleccionados", nacionalidadesString)
-                                }
-
-                                var dep = dbDepartamento.selectedItem.toString()
-                                var mun = dbMunicipio.selectedItem.toString()
-                                var di = txtDomicilio.text.toString()
-                                Reg.putString("Direccion", "$dep, $mun, $di")
-
-                                if(genero==1)
-                                {
-                                    generotxt="Masculino"
-                                }
-                                else if (genero==2)
-                                {
-                                    generotxt="Femenino"
-                                }
-
-                                Reg.putString("Genero", generotxt)
-
-                                Reg.putString("EstadoCivil", dbEstCivil.selectedItem.toString())
-                                Reg.putString("TipoSangre", dbTipoSangre.selectedItem.toString())
-
-                                Reg.apply()
-
-                                val intent = Intent(this, RegistroUsuarioDatosPolicia::class.java)
-                                startActivity(intent)
-                            }
-                            else
-                            {
-                                Toast.makeText(this, "Por favor seleccione su genero", Toast.LENGTH_SHORT).show()
-                            }
-                        } else {
-                            Toast.makeText(this, "Por favor ingrese una fecha valida", Toast.LENGTH_SHORT).show()
-                        }
-                    } else {
-                        Toast.makeText(this, "Error al convertir los valores seleccionados", Toast.LENGTH_SHORT).show()
-                    }
                 }
+                else{
+                    if (TelefonoExiste(tel)){
+                        Toast.makeText(this, "El Telefono ya existe en la base de datos.", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }else{
+                        if(validarCampos()){
+
+                            val dia = dbDia.selectedItem.toString().toIntOrNull()
+                            val mes = obtenerNumeroMes(dbMes.selectedItem.toString())
+                            val año = dbAño.selectedItem.toString().toIntOrNull()
+
+                            if (dia != null && mes != null && año != null) {
+                                if (validarFechaNacimiento(dia, mes, año)) {
+                                    if(genero==1 || genero==2)
+                                    {
+                                        val Reg = RegistroUsuarioValoresDeRegistro.edit()
+                                        Reg.putString("Nombre", txtNombre.text.toString())
+                                        Reg.putString("Apellido", txtApellido.text.toString())
+                                        Reg.putString("DUI", txtDUI.text.toString())
+                                        Reg.putString("Telefono", txtTelefono.text.toString())
+
+                                        var fechaNacimiento = "$año/$mes/$dia"
+                                        Reg.putString("FechaNacimiento", fechaNacimiento)
+
+                                        if (IdiomasSeleccionados != null) {
+                                            val idiomasString = IdiomasSeleccionados.joinToString(",")
+                                            Reg.putString("IdiomasSeleccionados", idiomasString)
+                                        }
+
+                                        if (NacionalidadesSeleccionados != null) {
+                                            val nacionalidadesString = NacionalidadesSeleccionados.joinToString(",")
+                                            Reg.putString("NacionalidadesSeleccionados", nacionalidadesString)
+                                        }
+
+                                        var dep = dbDepartamento.selectedItem.toString()
+                                        var mun = dbMunicipio.selectedItem.toString()
+                                        var di = txtDomicilio.text.toString()
+                                        Reg.putString("Direccion", "$dep, $mun, $di")
+
+                                        if(genero==1)
+                                        {
+                                            generotxt="Masculino"
+                                        }
+                                        else if (genero==2)
+                                        {
+                                            generotxt="Femenino"
+                                        }
+
+                                        Reg.putString("Genero", generotxt)
+
+                                        Reg.putString("EstadoCivil", dbEstCivil.selectedItem.toString())
+                                        Reg.putString("TipoSangre", dbTipoSangre.selectedItem.toString())
+
+                                        Reg.apply()
+
+                                        val intent = Intent(this, RegistroUsuarioDatosPolicia::class.java)
+                                        startActivity(intent)
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(this, "Por favor seleccione su genero", Toast.LENGTH_SHORT).show()
+                                    }
+                                } else {
+                                    Toast.makeText(this, "Por favor ingrese una fecha valida", Toast.LENGTH_SHORT).show()
+                                }
+                            } else {
+                                Toast.makeText(this, "Error al convertir los valores seleccionados", Toast.LENGTH_SHORT).show()
+                            }
+
+                        }
+                    }
+
+                }
+
+
             }
 
 
@@ -304,6 +325,44 @@ class RegistroUsuarioIngresoDatos : AppCompatActivity() {
     finish()
 
  */
+    fun duiExiste(dui: String): Boolean {
+        try {
+            val statement = connection.createStatement()
+            val query = "SELECT COUNT(*) AS count FROM tbPersonas WHERE Dui = ?"
+            val preparedStatement = connection.prepareStatement(query)
+            preparedStatement.setString(1, dui)
+            val resultSet = preparedStatement.executeQuery()
+
+            if (resultSet.next()) {
+                val count = resultSet.getInt("count")
+                return count > 0 // Si count es mayor que 0, significa que el DUI ya existe.
+            }
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+        return false // Si ocurre una excepción o no se encuentra el DUI, asumimos que no existe.
+    }
+
+    fun TelefonoExiste(tel: String): Boolean {
+        try {
+            val statement = connection.createStatement()
+            val query = "SELECT COUNT(*) AS count FROM tbPersonas WHERE NumeroTel = ?"
+            val preparedStatement = connection.prepareStatement(query)
+            preparedStatement.setString(1, tel)
+            val resultSet = preparedStatement.executeQuery()
+
+            if (resultSet.next()) {
+                val count = resultSet.getInt("count")
+                return count > 0 // Si count es mayor que 0, significa que el DUI ya existe.
+            }
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+        return false // Si ocurre una excepción o no se encuentra el DUI, asumimos que no existe.
+    }
+
+
+
 
     fun obtenerDatosPorID(tabla: String, columnaDato: String): ArrayList<String> {
         val datos: ArrayList<String> = ArrayList()

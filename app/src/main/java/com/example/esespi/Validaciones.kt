@@ -3,10 +3,12 @@ package com.example.esespi
 import android.content.Context
 import android.widget.EditText
 import android.widget.Toast
+import java.sql.Connection
+import java.sql.SQLException
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.regex.Pattern
-
+private lateinit var connection: Connection
 class Validaciones {
 
     fun parsearFecha(inputFecha: String): String {
@@ -148,7 +150,6 @@ class Validaciones {
 
         return true
     }
-
 
 
 }

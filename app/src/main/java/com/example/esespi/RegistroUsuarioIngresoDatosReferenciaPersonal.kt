@@ -1,6 +1,7 @@
 package com.example.esespi
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -56,7 +57,7 @@ class RegistroUsuarioIngresoDatosReferenciaPersonal : AppCompatActivity() {
         connection = conexionSQL().dbConn() ?: throw SQLException("No se pudo establecer la conexión a la base de datos")
 
         val userData = intent?.getSerializableExtra("userData") as? HashMap<String, String>
-
+        val RegistroUsuarioValoresDeRegistro2 = getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
 
 
 //TEXTBOX--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -210,6 +211,9 @@ class RegistroUsuarioIngresoDatosReferenciaPersonal : AppCompatActivity() {
         btnSiguiente.setOnClickListener {
 
             var v = Validaciones()
+            val dui = txtDUI.text.toString().trim()
+            val tel = txtTelefono.text.toString().trim()
+            val correo = txtCorreo.text.toString().trim()
             val dia = dbDia.selectedItem.toString().toInt()
             val mes = v.obtenerNumeroMes(dbMes.selectedItem.toString())
             val año = dbAño.selectedItem.toString().toInt()
@@ -218,95 +222,118 @@ class RegistroUsuarioIngresoDatosReferenciaPersonal : AppCompatActivity() {
                 v.CharWritten(txtNombre, "Nombre", 30, 3, this) &&
                 v.CharWritten(txtApellido, "Apelido", 30, 3, this) &&
                 v.validarDUI(txtDUI, this) &&
-                v.CharWritten(txtDomicilio, "Dirección", 50, 1, this) &&
+                v.CharWritten(txtDomicilio, "Dirección", 50, 5, this) &&
                 v.validarCorreoElectronico(txtCorreo, this)&&
                 v.CharWritten(txtTelefono, "Telefono", 8, 8, this) &&
                 v.GenderSelected(genero, this) &&
                 v.FechaReal(dia, mes, año, this)
             ) {
+                if(duiExiste(dui))
+                {
+                    Toast.makeText(this, "El DUI ya existe en la base de datos.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener // Salir de la función si el DUI existe}
 
-                if (validarCampos()) {
-                    val dia = dbDia.selectedItem.toString().toIntOrNull()
-                    val mes = obtenerNumeroMes(dbMes.selectedItem.toString())
-                    val año = dbAño.selectedItem.toString().toIntOrNull()
+                }
+                else{
+                    if (correoElectronicoExiste(correo)){
+                        Toast.makeText(this, "El correo electronico ya existe en la base de datos.", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener // Salir de la función si el DUI existe}
+                    }
+                    else{
+                        if(TelefonoExiste(tel)){
+                            Toast.makeText(this, "El Telefono ya existe en la base de datos.", Toast.LENGTH_SHORT).show()
+                            return@setOnClickListener
+                        }else{
 
-                    if (dia != null && mes != null && año != null) {
-                        if (validarFechaNacimiento(dia, mes, año)) {
-                            if (genero == 1 || genero == 2) {
 
-                                val userData = HashMap<String, String>()
+                            if (validarCampos()) {
+                                val dia = dbDia.selectedItem.toString().toIntOrNull()
+                                val mes = obtenerNumeroMes(dbMes.selectedItem.toString())
+                                val año = dbAño.selectedItem.toString().toIntOrNull()
 
-                                userData["nombre"] = txtNombre.text.toString()
-                                userData["apellido"] = txtApellido.text.toString()
-                                userData["dui"] = txtDUI.text.toString()
-                                userData["telefono"] = txtTelefono.text.toString()
-                                userData["correo"] = txtCorreo.text.toString()
+                                if (dia != null && mes != null && año != null) {
+                                    if (validarFechaNacimiento(dia, mes, año)) {
+                                        if (genero == 1 || genero == 2) {
 
-                                val fechaNacimiento = "$año/$mes/$dia"
-                                userData["fechaNacimiento"] = fechaNacimiento
+                                            val userData = HashMap<String, String>()
 
-                                if (IdiomasSeleccionados != null) {
-                                    val idiomasString = IdiomasSeleccionados.joinToString(",")
-                                    userData["idiomas"] = idiomasString
+                                            userData["nombre"] = txtNombre.text.toString()
+                                            userData["apellido"] = txtApellido.text.toString()
+                                            userData["dui"] = txtDUI.text.toString()
+                                            userData["telefono"] = txtTelefono.text.toString()
+                                            userData["correo"] = txtCorreo.text.toString()
+
+                                            val fechaNacimiento = "$año/$mes/$dia"
+                                            userData["fechaNacimiento"] = fechaNacimiento
+
+                                            if (IdiomasSeleccionados != null) {
+                                                val idiomasString = IdiomasSeleccionados.joinToString(",")
+                                                userData["idiomas"] = idiomasString
+                                            }
+
+                                            if (NacionalidadesSeleccionados != null) {
+                                                val nacionalidadesString =
+                                                    NacionalidadesSeleccionados.joinToString(",")
+                                                userData["nacionalidades"] = nacionalidadesString
+                                            }
+
+                                            val dep = dbDepartamento.selectedItem.toString()
+                                            val mun = dbMunicipio.selectedItem.toString()
+                                            val di = txtDomicilio.text.toString()
+                                            userData["domicilio"] = "$dep, $mun, $di"
+
+                                            var generotxt = ""
+                                            if (genero == 1) {
+                                                generotxt = "Masculino"
+                                            } else if (genero == 2) {
+                                                generotxt = "Femenino"
+                                            }
+                                            userData["genero"] = generotxt
+
+                                            userData["estadoCivil"] = dbEstCivil.selectedItem.toString()
+                                            userData["tipoSangre"] = dbTipoSangre.selectedItem.toString()
+
+                                            val intent =
+                                                Intent(this, RegistroUsuarioReferenciasPersonales::class.java)
+                                            intent.putExtra("userData", userData)
+                                            setResult(Activity.RESULT_OK, intent)
+                                            IdiomasSeleccionados.clear()
+                                            NacionalidadesSeleccionados.clear()
+                                            connection.close()
+                                            finish()
+
+
+                                        } else {
+                                            Toast.makeText(
+                                                this,
+                                                "Por favor seleccione su genero",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    } else {
+                                        Toast.makeText(
+                                            this,
+                                            "Por favor ingrese una fecha valida",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                } else {
+                                    Toast.makeText(
+                                        this,
+                                        "Error al convertir los valores seleccionados",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
-
-                                if (NacionalidadesSeleccionados != null) {
-                                    val nacionalidadesString =
-                                        NacionalidadesSeleccionados.joinToString(",")
-                                    userData["nacionalidades"] = nacionalidadesString
-                                }
-
-                                val dep = dbDepartamento.selectedItem.toString()
-                                val mun = dbMunicipio.selectedItem.toString()
-                                val di = txtDomicilio.text.toString()
-                                userData["domicilio"] = "$dep, $mun, $di"
-
-                                var generotxt = ""
-                                if (genero == 1) {
-                                    generotxt = "Masculino"
-                                } else if (genero == 2) {
-                                    generotxt = "Femenino"
-                                }
-                                userData["genero"] = generotxt
-
-                                userData["estadoCivil"] = dbEstCivil.selectedItem.toString()
-                                userData["tipoSangre"] = dbTipoSangre.selectedItem.toString()
-
-                                val intent =
-                                    Intent(this, RegistroUsuarioReferenciasPersonales::class.java)
-                                intent.putExtra("userData", userData)
-                                setResult(Activity.RESULT_OK, intent)
-                                IdiomasSeleccionados.clear()
-                                NacionalidadesSeleccionados.clear()
-                                connection.close()
-                                finish()
-
-
-                            } else {
-                                Toast.makeText(
-                                    this,
-                                    "Por favor seleccione su genero",
-                                    Toast.LENGTH_SHORT
-                                ).show()
                             }
-                        } else {
-                            Toast.makeText(
-                                this,
-                                "Por favor ingrese una fecha valida",
-                                Toast.LENGTH_SHORT
-                            ).show()
+
                         }
-                    } else {
-                        Toast.makeText(
-                            this,
-                            "Error al convertir los valores seleccionados",
-                            Toast.LENGTH_SHORT
-                        ).show()
                     }
                 }
+
             }
 
         }
+
 
 
 
@@ -406,6 +433,63 @@ class RegistroUsuarioIngresoDatosReferenciaPersonal : AppCompatActivity() {
     finish()
 
  */
+
+
+    fun duiExiste(dui: String): Boolean {
+        try {
+            val statement = connection.createStatement()
+            val query = "SELECT COUNT(*) AS count FROM tbPersonas WHERE Dui = ?"
+            val preparedStatement = connection.prepareStatement(query)
+            preparedStatement.setString(1, dui)
+            val resultSet = preparedStatement.executeQuery()
+
+            if (resultSet.next()) {
+                val count = resultSet.getInt("count")
+                return count > 0 // Si count es mayor que 0, significa que el DUI ya existe.
+            }
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+        return false // Si ocurre una excepción o no se encuentra el DUI, asumimos que no existe.
+    }
+
+    fun TelefonoExiste(tel: String): Boolean {
+        try {
+            val statement = connection.createStatement()
+            val query = "SELECT COUNT(*) AS count FROM tbPersonas WHERE NumeroTel = ?"
+            val preparedStatement = connection.prepareStatement(query)
+            preparedStatement.setString(1, tel)
+            val resultSet = preparedStatement.executeQuery()
+
+            if (resultSet.next()) {
+                val count = resultSet.getInt("count")
+                return count > 0 // Si count es mayor que 0, significa que el DUI ya existe.
+            }
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+        return false // Si ocurre una excepción o no se encuentra el DUI, asumimos que no existe.
+    }
+
+    fun correoElectronicoExiste(correo: String): Boolean {
+        try {
+            val statement = connection.createStatement()
+            val query = "SELECT COUNT(*) AS count FROM tbPersonas WHERE CorreoElectronico = ?"
+            val preparedStatement = connection.prepareStatement(query)
+            preparedStatement.setString(1, correo)
+            val resultSet = preparedStatement.executeQuery()
+
+            if (resultSet.next()) {
+                val count = resultSet.getInt("count")
+                return count > 0 // Si count es mayor que 0, significa que el correo ya existe.
+            }
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+        return false // Si ocurre una excepción o no se encuentra el correo, asumimos que no existe.
+    }
+
+
 
     fun obtenerDatosPorID(tabla: String, columnaDato: String): ArrayList<String> {
         val datos: ArrayList<String> = ArrayList()

@@ -26,7 +26,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/infractores_main_btnQuit"
+                android:id="@+id/acercamientos_agregar_btnQuit"
                 android:layout_width="0dp"
                 android:layout_height="59dp"
                 android:layout_weight="1"

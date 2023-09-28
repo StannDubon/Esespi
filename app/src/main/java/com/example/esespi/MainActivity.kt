@@ -73,11 +73,16 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 if (credentialsValid == true) {
-                    showToast("Inicio de sesión exitoso")
 
-                    val login = Intent(this, DashBoard::class.java)
-                    login.putExtra("grupoPatrullaje" , GrupoPatrullaje)
-                    startActivity(login)
+                    if(GrupoPatrullaje!=0){
+                        val login = Intent(this, DashBoard::class.java)
+                        login.putExtra("grupoPatrullaje" , GrupoPatrullaje)
+                        startActivity(login)
+                    } else{
+                        val noGrupo = Intent(this, NoGrupoPatrullaje::class.java)
+                        startActivity(noGrupo)
+                    }
+
 
                 } else {
                     showToast("Credenciales inválidas")

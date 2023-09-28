@@ -132,6 +132,10 @@ class Decomisos_main : AppCompatActivity() {
                 ex.printStackTrace()
             }
         }
+
+        findViewById<ImageView>(R.id.Decomisos_main_btnQuit).setOnClickListener {
+            finish()
+        }
     }
 
     override fun onResume() {

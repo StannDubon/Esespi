@@ -54,23 +54,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/RecuperacionCredencialesElegirMetodoBtnPhone"
-        android:layout_width="334dp"
-        android:layout_height="55dp"
-        android:background="@drawable/rounded_corners_all"
-        android:backgroundTint="#4399FF"
-        android:elevation="20dp"
-        android:fontFamily="@font/poppins_semibold"
-        android:padding="10dp"
-        android:text="Numero Telefonico"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.677" />
 </androidx.constraintlayout.widget.ConstraintLayout>

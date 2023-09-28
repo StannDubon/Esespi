@@ -1,6 +1,5 @@
 package com.example.esespi
 
-
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
@@ -14,41 +13,31 @@ import java.sql.SQLException
 import android.content.SharedPreferences
 
 private lateinit var txtCorreo: EditText
-
-private lateinit var btnVerificar: Button
-private lateinit var btnReenviar: Button
 private lateinit var connection: Connection
-
-private var codigoSeguridad: String = "no varificado"
 private lateinit var sharedPrefs: SharedPreferences
-
-
+private lateinit var btnCorreoVerificar: Button
 
 class RecuperacionCredencialesMailVerificacion : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_registro_usuario_verificar_correo)
+        setContentView(R.layout.activity_recuperacion_credenciales_mail_verificacion)
+
+        txtCorreo = findViewById(R.id.RecuperacionCredencialesMailVerificacionTxtEmail)
+        btnCorreoVerificar = findViewById(R.id.btnCorreoVerifcar)
+
         connection = conexionSQL().dbConn() ?: throw SQLException("No se pudo establecer la conexión a la base de datos")
-        txtCorreo = findViewById(R.id.TxtCorreo)
         sharedPrefs = getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
 
-        btnVerificar = findViewById(R.id.btnVerificarCorreo)
-
-
-
-        btnVerificar.setOnClickListener {
+        btnCorreoVerificar.setOnClickListener {
             val correo = txtCorreo.text.toString().trim()
             val validaciones = Validaciones()
 
             if (validaciones.validarCorreoElectronico(txtCorreo, this)) {
 
                 if (correoElectronicoExiste(correo)) {
-                    val editor = sharedPrefs.edit()
-                    editor.putString("Codigo", codigoSeguridad)
-                    editor.apply()
 
-                    codigoSeguridad = (0..99999999).random().toString()
+                    val codigo = (0..99999999).random().toString()
                     val tituloCorreo = "Codigo de verificacion para correo electronico"
                     val cuerpoCorreo =
                         "Querido usuario, este es un código de verificación. Por favor, ingréselo en el lugar adecuado en la aplicación. Si no puede ingresar con este código, puede solicitar que se le reenvíe uno nuevo."
@@ -56,30 +45,27 @@ class RecuperacionCredencialesMailVerificacion : AppCompatActivity() {
                     val task = SendMailTask(
                         txtCorreo.text.toString(),
                         tituloCorreo,
-                        cuerpoCorreo + " Código: $codigoSeguridad"
+                        cuerpoCorreo + " Código: $codigo"
                     )
                     task.execute()
 
-                    val intent = Intent(this, RegistroVerificarCorreoParte2::class.java)
+                    // Guardar el correo y el código en SharedPreferences
+                    val editor = sharedPrefs.edit()
+                    editor.putString("Correo", correo)
+                    editor.putString("Codigo", codigo)
+                    editor.apply()
+
+                    val intent = Intent(this, RecuperacionCredencialesMailVerificacion2::class.java)
+                    intent.putExtra("codigo", codigo) // Pasa el código como un extra
                     startActivity(intent)
-                }
-                else {
+                } else {
                     Toast.makeText(this, "El correo electrónico no está registrado.", Toast.LENGTH_SHORT).show()
-
                 }
-
-
             }
-
-
-
-
         }
-
-
-
     }
-    fun correoElectronicoExiste(correo: String): Boolean {
+
+    private fun correoElectronicoExiste(correo: String): Boolean {
         try {
             val statement = connection.createStatement()
             val query = "SELECT COUNT(*) AS count FROM tbPersonas WHERE CorreoElectronico = ?"

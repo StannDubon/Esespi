@@ -33,24 +33,24 @@ class RegistroVerificarCorreoParte2 : AppCompatActivity() {
 
         // Recuperar el valor de "codigo" desde el Intent
         var codigo = intent.getStringExtra("codigo")
-        var Correo = intent.getStringExtra("Correo")
 
         connection = conexionSQL().dbConn() ?: throw SQLException("No se pudo establecer la conexión a la base de datos")
         sharedPrefs = getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
 
-
+        correo = sharedPrefs.getString("Correo", "") ?: ""
 
 
 
         txtCodigo = findViewById(R.id.txtCodigo)
         btnReenviarCodigo2 = findViewById(R.id.btnReenviarCodigo2)
+
         btnVerificar2 = findViewById(R.id.btnVerificar2)
         android.util.Log.d("Depuración", "Código de seguridad esperado (Ventana): $codigo")
 
         btnVerificar2.setOnClickListener {
 
 
-            correo = sharedPrefs.getString("Correo", "") ?: ""
+
             val validaciones = Validaciones()
 
             if (!validaciones.CharWritten(txtCodigo, "El código", 8, 8, this)) {
@@ -67,15 +67,20 @@ class RegistroVerificarCorreoParte2 : AppCompatActivity() {
             else{
                 if (codigoIngresado == codigo) {
 
-                    val RegistroUsuarioValoresDeRegistro =
-                        getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
-                    val editor = RegistroUsuarioValoresDeRegistro.edit()
-                    editor.putString("Correo", correo)
-                    editor.apply()
 
-                    val intent = Intent(this, RegistroUsuarioReferenciasPersonales::class.java)
-                    startActivity(intent)
-                } else {
+                        val RegistroUsuarioValoresDeRegistro =
+                            getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
+                        val editor = RegistroUsuarioValoresDeRegistro.edit()
+                        editor.putString("Correo", correo)
+                        editor.apply()
+                        val intent = Intent(this, RegistroUsuarioReferenciasPersonales::class.java)
+                        startActivity(intent)
+                    }
+
+
+
+
+                else {
                     // El código es incorrecto, muestra un mensaje de error
                     Toast.makeText(this, "El código ingresado es incorrecto.", Toast.LENGTH_SHORT).show()
                 }

@@ -32,7 +32,7 @@ class RecuperacionCredencialesRecuperarUsuario : AppCompatActivity() {
                 val preparedStatement: PreparedStatement = connection.prepareStatement(sentencia)
 
                 // Asignar los valores a los parámetros de la sentencia preparada
-                preparedStatement.setString(1, correo_usuario_a_recuperar)
+                //preparedStatement.setString(1, correo_usuario_a_recuperar)
                 preparedStatement.setString(2, txtConfirmarUsuario.text.toString())
 
                 // Ejecutar la sentencia de inserción

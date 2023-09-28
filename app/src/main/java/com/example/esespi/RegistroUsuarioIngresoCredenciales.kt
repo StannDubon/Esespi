@@ -47,6 +47,9 @@ class RegistroUsuarioIngresoCredenciales : AppCompatActivity() {
             ?: throw SQLException("No se pudo establecer la conexión a la base de datos")
 
         btnRegistrarse.setOnClickListener {
+
+            var v = Validaciones()
+
             val usuario = txtUsuario.text.toString().trim()
             if (usuarioExiste(usuario)) {
                 // El usuario ya existe en la base de datos, muestra un mensaje de error
@@ -55,75 +58,79 @@ class RegistroUsuarioIngresoCredenciales : AppCompatActivity() {
             }
             else
             {
-                if (txtContraseña.text.toString() == txtConfirmarContraseña.text.toString()) {
+                if (v.CharWritten(txtContraseña, "La Contraseña", 15, 8, this)&&
+                    v.CharWritten(txtConfirmarContraseña, "La confirmacion de contraseña", 15, 8, this)){
+                    if (txtContraseña.text.toString() == txtConfirmarContraseña.text.toString()) {
 
-                    try {
-                        val RegistroUsuarioValoresDeRegistro =
-                            getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
-                        val valores = RegistroUsuarioValoresDeRegistro.all
+                        try {
+                            val RegistroUsuarioValoresDeRegistro =
+                                getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
+                            val valores = RegistroUsuarioValoresDeRegistro.all
 
-                        DUI = sharedPrefs.getString("DUI", "").toString()
-                        numPlaca = sharedPrefs.getString("NumeroPlaca", "").toString()
-
-
-                        for ((clave, valor) in valores) {
-                            println("Clave: $clave - Valor: $valor")
+                            DUI = sharedPrefs.getString("DUI", "").toString()
+                            numPlaca = sharedPrefs.getString("NumeroPlaca", "").toString()
 
 
-                        }
-
-                        android.util.Log.d("Depuración", "Referencias")
-                        val userData =
-                            getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
-                        val valor = userData.all
+                            for ((clave, valor) in valores) {
+                                println("Clave: $clave - Valor: $valor")
 
 
-                        for ((clave, valor) in valor) {
-                            println("Clave: $clave - Valor: $valor")
-
-
-                        }
-
-                        contraseñaEncriptada = Encriptacion().convertirSHA256(txtConfirmarContraseña.text.toString())
-
-                        insertarDatosEnBaseDeDatos()
-                        insertarReferenciasDatosEnBaseDeDatos()
-
-                        android.util.Log.d("Depuración", "Ingresa datos")
-
-
-
-                        //InsertarIdiomasPorUsuario()
-                        //InsertarNacionalidadesPorUsuario()
-
-                        val sharedPreferences =
-                            getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
-                        val editor = sharedPreferences.edit()
-                        editor.clear() // Elimina todos los datos almacenados en SharedPreferences
-                        editor.apply()
-                        if (!isFinishing) {
-                            runOnUiThread {
-                                val customDialog = ShowCustomDialogImage(this@RegistroUsuarioIngresoCredenciales)
-                                customDialog.showCustomDialog(R.drawable.dialog_check, "Registro exitoso", "Aceptar", MainActivity::class.java, 1)
                             }
-                        }
 
-                    } catch (e: SQLException) {
-                        /* if (!isFinishing) {
-                             runOnUiThread {
-                                 val customDialog =
-                                     ShowCustomDialogImage(this@RegistroUsuarioIngresoCredenciales)
-                                 customDialog.showCustomDialog(
-                                     R.drawable.dialog_cross,
-                                     "Ocurrió un error",
-                                     "Aceptar",
-                                     MainActivity::class.java,
-                                     3
-                                 )
-                             }
-                         }*/
+                            android.util.Log.d("Depuración", "Referencias")
+                            val userData =
+                                getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
+                            val valor = userData.all
+
+
+                            for ((clave, valor) in valor) {
+                                println("Clave: $clave - Valor: $valor")
+
+
+                            }
+
+                            contraseñaEncriptada = Encriptacion().convertirSHA256(txtConfirmarContraseña.text.toString())
+
+                            insertarDatosEnBaseDeDatos()
+                            insertarReferenciasDatosEnBaseDeDatos()
+
+                            android.util.Log.d("Depuración", "Ingresa datos")
+
+
+
+                            //InsertarIdiomasPorUsuario()
+                            //InsertarNacionalidadesPorUsuario()
+
+                            val sharedPreferences =
+                                getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
+                            val editor = sharedPreferences.edit()
+                            editor.clear() // Elimina todos los datos almacenados en SharedPreferences
+                            editor.apply()
+                            if (!isFinishing) {
+                                runOnUiThread {
+                                    val customDialog = ShowCustomDialogImage(this@RegistroUsuarioIngresoCredenciales)
+                                    customDialog.showCustomDialog(R.drawable.dialog_check, "Registro exitoso", "Aceptar", MainActivity::class.java, 1)
+                                }
+                            }
+
+                        } catch (e: SQLException) {
+                            /* if (!isFinishing) {
+                                 runOnUiThread {
+                                     val customDialog =
+                                         ShowCustomDialogImage(this@RegistroUsuarioIngresoCredenciales)
+                                     customDialog.showCustomDialog(
+                                         R.drawable.dialog_cross,
+                                         "Ocurrió un error",
+                                         "Aceptar",
+                                         MainActivity::class.java,
+                                         3
+                                     )
+                                 }
+                             }*/
+                        }
                     }
                 }
+
             }
 
 

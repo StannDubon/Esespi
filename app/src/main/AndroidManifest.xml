@@ -15,6 +15,9 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".NoGrupoPatrullaje"
+            android:exported="false" />
+        <activity
             android:name=".Denuncias_info"
             android:exported="false" />
         <activity
@@ -76,6 +79,9 @@
             android:exported="false" />
         <activity
             android:name=".RecuperacionCredencialesElegirCredencial"
+            android:exported="false" />
+        <activity
+            android:name=".RecuperacionCredencialesMailVerificacion2"
             android:exported="false" />
         <activity
             android:name=".RecuperacionCredencialesMailVerificacion"

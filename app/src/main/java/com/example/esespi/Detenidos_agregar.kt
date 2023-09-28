@@ -81,6 +81,10 @@ class Detenidos_agregar : AppCompatActivity() {
 
         ActivityMode = intent.getStringExtra("mode")
 
+        findViewById<ImageView>(R.id.Detenidos_agregar_btnQuit).setOnClickListener {
+            finish()
+        }
+
 
 // SPINNER -----------------------------------------------------------------------------------------
 

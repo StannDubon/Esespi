@@ -87,6 +87,10 @@ class Denuncias_agregar : AppCompatActivity() {
 
         ActivityMode = intent.getStringExtra("mode")
 
+        findViewById<ImageView>(R.id.Denuncias_agregar_btnQuit).setOnClickListener {
+            finish()
+        }
+
         // SPINNER -----------------------------------------------------------------------------------------
 
         val clasificaciones = ArrayList<String>()

@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
@@ -67,6 +68,10 @@ class Acercamientos_agregar : AppCompatActivity() {
         btnDescartar = findViewById(R.id.Acercamientos_Agregar_btnDescartar)
 
         btnDescartar.setOnClickListener {
+            finish()
+        }
+
+        findViewById<ImageView>(R.id.acercamientos_agregar_btnQuit).setOnClickListener {
             finish()
         }
 

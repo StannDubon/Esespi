@@ -84,6 +84,10 @@ class Decomisos_agregar : AppCompatActivity() {
             foto = null
         }
 
+        findViewById<ImageView>(R.id.Decomisos_agregar_btnQuitTop).setOnClickListener {
+            finish()
+        }
+
 // SPINNER -----------------------------------------------------------------------------------------
 
         val clasificaciones = ArrayList<String>()

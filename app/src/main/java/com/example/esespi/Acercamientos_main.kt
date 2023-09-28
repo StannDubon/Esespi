@@ -46,6 +46,8 @@ class Acercamientos_main : AppCompatActivity() {
             finish()
         }
 
+
+
         findViewById<EditText>(R.id.Acercamientos_Main_txtBuscar).addTextChangedListener(object :
             TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

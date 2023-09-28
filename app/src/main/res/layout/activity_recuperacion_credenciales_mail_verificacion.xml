@@ -7,7 +7,7 @@
     tools:context=".RecuperacionCredencialesMailVerificacion">
 
     <Button
-        android:id="@+id/RecuperacionCredencialesMailVerificacionBtnVerificar"
+        android:id="@+id/btnVerificarCorreo"
         android:layout_width="334dp"
         android:layout_height="55dp"
         android:background="@drawable/rounded_corners_all"

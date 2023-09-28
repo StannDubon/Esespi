@@ -33,6 +33,7 @@ class RegistroVerificarCorreoParte2 : AppCompatActivity() {
 
         // Recuperar el valor de "codigo" desde el Intent
         var codigo = intent.getStringExtra("codigo")
+        var Correo = intent.getStringExtra("Correo")
 
         connection = conexionSQL().dbConn() ?: throw SQLException("No se pudo establecer la conexión a la base de datos")
         sharedPrefs = getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)

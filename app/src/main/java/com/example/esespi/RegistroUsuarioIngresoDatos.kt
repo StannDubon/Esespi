@@ -343,6 +343,7 @@ class RegistroUsuarioIngresoDatos : AppCompatActivity() {
         return false // Si ocurre una excepción o no se encuentra el DUI, asumimos que no existe.
     }
 
+
     fun TelefonoExiste(tel: String): Boolean {
         try {
             val statement = connection.createStatement()

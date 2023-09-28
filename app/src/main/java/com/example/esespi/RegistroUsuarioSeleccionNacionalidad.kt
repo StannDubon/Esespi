@@ -4,19 +4,19 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import java.sql.Connection
 
 private lateinit var connSQL: conexionSQL
 private lateinit var btnIdiomaAceptar: Button
 private lateinit var linearLayout: LinearLayout
 private lateinit var Busqueda: EditText
-private lateinit var Buscar: Button
+private lateinit var Buscar: ImageView
 
 class RegistroUsuarioSeleccionNacionalidad : AppCompatActivity() {
 

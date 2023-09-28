@@ -3,12 +3,11 @@ package com.example.esespi
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import java.util.*
-import kotlin.collections.ArrayList
 
 private lateinit var btnAñadirReferencia: Button
 private lateinit var btnContinuar: Button
@@ -39,6 +38,7 @@ class RegistroUsuarioReferenciasPersonales : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 3 && resultCode == Activity.RESULT_OK) {
+
             val userData = data?.getSerializableExtra("userData") as? HashMap<String, String>
             val linLay =  findViewById<LinearLayout>(R.id.LinearLayoutReferenciasPersonales)
 
@@ -67,6 +67,7 @@ class RegistroUsuarioReferenciasPersonales : AppCompatActivity() {
                 btnEditar.setOnClickListener {
                     val intent = Intent(this, RegistroUsuarioIngresoDatosReferenciaPersonal::class.java)
                     intent.putExtra("userData", userData)
+                    intent.putExtra("mode", "Edit")
                     startActivityForResult(intent, 3)
                 }
 

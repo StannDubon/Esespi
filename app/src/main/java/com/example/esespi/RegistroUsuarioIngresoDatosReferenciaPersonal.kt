@@ -5,15 +5,21 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.Spinner
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import java.sql.Connection
 import java.sql.SQLException
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.Calendar
 
 private var genero: Int = 0
 private var generotxt: String? = null
@@ -57,6 +63,7 @@ class RegistroUsuarioIngresoDatosReferenciaPersonal : AppCompatActivity() {
         connection = conexionSQL().dbConn() ?: throw SQLException("No se pudo establecer la conexión a la base de datos")
 
         val userData = intent?.getSerializableExtra("userData") as? HashMap<String, String>
+        val ActivityMode = intent.getStringExtra("mode")
         val RegistroUsuarioValoresDeRegistro2 = getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
 
 

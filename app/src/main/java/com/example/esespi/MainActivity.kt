@@ -20,7 +20,7 @@ private lateinit var Login: Button
 private lateinit var Registrarse: Button
 private lateinit var CambiarCredenciales:TextView
 
-private var GrupoPatrullaje:Int=1
+private var GrupoPatrullaje:Int=0
 
 class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
 
                 }
 
-                if (credentialsValid == true || true) {
+                if (credentialsValid == true) {
                     showToast("Inicio de sesión exitoso")
 
                     val login = Intent(this, DashBoard::class.java)
@@ -93,19 +93,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun verifyCredentials(conn: Connection, usuario: String, contraseña: String): Boolean {
-        val query = "SELECT COUNT(*) FROM tbUsuarios WHERE Usuario = ? AND Contraseña = ?"
+        val query = "SELECT IdGrupoPatrullaje FROM tbPolicias WHERE IdUsuario = (SELECT IdUsuario FROM tbUsuarios WHERE Usuario  = ? AND Contraseña = ?)"
         val preparedStatement = conn.prepareStatement(query)
         preparedStatement.setString(1, usuario)
         preparedStatement.setString(2, contraseña)
 
         val resultSet = preparedStatement.executeQuery()
-        resultSet.next()
-        val count = resultSet.getInt(1)
 
-        resultSet.close()
-        preparedStatement.close()
+        if (resultSet.next()) {
+            val count = resultSet.getInt(1)
+            resultSet.close()
+            preparedStatement.close()
+            GrupoPatrullaje = count
 
-        return count > 0
+            println(count)
+            return true
+        } else {
+            resultSet.close()
+            preparedStatement.close()
+            return false
+        }
     }
 
     private fun showToast(message: String) {

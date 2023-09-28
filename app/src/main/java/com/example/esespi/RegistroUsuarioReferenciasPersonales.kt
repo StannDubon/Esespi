@@ -68,6 +68,8 @@ class RegistroUsuarioReferenciasPersonales : AppCompatActivity() {
                     val intent = Intent(this, RegistroUsuarioIngresoDatosReferenciaPersonal::class.java)
                     intent.putExtra("userData", userData)
                     intent.putExtra("mode", "Edit")
+                    linLay.removeView(tarjeta)
+                    userDataList.remove(userData)
                     startActivityForResult(intent, 3)
                 }
 

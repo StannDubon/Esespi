@@ -5,10 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -40,6 +45,20 @@ class Acercamientos_main : AppCompatActivity() {
         btnSalir.setOnClickListener {
             finish()
         }
+
+        findViewById<EditText>(R.id.Acercamientos_Main_txtBuscar).addTextChangedListener(object :
+            TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val query = s.toString()
+                buscarInfractores(query)
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
     }
 
     @SuppressLint("MissingInflatedId")
@@ -104,6 +123,25 @@ class Acercamientos_main : AppCompatActivity() {
         super.onResume()
         LlAcercamientos.removeAllViews()
         Actualizar { result ->}
+    }
+
+    private fun buscarInfractores(query: String) {
+        val queryLowerCase = query.toLowerCase()
+
+        for (i in 0 until LlAcercamientos.childCount) {
+            val cardView = LlAcercamientos.getChildAt(i) as ConstraintLayout
+            val ID = cardView.findViewById<TextView>(R.id.Acercamientos_Card_Acercamiento_lblID)
+            val Nombre = cardView.findViewById<TextView>(R.id.Acercamientos_Card_Acercamiento_lblNombre)
+
+            val id = ID.text.toString().toLowerCase()
+            val nombre = Nombre.text.toString().toLowerCase()
+
+            if (id.contains(queryLowerCase) || nombre.contains(queryLowerCase)) {
+                cardView.visibility = View.VISIBLE
+            } else {
+                cardView.visibility = View.GONE
+            }
+        }
     }
 
 }

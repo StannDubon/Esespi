@@ -6,10 +6,15 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -39,6 +44,20 @@ class Infractores_main : AppCompatActivity() {
         }
 
         cardsLayout = findViewById(R.id.infractores_main_infractores_cards)
+
+        findViewById<EditText>(R.id.Infractores_Main_txtBuscar).addTextChangedListener(object :
+            TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val query = s.toString()
+                buscar(query)
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
     }
 
     @SuppressLint("MissingInflatedId")
@@ -128,9 +147,30 @@ class Infractores_main : AppCompatActivity() {
             }
         }
     }
-        override fun onResume() {
-            super.onResume()
-            cardsLayout.removeAllViews()
-            Actualizar { result -> }
+
+    override fun onResume() {
+        super.onResume()
+        cardsLayout.removeAllViews()
+        Actualizar { result -> }
+    }
+
+    private fun buscar(query: String) {
+        val queryLowerCase = query.toLowerCase()
+
+        for (i in 0 until cardsLayout.childCount) {
+            val cardView = cardsLayout.getChildAt(i) as ConstraintLayout
+
+            val Text = cardView.findViewById<TextView>(R.id.Infractores_card_infractor_lblNombre)
+            val Text2 = cardView.findViewById<TextView>(R.id.Infractores_card_infractor_lblDui)
+
+            val text = Text.text.toString().toLowerCase()
+            val text2 = Text2.text.toString().toLowerCase()
+
+            if (text.contains(queryLowerCase) || text2.contains(queryLowerCase)) {
+                cardView.visibility = View.VISIBLE
+            } else {
+                cardView.visibility = View.GONE
+            }
         }
+    }
     }

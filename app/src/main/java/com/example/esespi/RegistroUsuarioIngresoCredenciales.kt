@@ -90,6 +90,9 @@ class RegistroUsuarioIngresoCredenciales : AppCompatActivity() {
                         insertarReferenciasDatosEnBaseDeDatos()
 
                         android.util.Log.d("Depuración", "Ingresa datos")
+
+
+
                         //InsertarIdiomasPorUsuario()
                         //InsertarNacionalidadesPorUsuario()
 
@@ -241,7 +244,7 @@ class RegistroUsuarioIngresoCredenciales : AppCompatActivity() {
         return false // Si ocurre una excepción o no se encuentra el usuario, asumimos que no existe.
     }
 
-    fun InsertarIdiomasPorUsuario() {
+    fun InsertarIdiomasPorUsuario(){
         try {
             val idiomasString = sharedPrefs.getString("IdiomasSeleccionados", "")
             val idiomasSeleccionados: ArrayList<String> = ArrayList(idiomasString?.split(","))

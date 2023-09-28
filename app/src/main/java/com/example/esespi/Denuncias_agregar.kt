@@ -189,61 +189,84 @@ class Denuncias_agregar : AppCompatActivity() {
 
         if(ActivityMode=="Agregar"){
             btnGuardar.setOnClickListener {
-                for (triple in SelectedInfractores) {
 
-                    val dia = dbDia.selectedItem.toString().toInt()
-                    val mes = Validaciones().obtenerNumeroMes(dbMes.selectedItem.toString())
-                    val año = dbAño.selectedItem.toString().toInt()
+                var v = Validaciones()
+                val dui = txtDui_Denunciante.text.toString().trim()
+                if (
 
-                    if (
-                        dbTipo.selectedItemPosition != 0
-                    ) {
-                        try {
-                            val addProducto: PreparedStatement = conn.prepareStatement(
-                                "EXEC dbo.InsertarDenuncias\n" +
-                                        "\t@Lugar = ?,\n" +
-                                        "\t@Fecha = ?,\n" +
-                                        "\t@DuiDenunciante = ?,\n" +
-                                        "\t@DuiInfractor = ?,\n" +
-                                        "\t@Delito = ?,\n" +
-                                        "\t@CategoriaDelito = ?,\n" +
-                                        "\t@NombreDenun = ?,\n" +
-                                        "\t@ApellidoDenun = ?,\n" +
-                                        "\t@IdGrupoPatrullaje = ?;"
-                            )
+                    v.validarDUI(txtDui_Denunciante, this)
 
-                            addProducto.setString(1, dbDepartamento.selectedItem.toString() + ", " + dbMunicipio.selectedItem.toString() + ", " + txtDireccion.text.toString())
-                            addProducto.setString(2, "$año/$mes/$dia $hora")
-                            addProducto.setString(3, txtDui_Denunciante.text.toString())
-                            addProducto.setString(4, triple.first)
-                            addProducto.setString(5, txtDetalles.text.toString())
-                            addProducto.setString(6, dbTipo.selectedItem.toString())
-                            addProducto.setString(7, txtNombre_Denunciante.text.toString())
-                            addProducto.setString(8, txtApellido_Denunciante.text.toString())
-                            addProducto.setInt(9, IdGrupoGot)
-                            addProducto.executeUpdate()
+                ) {
+                    if(duiExiste(dui))
+                    {
+                        Toast.makeText(this, "El DUI ya existe en la base de datos.", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener // Salir de la función si el DUI existe}
 
-                            Toast.makeText(
-                                this,
-                                "Se ha registrado correctamente",
-                                Toast.LENGTH_SHORT
-                            ).show()
-
-                            setResult(RESULT_OK, Intent())
-                            finish()
-                        } catch (ex: SQLException) {
-                            Toast.makeText(this, "Error al ingresar: " + ex, Toast.LENGTH_SHORT)
-                                .show()
-                            println(ex)
-                            setResult(RESULT_OK, Intent())
-                        }
-                    } else {
-                        Toast.makeText(
-                            this,
-                            "Por favor complete todos los campos",
-                            Toast.LENGTH_SHORT
-                        ).show()
                     }
+                    else{
+                        for (triple in SelectedInfractores) {
+
+                            val dia = dbDia.selectedItem.toString().toInt()
+                            val mes = Validaciones().obtenerNumeroMes(dbMes.selectedItem.toString())
+                            val año = dbAño.selectedItem.toString().toInt()
+
+                            if (
+                                dbTipo.selectedItemPosition != 0
+                            ) {
+                                try {
+                                    val addProducto: PreparedStatement = conn.prepareStatement(
+                                        "EXEC dbo.InsertarDenuncias\n" +
+                                                "\t@Lugar = ?,\n" +
+                                                "\t@Fecha = ?,\n" +
+                                                "\t@DuiDenunciante = ?,\n" +
+                                                "\t@DuiInfractor = ?,\n" +
+                                                "\t@Delito = ?,\n" +
+                                                "\t@CategoriaDelito = ?,\n" +
+                                                "\t@NombreDenun = ?,\n" +
+                                                "\t@ApellidoDenun = ?,\n" +
+                                                "\t@IdGrupoPatrullaje = ?;"
+                                    )
+
+                                    addProducto.setString(
+                                        1,
+                                        dbDepartamento.selectedItem.toString() + ", " + dbMunicipio.selectedItem.toString() + ", " + txtDireccion.text.toString()
+                                    )
+                                    addProducto.setString(2, "$año/$mes/$dia $hora")
+                                    addProducto.setString(3, txtDui_Denunciante.text.toString())
+                                    addProducto.setString(4, triple.first)
+                                    addProducto.setString(5, txtDetalles.text.toString())
+                                    addProducto.setString(6, dbTipo.selectedItem.toString())
+                                    addProducto.setString(7, txtNombre_Denunciante.text.toString())
+                                    addProducto.setString(8, txtApellido_Denunciante.text.toString())
+                                    addProducto.setInt(9, IdGrupoGot)
+                                    addProducto.executeUpdate()
+
+                                    Toast.makeText(
+                                        this,
+                                        "Se ha registrado correctamente",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    setResult(RESULT_OK, Intent())
+                                    finish()
+                                } catch (ex: SQLException) {
+                                    Toast.makeText(this, "Error al ingresar: " + ex, Toast.LENGTH_SHORT)
+                                        .show()
+                                    println(ex)
+                                    setResult(RESULT_OK, Intent())
+                                }
+                            } else {
+                                Toast.makeText(
+                                    this,
+                                    "Por favor complete todos los campos",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }
+
+
+
                 }
                 conn.close()
             }
@@ -491,6 +514,24 @@ class Denuncias_agregar : AppCompatActivity() {
             }
         }
 
+    }
+
+    fun duiExiste(dui: String): Boolean {
+        try {
+            val statement = conn.createStatement()
+            val query = "SELECT COUNT(*) AS count FROM tbPersonas WHERE Dui = ?"
+            val preparedStatement = conn.prepareStatement(query)
+            preparedStatement.setString(1, dui)
+            val resultSet = preparedStatement.executeQuery()
+
+            if (resultSet.next()) {
+                val count = resultSet.getInt("count")
+                return count > 0 // Si count es mayor que 0, significa que el DUI ya existe.
+            }
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+        return false // Si ocurre una excepción o no se encuentra el DUI, asumimos que no existe.
     }
 
     private fun onTimeSelected(time:String){

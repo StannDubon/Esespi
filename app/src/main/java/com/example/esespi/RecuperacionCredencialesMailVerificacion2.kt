@@ -3,6 +3,7 @@ package com.example.esespi
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
@@ -35,36 +36,35 @@ class activity_recuperacion_credenciales_mail_verificacion : AppCompatActivity()
         codigoSeguridad = sharedPrefs.getString("Codigo", "") ?: ""
 
         txtCodigo = findViewById(R.id.txtCodigo)
-        btnReenviarCodigo2 = findViewById(R.id.recuperacionCredencialesMailVerificacionBtnReenviarCodigo)
+        btnReenviarCodigo2 = findViewById(R.id.btnReenviarCodigo2)
 
-        btnVerificar2 = findViewById(R.id.recuperacionCredencialesMailVerificacionBtnVerificar2)
+        btnVerificar2 = findViewById(R.id.btnVerificarCodigo)
         android.util.Log.d("Depuración", "Código de seguridad esperado (Ventana): $codigoSeguridad")
 
         btnVerificar2.setOnClickListener {
 
             val validaciones = Validaciones()
 
-            if (!validaciones.CharWritten(txtCodigo, "El código", 8, 8, this)) {
-                // El código no es válido (no tiene 8 caracteres)
-                return@setOnClickListener
-            }
             val codigoIngresado = txtCodigo.text.toString().trim()
 
-            if (codigoIngresado == codigoSeguridad) {
+            if (validaciones.CharWritten(txtCodigo, "El código", 8, 8, this)) {
+                if (codigoIngresado == codigoSeguridad) {
 
-                val RegistroUsuarioValoresDeRegistro =
-                    getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
-                val editor = RegistroUsuarioValoresDeRegistro.edit()
-                editor.putString("Correo", correo)
-                editor.apply()
-                correo_usuario_a_recuperar=correo
+                    val RegistroUsuarioValoresDeRegistro =
+                        getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
+                    val editor = RegistroUsuarioValoresDeRegistro.edit()
+                    editor.putString("Correo", correo)
+                    editor.apply()
+                    correo_usuario_a_recuperar=correo
 
-                //val intent = Intent(this, RegistroUsuarioVerificarTelefono::class.java)
-                //startActivity(intent)
-            } else {
-                // El código es incorrecto, muestra un mensaje de error
-                Toast.makeText(this, "El código ingresado es incorrecto.", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, RecuperacionCredencialesRecuperarContrasena::class.java)
+                    startActivity(intent)
+                } else {
+                    // El código es incorrecto, muestra un mensaje de error
+                    Toast.makeText(this, "El código ingresado es incorrecto.", Toast.LENGTH_SHORT).show()
+                }
             }
+
         }
 
         btnReenviarCodigo2.setOnClickListener {

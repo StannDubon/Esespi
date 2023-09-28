@@ -33,7 +33,7 @@ class RecuperacionCredencialesMailVerificacion : AppCompatActivity() {
         txtCorreo = findViewById(R.id.TxtCorreo)
         sharedPrefs = getSharedPreferences("datos_ingreso", Context.MODE_PRIVATE)
 
-        btnVerificar = findViewById(R.id.BtnVerificar)
+        btnVerificar = findViewById(R.id.btnVerificarCorreo)
 
 
 
@@ -41,33 +41,33 @@ class RecuperacionCredencialesMailVerificacion : AppCompatActivity() {
             val correo = txtCorreo.text.toString().trim()
             val validaciones = Validaciones()
 
-            if (!validaciones.validarCorreoElectronico(txtCorreo, this)) {
-                // El correo electrónico no es válido
-                return@setOnClickListener
-            }
+            if (validaciones.validarCorreoElectronico(txtCorreo, this)) {
 
-            if (correoElectronicoExiste(correo)) {
-                val editor = sharedPrefs.edit()
-                editor.putString("Codigo", codigoSeguridad)
-                editor.apply()
+                if (correoElectronicoExiste(correo)) {
+                    val editor = sharedPrefs.edit()
+                    editor.putString("Codigo", codigoSeguridad)
+                    editor.apply()
 
-                codigoSeguridad = (0..99999999).random().toString()
-                val tituloCorreo = "Codigo de verificacion para correo electronico"
-                val cuerpoCorreo =
-                    "Querido usuario, este es un código de verificación. Por favor, ingréselo en el lugar adecuado en la aplicación. Si no puede ingresar con este código, puede solicitar que se le reenvíe uno nuevo."
+                    codigoSeguridad = (0..99999999).random().toString()
+                    val tituloCorreo = "Codigo de verificacion para correo electronico"
+                    val cuerpoCorreo =
+                        "Querido usuario, este es un código de verificación. Por favor, ingréselo en el lugar adecuado en la aplicación. Si no puede ingresar con este código, puede solicitar que se le reenvíe uno nuevo."
 
-                val task = SendMailTask(
-                    txtCorreo.text.toString(),
-                    tituloCorreo,
-                    cuerpoCorreo + " Código: $codigoSeguridad"
-                )
-                task.execute()
+                    val task = SendMailTask(
+                        txtCorreo.text.toString(),
+                        tituloCorreo,
+                        cuerpoCorreo + " Código: $codigoSeguridad"
+                    )
+                    task.execute()
 
-                val intent = Intent(this, RegistroVerificarCorreoParte2::class.java)
-                startActivity(intent)
-            }
-            else {
-                Toast.makeText(this, "El correo electrónico no está registrado.", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, RegistroVerificarCorreoParte2::class.java)
+                    startActivity(intent)
+                }
+                else {
+                    Toast.makeText(this, "El correo electrónico no está registrado.", Toast.LENGTH_SHORT).show()
+
+                }
+
 
             }
 

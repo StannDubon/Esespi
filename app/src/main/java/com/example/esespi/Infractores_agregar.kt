@@ -213,54 +213,63 @@ class Infractores_agregar : AppCompatActivity() {
             btnGuardar.setOnClickListener {
 
                 var v = Validaciones()
+                val dui = txtDUI.text.toString().trim()
                 val dia = dbDia.selectedItem.toString().toInt()
                 val mes = v.obtenerNumeroMes(dbMes.selectedItem.toString())
                 val año = dbAño.selectedItem.toString().toInt()
 
                 if (
-                    v.CharWritten(txtNombre, "Nombre", 30, 3, this) &&
-                    v.CharWritten(txtApellido, "Apelido", 30, 3, this) &&
-                    v.CharWritten(txtDUI, "Dui", 9, 9, this) &&
-                    v.CharWritten(txtDireccion, "Dirección", 50, 1, this) &&
-                    v.CharWritten(txtDescripcion, "Descripción", 50, 1, this) &&
+                    v.CharWritten(txtNombre, "El Nombre", 30, 3, this) &&
+                    v.CharWritten(txtApellido, "El Apellido", 30, 5, this) &&
+                    v.CharWritten(txtDUI, "El Dui", 10, 10, this) &&
+                    v.CharWritten(txtDireccion, "La Dirección", 50, 5, this) &&
+                    v.CharWritten(txtDescripcion, "La Descripción", 50, 10, this) &&
                     v.GenderSelected(genero, this) &&
                     v.FechaReal(dia, mes, año, this)
                 ){
+                    if(duiExiste(dui))
+                    {
+                        Toast.makeText(this, "El DUI ya existe en la base de datos.", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener // Salir de la función si el DUI existe}
 
-                    try {
-                        val addProducto: PreparedStatement =  conn.prepareStatement(
-                            "EXEC dbo.InsertarInfractores \n" +
-                                    "    @NombrePersona = ?,\n" +
-                                    "    @ApellidoPersona = ?,\n" +
-                                    "    @DuiPersona = ?,\n" +
-                                    "    @DireccionPersona = ?,\n" +
-                                    "    @IdGenero = ?,\n" +
-                                    "    @DescripcionInfractor = ?,\n" +
-                                    "    @UltimaVezVisto = ?,\n" +
-                                    "    @Foto = ?;"
-                        )!!
+                    }else{
+                        try {
+                            val addProducto: PreparedStatement =  conn.prepareStatement(
+                                "EXEC dbo.InsertarInfractores \n" +
+                                        "    @NombrePersona = ?,\n" +
+                                        "    @ApellidoPersona = ?,\n" +
+                                        "    @DuiPersona = ?,\n" +
+                                        "    @DireccionPersona = ?,\n" +
+                                        "    @IdGenero = ?,\n" +
+                                        "    @DescripcionInfractor = ?,\n" +
+                                        "    @UltimaVezVisto = ?,\n" +
+                                        "    @Foto = ?;"
+                            )!!
 
-                        addProducto.setString(1, txtNombre.text.toString())
-                        addProducto.setString(2, txtApellido.text.toString())
-                        addProducto.setString(3, txtDUI.text.toString())
-                        addProducto.setString(4, dbDepartamento.selectedItem.toString() +", "+ dbMunicipio.selectedItem.toString() +", "+ txtDireccion.text.toString())
-                        addProducto.setInt(5, genero)
-                        addProducto.setString(6, txtDescripcion.text.toString())
-                        addProducto.setString(7, "$año/$mes/$dia")
-                        addProducto.setBytes(8, foto)
-                        addProducto.executeUpdate()
+                            addProducto.setString(1, txtNombre.text.toString())
+                            addProducto.setString(2, txtApellido.text.toString())
+                            addProducto.setString(3, txtDUI.text.toString())
+                            addProducto.setString(4, dbDepartamento.selectedItem.toString() +", "+ dbMunicipio.selectedItem.toString() +", "+ txtDireccion.text.toString())
+                            addProducto.setInt(5, genero)
+                            addProducto.setString(6, txtDescripcion.text.toString())
+                            addProducto.setString(7, "$año/$mes/$dia")
+                            addProducto.setBytes(8, foto)
+                            addProducto.executeUpdate()
 
-                        Toast.makeText(this, "Se ha registrado correctamente", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Se ha registrado correctamente", Toast.LENGTH_SHORT).show()
 
-                        setResult(RESULT_OK, Intent())
-                        conn.close()
-                        finish()
+                            setResult(RESULT_OK, Intent())
+                            conn.close()
+                            finish()
+                        }
+                        catch (ex: SQLException){
+                            Toast.makeText(this, "Error al ingresar: "+ex, Toast.LENGTH_SHORT).show()
+                            println(ex)
+                            setResult(RESULT_OK, Intent())
+                        }
                     }
-                    catch (ex: SQLException){
-                        Toast.makeText(this, "Error al ingresar: "+ex, Toast.LENGTH_SHORT).show()
-                        println(ex)
-                        setResult(RESULT_OK, Intent())
-                    }
+
+
                 } else{
 
                 }
@@ -448,6 +457,23 @@ class Infractores_agregar : AppCompatActivity() {
 
     }
 
+    fun duiExiste(dui: String): Boolean {
+        try {
+            val statement = conn.createStatement()
+            val query = "SELECT COUNT(*) AS count FROM tbPersonas WHERE Dui = ?"
+            val preparedStatement = conn.prepareStatement(query)
+            preparedStatement.setString(1, dui)
+            val resultSet = preparedStatement.executeQuery()
+
+            if (resultSet.next()) {
+                val count = resultSet.getInt("count")
+                return count > 0 // Si count es mayor que 0, significa que el DUI ya existe.
+            }
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+        return false // Si ocurre una excepción o no se encuentra el DUI, asumimos que no existe.
+    }
     private fun getIMG(activity: Activity, capturarFoto: Boolean) {
         val intent: Intent
         if (capturarFoto) {
